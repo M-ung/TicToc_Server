@@ -19,7 +19,7 @@ public class Auction extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long sellerId;
+    private Long auctioneerId;
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
