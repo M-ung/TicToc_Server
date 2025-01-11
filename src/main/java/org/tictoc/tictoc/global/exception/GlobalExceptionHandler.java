@@ -1,9 +1,9 @@
-package org.tictoc.tictoc.global.common.exception;
+package org.tictoc.tictoc.global.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.tictoc.tictoc.global.common.exception.tictoc.TicTocException;
+import org.tictoc.tictoc.global.exception.common.TicTocException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {

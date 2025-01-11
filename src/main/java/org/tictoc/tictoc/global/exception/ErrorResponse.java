@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.common.exception;
+package org.tictoc.tictoc.global.exception;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;
