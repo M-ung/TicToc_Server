@@ -2,10 +2,10 @@ package org.tictoc.tictoc.global.auth.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.tictoc.tictoc.global.auth.RefreshTokenGenerator;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.tictoc.tictoc.global.exception.ErrorCode;
+import org.tictoc.tictoc.global.redis.refreshtoken.RefreshTokenGenerator;
 
 @RequiredArgsConstructor
 @Component
