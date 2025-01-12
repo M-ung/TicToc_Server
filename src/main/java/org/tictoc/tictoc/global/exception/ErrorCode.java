@@ -11,7 +11,10 @@ public enum ErrorCode {
     USER_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 회원입니다."),
 
     // Auction
+    AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 경매입니다."),
+    AUCTION_NO_ACCESS(HttpStatus.FORBIDDEN,"경매에 대한 접근 권한이 없습니다."),
     DUPLICATE_AUCTION_DATE(HttpStatus.BAD_REQUEST,"중복된 경매 날짜가 있습니다."),
+    CONFLICT_AUCTION_UPDATE(HttpStatus.BAD_REQUEST,"경매 수정이 다른 곳에서 일어났습니다."),
 
     // Server
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),

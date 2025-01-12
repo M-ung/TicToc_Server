@@ -11,8 +11,11 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT COUNT(a) > 0 FROM Auction a " +
             "WHERE a.auctioneerId = :userId " +
             "AND a.sellStartTime <= :sellEndTime " +
-            "AND a.sellEndTime >= :sellStartTime")
-    boolean existAuctionInTimeRange(@Param("userId") Long userId,
-                                    @Param("startTime") LocalDateTime sellStartTime,
-                                    @Param("endTime") LocalDateTime sellEndTime);
+            "AND a.sellEndTime >= :sellStartTime " +
+            "AND a.status = org.tictoc.tictoc.global.common.entity.type.TicTocStatus.ACTIVE")
+    boolean existsAuctionInTimeRange(@Param("userId") Long userId,
+                                     @Param("sellStartTime") LocalDateTime sellStartTime,
+                                     @Param("sellEndTime") LocalDateTime sellEndTime);
+
+    boolean existsByAuctioneerIdAndId(Long auctioneer, Long auctionId);
 }

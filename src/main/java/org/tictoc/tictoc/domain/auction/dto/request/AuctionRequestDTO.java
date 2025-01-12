@@ -23,6 +23,8 @@ public class AuctionRequestDTO {
             Integer startPrice,
             LocalDateTime sellStartTime,
             LocalDateTime sellEndTime,
-            List<Zone> zones
+            LocalDateTime auctionCloseTime,
+            List<Zone> zones,
+            AuctionType type
     ) {}
 }

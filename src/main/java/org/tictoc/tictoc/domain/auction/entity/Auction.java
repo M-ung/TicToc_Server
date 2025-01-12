@@ -61,4 +61,17 @@ public class Auction extends BaseTimeEntity {
                 .status(TicTocStatus.ACTIVE)
                 .build();
     }
+
+    public void update(AuctionRequestDTO.Update requestDTO) {
+        this.title = requestDTO.title();
+        this.content = requestDTO.content();
+        this.startPrice = requestDTO.startPrice();
+        this.currentPrice = requestDTO.startPrice();
+        this.finalPrice = requestDTO.startPrice();
+        this.sellStartTime = requestDTO.sellStartTime();
+        this.sellEndTime = requestDTO.sellEndTime();
+        this.auctionCloseTime = requestDTO.auctionCloseTime();
+        this.zones = requestDTO.zones();
+        this.type = requestDTO.type();
+    }
 }
