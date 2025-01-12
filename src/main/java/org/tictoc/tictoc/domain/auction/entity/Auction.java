@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionStatus;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 
@@ -19,7 +21,7 @@ public class Auction extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long auctioneerId;
+    private Long auctioneerId ;
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -30,5 +32,8 @@ public class Auction extends BaseTimeEntity {
     private LocalDateTime sellEndTime;
     private LocalDateTime auctionOpenTime;
     private LocalDateTime auctionCloseTime;
+    @Enumerated(EnumType.STRING)
+    private AuctionProgress progress;
+    @Enumerated(EnumType.STRING)
     private TicTocStatus status;
 }

@@ -19,5 +19,6 @@ public class ProfileImage {
     private Long profileId;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String imageUrl;
+    @Enumerated(EnumType.STRING)
     private TicTocStatus status;
 }

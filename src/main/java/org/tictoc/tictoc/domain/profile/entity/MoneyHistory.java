@@ -1,9 +1,6 @@
 package org.tictoc.tictoc.domain.profile.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,5 +20,6 @@ public class MoneyHistory extends BaseTimeEntity {
     private Long userId;
     private Integer useMoney;
     private Integer finalMoney;
+    @Enumerated(EnumType.STRING)
     private MoneyHistoryStatus status;
 }

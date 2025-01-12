@@ -1,9 +1,6 @@
 package org.tictoc.tictoc.domain.payment.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,5 +20,6 @@ public class Payment {
     private Long auctioneerId;
     private Long bidderId;
     private Integer price;
+    @Enumerated(EnumType.STRING)
     private PaymentStatus status;
 }

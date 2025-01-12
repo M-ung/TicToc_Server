@@ -1,9 +1,6 @@
 package org.tictoc.tictoc.domain.user.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,5 +23,6 @@ public class UserSchedule extends BaseTimeEntity {
     private Long tradeId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    @Enumerated(EnumType.STRING)
     private UserScheduleStatus status;
 }

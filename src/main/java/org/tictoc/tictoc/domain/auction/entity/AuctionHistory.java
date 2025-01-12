@@ -1,9 +1,6 @@
 package org.tictoc.tictoc.domain.auction.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,5 +18,6 @@ public class AuctionHistory {
     private Long id;
     private Long auctionId;
     private Long buyerId;
+    @Enumerated(EnumType.STRING)
     private AuctionStatus status;
 }
