@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.redis.util.RefreshTokenGenerator;
+import org.tictoc.tictoc.global.redis.refreshtoken.util.RefreshTokenGenerator;
 
 @RequiredArgsConstructor
 @Component
