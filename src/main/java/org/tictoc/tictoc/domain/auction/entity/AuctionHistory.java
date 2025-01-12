@@ -15,6 +15,7 @@ public class AuctionHistory {
     private Long id;
     private Long auctionId;
     private Long buyerId;
+    private Integer price;
     @Enumerated(EnumType.STRING)
     private AuctionStatus status;
 }

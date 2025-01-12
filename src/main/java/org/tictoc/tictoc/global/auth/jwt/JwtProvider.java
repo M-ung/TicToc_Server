@@ -15,17 +15,16 @@ public class JwtProvider {
     private final JwtGenerator jwtGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
 
-    public JwtResponseDTO.Login createJwt(final long userId) {
+    public JwtResponseDTO.Login createJwt(final Long userId) {
         return JwtResponseDTO.Login.of(
                 jwtGenerator.generateAccessToken(userId),
                 refreshTokenGenerator.generateRefreshToken(userId)
         );
     }
 
-    public long getUserIdFromSubject(String token) {
+    public Long getUserIdFromToken(String token) {
         Jws<Claims> jws = jwtGenerator.parseToken(token);
         String subject = jws.getBody().getSubject();
-
         try {
             return Long.parseLong(subject);
         } catch (NumberFormatException e) {
