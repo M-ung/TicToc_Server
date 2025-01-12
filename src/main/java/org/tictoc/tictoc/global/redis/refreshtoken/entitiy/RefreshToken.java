@@ -1,20 +1,17 @@
 package org.tictoc.tictoc.global.redis.refreshtoken.entitiy;
 
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-
+import org.springframework.data.redis.core.RedisHash;
 import java.time.LocalDateTime;
 
-@Builder(access = AccessLevel.PRIVATE)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
-@Table(name = "refresh_token")
-@Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@RedisHash(value = "refresh_token", timeToLive = 3600 * 24 * 7)
 public class RefreshToken {
     @Id
     @NotNull
@@ -27,7 +24,7 @@ public class RefreshToken {
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
-    public static RefreshToken create(final String token, final Long userId, LocalDateTime expiredAt) {
+    public static RefreshToken of(final String token, final Long userId, LocalDateTime expiredAt) {
         return RefreshToken.builder()
                 .token(token)
                 .userId(userId)

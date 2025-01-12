@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.auth;
+package org.tictoc.tictoc.global.redis.refreshtoken.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,7 +28,7 @@ public class RefreshTokenGenerator {
 
         LocalDateTime expireAt = LocalDateTime.now().plusWeeks(4);
 
-        RefreshToken newRefreshToken = RefreshToken.create(token, userId, expireAt);
+        RefreshToken newRefreshToken = RefreshToken.of(token, userId, expireAt);
         refreshTokenRepository.save(newRefreshToken);
 
         return token;
