@@ -2,13 +2,14 @@ package org.tictoc.tictoc.domain.auction.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
-
 import java.time.LocalDateTime;
 import java.util.List;
+import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
 
 @Getter
 @Entity
@@ -41,4 +42,23 @@ public class Auction extends BaseTimeEntity {
     private TicTocStatus status;
     @Version
     private Integer version;
+
+    public static Auction of(final Long userId, AuctionRequestDTO.Register requestDTO) {
+        return Auction.builder()
+                .auctioneerId(userId)
+                .title(requestDTO.title())
+                .content(requestDTO.content())
+                .startPrice(requestDTO.startPrice())
+                .currentPrice(requestDTO.startPrice())
+                .finalPrice(requestDTO.startPrice())
+                .sellStartTime(requestDTO.sellStartTime())
+                .sellEndTime(requestDTO.sellEndTime())
+                .auctionOpenTime(LocalDateTime.now())
+                .auctionCloseTime(requestDTO.auctionCloseTime())
+                .zones(requestDTO.zones())
+                .progress(NOT_PROGRESS)
+                .type(requestDTO.type())
+                .status(TicTocStatus.ACTIVE)
+                .build();
+    }
 }
