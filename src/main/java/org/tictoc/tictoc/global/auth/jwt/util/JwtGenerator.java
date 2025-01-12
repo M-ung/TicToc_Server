@@ -5,10 +5,14 @@ import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.tictoc.tictoc.global.auth.jwt.JwtProperties;
+import org.tictoc.tictoc.global.auth.jwt.dto.JwtResponseDTO;
 import org.tictoc.tictoc.global.exception.ErrorCode;
 import org.tictoc.tictoc.global.exception.common.UnauthorizedException;
 import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.Date;
 
@@ -17,21 +21,27 @@ import java.util.Date;
 public class JwtGenerator {
     private final JwtProperties jwtProperties;
 
-    public String generateAccessToken(final long userId) {
-        final Date now = new Date();
-        final Date expireDate = generateExpirationDate(now);
+    public JwtResponseDTO.AccessToken generateAccessToken(final long userId) {
+        final LocalDateTime now = LocalDateTime.now();
+        final LocalDateTime expireDate = generateExpirationDate(now);
 
-        return Jwts.builder()
+        String accessToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(String.valueOf(userId))
-                .setIssuedAt(now)
-                .setExpiration(expireDate)
+                .setIssuedAt(convertToDate(now))
+                .setExpiration(convertToDate(expireDate))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
+
+        return JwtResponseDTO.AccessToken.of(userId, accessToken, expireDate);
     }
 
-    private Date generateExpirationDate(final Date now) {
-        return new Date(now.getTime() + jwtProperties.getAccessTokenExpireTime());
+    private LocalDateTime generateExpirationDate(final LocalDateTime now) {
+        return now.plusMinutes(jwtProperties.getAccessTokenExpireTime());
+    }
+
+    private Date convertToDate(LocalDateTime localDateTime) {
+        return Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     public Key getSigningKey() {

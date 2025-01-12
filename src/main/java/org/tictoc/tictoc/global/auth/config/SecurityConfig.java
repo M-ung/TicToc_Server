@@ -27,12 +27,9 @@ public class SecurityConfig {
     private final CorsFilter corsFilter;
 //        private final CorsConfig corsConfig;
     private static final String[] whiteList = {
-            "/users/login",
-            "/actuator/health",
+            "/api/v1/member/login",
             "/swagger-ui/**",
-            "/error",
             "/v3/api-docs/**"
-//            "/api/v1/member/**"
     };
 
     @Bean

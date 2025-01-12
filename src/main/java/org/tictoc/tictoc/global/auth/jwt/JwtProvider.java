@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import org.tictoc.tictoc.global.auth.jwt.dto.JwtResponseDTO;
 import org.tictoc.tictoc.global.auth.jwt.util.JwtGenerator;
 import org.tictoc.tictoc.global.exception.ErrorCode;
 import org.tictoc.tictoc.global.redis.refreshtoken.util.RefreshTokenGenerator;
@@ -14,8 +15,8 @@ public class JwtProvider {
     private final JwtGenerator jwtGenerator;
     private final RefreshTokenGenerator refreshTokenGenerator;
 
-    public Token issueToken(final long userId) {
-        return Token.of(
+    public JwtResponseDTO.Login createJwt(final long userId) {
+        return JwtResponseDTO.Login.of(
                 jwtGenerator.generateAccessToken(userId),
                 refreshTokenGenerator.generateRefreshToken(userId)
         );
@@ -25,7 +26,6 @@ public class JwtProvider {
         Jws<Claims> jws = jwtGenerator.parseToken(token);
         String subject = jws.getBody().getSubject();
 
-        //subject가 숫자문자열인지 예외처리
         try {
             return Long.parseLong(subject);
         } catch (NumberFormatException e) {
