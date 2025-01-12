@@ -1,17 +1,14 @@
 package org.tictoc.tictoc.domain.auction.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionStatus;
 
 @Getter
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuctionHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
