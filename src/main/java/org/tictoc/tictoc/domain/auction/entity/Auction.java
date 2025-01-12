@@ -1,22 +1,20 @@
 package org.tictoc.tictoc.domain.auction.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
-import org.tictoc.tictoc.domain.auction.entity.type.AuctionStatus;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Entity
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Auction extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +30,15 @@ public class Auction extends BaseTimeEntity {
     private LocalDateTime sellEndTime;
     private LocalDateTime auctionOpenTime;
     private LocalDateTime auctionCloseTime;
+    @ElementCollection
+    @CollectionTable(name = "zones", joinColumns = @JoinColumn(name = "auction_id"))
+    private List<Zone> zones;
     @Enumerated(EnumType.STRING)
     private AuctionProgress progress;
     @Enumerated(EnumType.STRING)
+    private AuctionType type;
+    @Enumerated(EnumType.STRING)
     private TicTocStatus status;
+    @Version
+    private Integer version;
 }
