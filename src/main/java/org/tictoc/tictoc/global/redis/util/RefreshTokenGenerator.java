@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.redis.refreshtoken;
+package org.tictoc.tictoc.global.redis.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
