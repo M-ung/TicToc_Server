@@ -12,7 +12,6 @@ import org.tictoc.tictoc.global.exception.auction.AuctionNoAccessException;
 import org.tictoc.tictoc.global.exception.auction.AuctionNotFoundException;
 import org.tictoc.tictoc.global.exception.auction.ConflictAuctionUpdateException;
 import org.tictoc.tictoc.global.exception.auction.DuplicateAuctionDateException;
-
 import static org.tictoc.tictoc.global.exception.ErrorCode.*;
 
 @Service
@@ -33,7 +32,6 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     @Override
     public void update(final Long userId, final Long auctionId, AuctionRequestDTO.Update requestDTO) {
         validateAuctionAccess(userId, auctionId);
-        auctionRepository.existsByAuctioneerIdAndId(userId, auctionId);
         try {
             findAuctionById(auctionId).update(requestDTO);
         } catch (OptimisticLockingFailureException e) {
@@ -43,7 +41,8 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
     @Override
     public void delete(final Long userId, final Long auctionId) {
-
+        validateAuctionAccess(userId, auctionId);
+        findAuctionById(auctionId).delete();
     }
 
     private Auction findAuctionById(final Long auctionId) {

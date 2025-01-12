@@ -74,4 +74,8 @@ public class Auction extends BaseTimeEntity {
         this.zones = requestDTO.zones();
         this.type = requestDTO.type();
     }
+
+    public void delete() {
+        this.status = TicTocStatus.DISACTIVE;
+    }
 }
