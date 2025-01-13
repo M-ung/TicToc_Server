@@ -1,6 +1,7 @@
 package org.tictoc.tictoc.domain.auction.controller.command;
 
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,14 +17,14 @@ public class AuctionCommandController {
 
     @PostMapping("/register")
     @Operation(summary = "경매 등록 API", description = "경매 등록 API 입니다.")
-    public ResponseEntity<String> register (@UserId final Long userId, @RequestBody AuctionRequestDTO.Register requestDTO) {
+    public ResponseEntity<String> register (@UserId final Long userId, @RequestBody @Valid AuctionRequestDTO.Register requestDTO) {
         auctionCommandService.register(userId, requestDTO);
         return ResponseEntity.ok().body("경매가 등록되었습니다.");
     }
 
     @PostMapping("/update/{auctionId}")
     @Operation(summary = "경매 수정 API", description = "경매 수정 API 입니다.")
-    public ResponseEntity<String> update (@UserId final Long userId, @PathVariable("auctionId") Long auctionId, @RequestBody AuctionRequestDTO.Update requestDTO) {
+    public ResponseEntity<String> update (@UserId final Long userId, @PathVariable("auctionId") Long auctionId, @RequestBody @Valid AuctionRequestDTO.Update requestDTO) {
         auctionCommandService.update(userId, auctionId, requestDTO);
         return ResponseEntity.ok().body("경매가 수정되었습니다.");
     }
