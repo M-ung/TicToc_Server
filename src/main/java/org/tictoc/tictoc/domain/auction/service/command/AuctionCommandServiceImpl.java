@@ -8,10 +8,8 @@ import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
 import org.tictoc.tictoc.domain.auction.repository.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
-import org.tictoc.tictoc.global.exception.auction.AuctionNoAccessException;
-import org.tictoc.tictoc.global.exception.auction.AuctionNotFoundException;
-import org.tictoc.tictoc.global.exception.auction.ConflictAuctionUpdateException;
-import org.tictoc.tictoc.global.exception.auction.DuplicateAuctionDateException;
+import org.tictoc.tictoc.global.exception.auction.*;
+
 import static org.tictoc.tictoc.global.exception.ErrorCode.*;
 
 @Service
@@ -42,7 +40,11 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     @Override
     public void delete(final Long userId, final Long auctionId) {
         validateAuctionAccess(userId, auctionId);
-        findAuctionById(auctionId).delete();
+        try {
+            findAuctionById(auctionId).delete();
+        } catch (OptimisticLockingFailureException e) {
+            throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
+        }
     }
 
     private Auction findAuctionById(final Long auctionId) {
