@@ -6,8 +6,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import org.tictoc.tictoc.global.auth.jwt.dto.JwtResponseDTO;
 import org.tictoc.tictoc.global.auth.jwt.util.JwtGenerator;
-import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.redis.refreshtoken.util.RefreshTokenGenerator;
+import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.infra.redis.refreshtoken.util.RefreshTokenGenerator;
 
 @RequiredArgsConstructor
 @Component

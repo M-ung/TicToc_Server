@@ -8,8 +8,8 @@ import org.tictoc.tictoc.domain.user.entity.User;
 import org.tictoc.tictoc.domain.user.repository.UserRepository;
 import org.tictoc.tictoc.global.auth.jwt.JwtProvider;
 import org.tictoc.tictoc.global.auth.jwt.dto.JwtResponseDTO;
-import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.exception.user.UserNotFoundException;
+import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.domain.user.exception.UserNotFoundException;
 import java.util.Optional;
 
 @Service

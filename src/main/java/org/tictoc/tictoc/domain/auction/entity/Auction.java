@@ -7,14 +7,14 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
-import org.tictoc.tictoc.global.exception.auction.AuctionAlreadyStartedException;
+import org.tictoc.tictoc.domain.auction.exception.AuctionAlreadyStartedException;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.FINISHED;
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
-import static org.tictoc.tictoc.global.exception.ErrorCode.AUCTION_ALREADY_STARTED;
+import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_ALREADY_STARTED;
 
 @Getter
 @Entity

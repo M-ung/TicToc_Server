@@ -1,9 +1,9 @@
-package org.tictoc.tictoc.global.redis.refreshtoken.util;
+package org.tictoc.tictoc.infra.redis.refreshtoken.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.tictoc.tictoc.global.redis.refreshtoken.entitiy.RefreshToken;
-import org.tictoc.tictoc.global.redis.refreshtoken.repository.RefreshTokenRepository;
+import org.tictoc.tictoc.infra.redis.refreshtoken.entitiy.RefreshToken;
+import org.tictoc.tictoc.infra.redis.refreshtoken.repository.RefreshTokenRepository;
 
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;

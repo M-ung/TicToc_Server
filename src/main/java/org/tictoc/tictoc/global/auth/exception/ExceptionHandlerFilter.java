@@ -12,9 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tictoc.tictoc.global.common.entity.Constants;
-import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.exception.ErrorResponse;
-import org.tictoc.tictoc.global.exception.common.UnauthorizedException;
+import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.global.error.ErrorResponse;
+import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
 
 import java.io.IOException;
 import java.io.PrintWriter;

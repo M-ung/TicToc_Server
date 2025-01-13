@@ -1,7 +1,7 @@
-package org.tictoc.tictoc.global.exception.common;
+package org.tictoc.tictoc.global.error.exception;
 
 import lombok.Getter;
-import org.tictoc.tictoc.global.exception.ErrorCode;
+import org.tictoc.tictoc.global.error.ErrorCode;
 
 @Getter
 public class TicTocException extends RuntimeException {
