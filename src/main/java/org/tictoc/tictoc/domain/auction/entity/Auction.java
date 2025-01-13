@@ -7,9 +7,12 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
+import org.tictoc.tictoc.global.exception.auction.AuctionAlreadyStartedException;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
+import static org.tictoc.tictoc.global.exception.ErrorCode.AUCTION_ALREADY_STARTED;
 
 @Getter
 @Entity
@@ -63,6 +66,7 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void update(AuctionRequestDTO.Update requestDTO) {
+        checkAuctionNotStarted();
         this.title = requestDTO.title();
         this.content = requestDTO.content();
         this.startPrice = requestDTO.startPrice();
@@ -75,7 +79,14 @@ public class Auction extends BaseTimeEntity {
         this.type = requestDTO.type();
     }
 
-    public void delete() {
+    public void deactivate() {
+        checkAuctionNotStarted();
         this.status = TicTocStatus.DISACTIVE;
+    }
+
+    public void checkAuctionNotStarted() {
+        if(this.getProgress().equals(AuctionProgress.PROGRESS)) {
+            throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
+        }
     }
 }
