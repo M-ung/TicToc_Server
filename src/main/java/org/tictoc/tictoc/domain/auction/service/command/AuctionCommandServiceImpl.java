@@ -41,7 +41,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     public void delete(final Long userId, final Long auctionId) {
         validateAuctionAccess(userId, auctionId);
         try {
-            findAuctionById(auctionId).delete();
+            findAuctionById(auctionId).deactivate();
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }

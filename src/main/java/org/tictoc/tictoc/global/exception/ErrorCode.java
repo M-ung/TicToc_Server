@@ -13,6 +13,7 @@ public enum ErrorCode {
     // Auction
     AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 경매입니다."),
     AUCTION_NO_ACCESS(HttpStatus.FORBIDDEN,"경매에 대한 접근 권한이 없습니다."),
+    AUCTION_ALREADY_STARTED(HttpStatus.FORBIDDEN,"이미 경매가 시작되었습니다."),
     DUPLICATE_AUCTION_DATE(HttpStatus.BAD_REQUEST,"중복된 경매 날짜가 있습니다."),
     CONFLICT_AUCTION_UPDATE(HttpStatus.BAD_REQUEST,"경매 수정이 충돌나서 할 수 없습니다."),
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),

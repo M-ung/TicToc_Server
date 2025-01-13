@@ -8,7 +8,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Zone {
+public class Zone { //TODO 지역 관련 공공 데이터 OPEN API 가져올 예정
     @Column(nullable = false)
     private String city;
 
