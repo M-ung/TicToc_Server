@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
+import org.tictoc.tictoc.domain.auction.exception.*;
 import org.tictoc.tictoc.domain.auction.repository.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
-import org.tictoc.tictoc.global.exception.auction.*;
 
-import static org.tictoc.tictoc.global.exception.ErrorCode.*;
+import static org.tictoc.tictoc.global.error.ErrorCode.*;
 
 @Service
 @Transactional

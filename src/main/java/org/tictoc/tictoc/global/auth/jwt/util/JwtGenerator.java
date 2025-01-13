@@ -6,13 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.tictoc.tictoc.global.auth.jwt.JwtProperties;
 import org.tictoc.tictoc.global.auth.jwt.dto.JwtResponseDTO;
-import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.exception.common.UnauthorizedException;
+import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
 import io.jsonwebtoken.security.SignatureException;
 import java.security.Key;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.Base64;
 import java.util.Date;
 

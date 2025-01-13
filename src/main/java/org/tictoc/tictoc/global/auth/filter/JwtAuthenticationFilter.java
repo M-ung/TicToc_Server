@@ -12,8 +12,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tictoc.tictoc.global.auth.jwt.JwtProvider;
 import org.tictoc.tictoc.global.common.entity.Constants;
-import org.tictoc.tictoc.global.exception.ErrorCode;
-import org.tictoc.tictoc.global.exception.common.UnauthorizedException;
+import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
 
 import java.io.IOException;
 

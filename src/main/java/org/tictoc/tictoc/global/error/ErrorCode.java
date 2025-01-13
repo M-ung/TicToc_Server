@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.exception;
+package org.tictoc.tictoc.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

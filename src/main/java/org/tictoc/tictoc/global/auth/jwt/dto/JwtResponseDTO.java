@@ -1,6 +1,6 @@
 package org.tictoc.tictoc.global.auth.jwt.dto;
 
-import org.tictoc.tictoc.global.redis.refreshtoken.entitiy.RefreshToken;
+import org.tictoc.tictoc.infra.redis.refreshtoken.entitiy.RefreshToken;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

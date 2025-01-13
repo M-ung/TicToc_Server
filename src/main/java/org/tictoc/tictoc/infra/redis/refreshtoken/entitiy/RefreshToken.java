@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.redis.refreshtoken.entitiy;
+package org.tictoc.tictoc.infra.redis.refreshtoken.entitiy;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
