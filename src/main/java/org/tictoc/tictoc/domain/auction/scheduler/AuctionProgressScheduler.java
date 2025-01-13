@@ -24,5 +24,7 @@ public class AuctionProgressScheduler {
         List<Auction> finishedAuctions = auctionRepository.findByProgressAndAuctionCloseTimeBefore(AuctionProgress.PROGRESS, now);
 
         finishedAuctions.forEach(Auction::finished);
+
+        //TODO 입찰될 수 있게 해야 함.
     }
 }
