@@ -11,6 +11,8 @@ import org.tictoc.tictoc.global.exception.auction.AuctionAlreadyStartedException
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.FINISHED;
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
 import static org.tictoc.tictoc.global.exception.ErrorCode.AUCTION_ALREADY_STARTED;
 
@@ -82,6 +84,10 @@ public class Auction extends BaseTimeEntity {
     public void deactivate() {
         checkAuctionNotStarted();
         this.status = TicTocStatus.DISACTIVE;
+    }
+
+    public void finished() {
+        this.progress = FINISHED;
     }
 
     public void checkAuctionNotStarted() {

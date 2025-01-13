@@ -4,8 +4,10 @@ import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long> {
     @Query("SELECT COUNT(a) > 0 FROM Auction a " +
@@ -16,4 +18,5 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     boolean existsAuctionInTimeRange(@Param("userId") Long userId,
                                      @Param("sellStartTime") LocalDateTime sellStartTime,
                                      @Param("sellEndTime") LocalDateTime sellEndTime);
+    List<Auction> findByProgressAndAuctionCloseTimeBefore(AuctionProgress progress, LocalDateTime auctionCloseTime);
 }
