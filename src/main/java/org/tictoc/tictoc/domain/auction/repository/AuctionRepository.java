@@ -18,5 +18,5 @@ public interface AuctionRepository extends JpaRepository<Auction, Long> {
     boolean existsAuctionInTimeRange(@Param("userId") Long userId,
                                      @Param("sellStartTime") LocalDateTime sellStartTime,
                                      @Param("sellEndTime") LocalDateTime sellEndTime);
-    List<Auction> findByProgressAndAuctionCloseTimeBefore(AuctionProgress progress, LocalDateTime auctionCloseTime);
+    List<Auction> findByProgressNotAndAuctionCloseTime(AuctionProgress progress, LocalDateTime auctionCloseTime);
 }
