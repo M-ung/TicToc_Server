@@ -73,7 +73,7 @@ class AuctionRepositoryTest {
     }
 
     @Test
-    @DisplayName("해당_시간_안에_경매가_존재하는지_확인하는_테스트")
+    @DisplayName("해당 시간 안에 경매가 존재하는지 확인하는 테스트")
     void 해당_시간_안에_경매가_존재하는지_확인하는_테스트() {
         // given
         Long userId = 1L;
@@ -88,7 +88,7 @@ class AuctionRepositoryTest {
     }
 
     @Test
-    @DisplayName("경매_종료_시간_전에_존재하는_경매_확인_테스트")
+    @DisplayName("경매 종료 시간 전에 존재하는 경매 확인 테스트")
     void 경매_종료_시간_전에_존재하는_경매_확인_테스트() {
         // given
         LocalDateTime checkTime = LocalDateTime.of(2024, 12, 15, 20, 0, 0);
