@@ -1,8 +1,10 @@
 package org.tictoc.tictoc.domain.auction.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
 import org.tictoc.tictoc.domain.auction.entity.Zone;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 
 import java.time.LocalDateTime;
@@ -40,5 +42,14 @@ public class AuctionRequestDTO {
             LocalDateTime auctionCloseTime,
             @NotNull List<Zone> zones,
             @NotNull AuctionType type
+    ) {}
+    public record Filter(
+            @Nullable Integer startPrice,
+            @Nullable Integer endPrice,
+            @Nullable LocalDateTime sellStartTime,
+            @Nullable LocalDateTime sellEndTime,
+            @Nullable List<Zone> zones,
+            @Nullable AuctionProgress progress,
+            @Nullable AuctionType type
     ) {}
 }
