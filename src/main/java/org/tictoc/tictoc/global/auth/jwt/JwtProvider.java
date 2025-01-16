@@ -23,8 +23,7 @@ public class JwtProvider {
     }
 
     public Long getUserIdFromToken(String token) {
-        Jws<Claims> jws = jwtGenerator.parseToken(token);
-        String subject = jws.getBody().getSubject();
+        var subject = jwtGenerator.parseToken(token).getBody().getSubject();
         try {
             return Long.parseLong(subject);
         } catch (NumberFormatException e) {

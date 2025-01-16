@@ -21,10 +21,10 @@ public class JwtGenerator {
     private final JwtProperties jwtProperties;
 
     public JwtResponseDTO.AccessToken generateAccessToken(final long userId) {
-        final LocalDateTime now = LocalDateTime.now();
-        final LocalDateTime expireDate = generateExpirationDate(now);
+        final var now = LocalDateTime.now();
+        final var expireDate = generateExpirationDate(now);
 
-        String accessToken = Jwts.builder()
+        var accessToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(String.valueOf(userId))
                 .setIssuedAt(convertToDate(now))
@@ -53,7 +53,7 @@ public class JwtGenerator {
 
     public Jws<Claims> parseToken(String token) {
         try {
-            JwtParser jwtParser = getJwtParser();
+            var jwtParser = getJwtParser();
             return jwtParser.parseClaimsJws(token);
         } catch (ExpiredJwtException e) {
             throw new UnauthorizedException(ErrorCode.EXPIRED_ACCESS_TOKEN);

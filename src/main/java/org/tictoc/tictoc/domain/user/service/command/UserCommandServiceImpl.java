@@ -21,8 +21,8 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public JwtResponseDTO.Login login(UserRequestDTO.Login requestDTO) {
-        final Long userId = requestDTO.userId();
-        Optional<User> findUser = userRepository.findById(userId);
+        final var userId = requestDTO.userId();
+        var findUser = userRepository.findById(userId);
         if(!findUser.isPresent()) {
             throw new UserNotFoundException(ErrorCode.USER_NOT_FOUND);
         }

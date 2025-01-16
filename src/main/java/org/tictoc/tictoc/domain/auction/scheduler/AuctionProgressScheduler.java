@@ -21,7 +21,7 @@ public class AuctionProgressScheduler {
     public void updateAuctionProgress() {
         LocalDateTime now = LocalDateTime.now();
 
-        List<Auction> finishedAuctions = auctionRepository.findByProgressAndAuctionCloseTimeBefore(AuctionProgress.PROGRESS, now);
+        List<Auction> finishedAuctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.FINISHED, now);
 
         finishedAuctions.forEach(Auction::finished);
 

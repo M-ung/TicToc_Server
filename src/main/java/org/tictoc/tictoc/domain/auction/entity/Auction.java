@@ -91,7 +91,7 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void checkAuctionNotStarted() {
-        if(this.getProgress().equals(AuctionProgress.PROGRESS)) {
+        if(!this.getProgress().equals(NOT_PROGRESS)) {
             throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
         }
     }

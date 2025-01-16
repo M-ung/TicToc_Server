@@ -9,7 +9,7 @@ import org.tictoc.tictoc.domain.auction.entity.Auction;
 import org.tictoc.tictoc.domain.auction.exception.*;
 import org.tictoc.tictoc.domain.auction.repository.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
-
+import java.time.LocalDateTime;
 import static org.tictoc.tictoc.global.error.ErrorCode.*;
 
 @Service
@@ -21,15 +21,14 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
     @Override
     public void register(final Long userId, AuctionRequestDTO.Register requestDTO) {
-        if(auctionRepository.existsAuctionInTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime())) {
-            throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
-        }
+        checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         auctionRepository.save(Auction.of(userId, requestDTO));
     }
 
     @Override
     public void update(final Long userId, final Long auctionId, AuctionRequestDTO.Update requestDTO) {
         validateAuctionAccess(userId, auctionId);
+        checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
             findAuctionById(auctionId).update(requestDTO);
         } catch (OptimisticLockingFailureException e) {
@@ -55,6 +54,12 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     private void validateAuctionAccess(final Long userId, final Long auctioneerId) {
         if(!userId.equals(auctioneerId)) {
             throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
+        }
+    }
+
+    private void checkAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
+        if(auctionRepository.existsAuctionInTimeRange(userId, sellStartTime, sellEndTime)) {
+            throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
         }
     }
 }
