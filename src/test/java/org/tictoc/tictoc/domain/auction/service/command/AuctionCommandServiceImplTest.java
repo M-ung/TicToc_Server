@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
 import org.tictoc.tictoc.domain.auction.entity.Zone;
@@ -17,6 +18,10 @@ import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -30,7 +35,8 @@ class AuctionCommandServiceImplTest {
     private AuctionRepository auctionRepository;
 
     private Auction auction;
-    private AuctionRequestDTO.Update updateRequestDTO;
+    private AuctionRequestDTO.Update updateRequestDTO1;
+    private AuctionRequestDTO.Update updateRequestDTO2;
     private AuctionRequestDTO.Register registerRequestDTO;
 
     @BeforeEach
@@ -57,8 +63,17 @@ class AuctionCommandServiceImplTest {
                 .version(0)
                 .build();
 
-        updateRequestDTO = new AuctionRequestDTO.Update(
-                "수정된 제목", "수정된 내용", 1500,
+        updateRequestDTO1 = new AuctionRequestDTO.Update(
+                "수정된 제목 1", "수정된 내용 1", 1500,
+                LocalDateTime.of(2024, 12, 16, 12, 0, 0),
+                LocalDateTime.of(2024, 12, 16, 20, 0, 0),
+                LocalDateTime.of(2024, 12, 14, 18, 0, 0),
+                List.of(),
+                AuctionType.ALL
+        );
+
+        updateRequestDTO2 = new AuctionRequestDTO.Update(
+                "수정된 제목 2", "수정된 내용 2", 1500,
                 LocalDateTime.of(2024, 12, 16, 12, 0, 0),
                 LocalDateTime.of(2024, 12, 16, 20, 0, 0),
                 LocalDateTime.of(2024, 12, 14, 18, 0, 0),
@@ -100,21 +115,91 @@ class AuctionCommandServiceImplTest {
         Long auctionId = 1L;
 
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO.sellStartTime(), updateRequestDTO.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
                 .thenReturn(false);
 
         // when
-        auctionCommandService.update(userId, auctionId, updateRequestDTO);
+        auctionCommandService.update(userId, auctionId, updateRequestDTO1);
 
         // then
-        assertThat(auction.getTitle()).isEqualTo("수정된 제목");
-        assertThat(auction.getContent()).isEqualTo("수정된 내용");
+        assertThat(auction.getTitle()).isEqualTo("수정된 제목 1");
+        assertThat(auction.getContent()).isEqualTo("수정된 내용 1");
         assertThat(auction.getStartPrice()).isEqualTo(1500);
-        assertThat(auction.getSellStartTime()).isEqualTo(updateRequestDTO.sellStartTime());
-        assertThat(auction.getSellEndTime()).isEqualTo(updateRequestDTO.sellEndTime());
-        assertThat(auction.getAuctionCloseTime()).isEqualTo(updateRequestDTO.auctionCloseTime());
-        assertThat(auction.getZones()).isEqualTo(updateRequestDTO.zones());
-        assertThat(auction.getType()).isEqualTo(updateRequestDTO.type());
+        assertThat(auction.getSellStartTime()).isEqualTo(updateRequestDTO1.sellStartTime());
+        assertThat(auction.getSellEndTime()).isEqualTo(updateRequestDTO1.sellEndTime());
+        assertThat(auction.getAuctionCloseTime()).isEqualTo(updateRequestDTO1.auctionCloseTime());
+        assertThat(auction.getZones()).isEqualTo(updateRequestDTO1.zones());
+        assertThat(auction.getType()).isEqualTo(updateRequestDTO1.type());
+    }
+
+    @Test
+    @DisplayName("경매가 동시에 수정되는 테스트")
+    void 경매가_동시에_수정되는_테스트() throws InterruptedException {
+        // given
+        Long userId = 1L;
+        Long auctionId = 1L;
+
+        when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
+                .thenReturn(false);
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime()))
+                .thenReturn(false);
+
+        // when
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(() -> {
+            auctionCommandService.update(userId, auctionId, updateRequestDTO1);
+        });
+
+        executorService.submit(() -> {
+            auctionCommandService.update(userId, auctionId, updateRequestDTO2);
+        });
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        // then
+        verify(auctionRepository, times(2)).findById(auctionId);
+    }
+
+    @Test
+    @DisplayName("동시 경매 수정 시 낙관적 잠금 실패 테스트")
+    void 경매가_동시에_수정되면_낙관적_잠금_실패하는_테스트() throws InterruptedException {
+        // given
+        Long userId = 1L;
+        Long auctionId = 1L;
+
+        when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
+                .thenReturn(false);
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime()))
+                .thenReturn(false);
+
+        // when
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(() -> {
+            try {
+                auctionCommandService.update(userId, auctionId, updateRequestDTO1);
+            } catch (OptimisticLockingFailureException e) {
+                assertThat(e).isInstanceOf(OptimisticLockingFailureException.class);
+            }
+        });
+
+        executorService.submit(() -> {
+            try {
+                auctionCommandService.update(userId, auctionId, updateRequestDTO2);
+            } catch (OptimisticLockingFailureException e) {
+                assertThat(e).isInstanceOf(OptimisticLockingFailureException.class);
+            }
+        });
+
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        // then
+        verify(auctionRepository, times(2)).findById(auctionId);
+        verify(auctionRepository, never()).save(any(Auction.class));
     }
 
     @Test
@@ -131,5 +216,66 @@ class AuctionCommandServiceImplTest {
 
         // then
         assertThat(auction.getStatus()).isEqualTo(TicTocStatus.DISACTIVE);
+    }
+
+    @Test
+    @DisplayName("경매가 동시에 삭제되는 테스트")
+    void 경매가_동시에_삭제되는_테스트() throws InterruptedException {
+        // given
+        Long userId = 1L;
+        Long auctionId = 1L;
+
+        when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
+
+        // when
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(() -> {
+            auctionCommandService.delete(userId, auctionId);
+        });
+
+        executorService.submit(() -> {
+            auctionCommandService.delete(userId, auctionId);
+        });
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        // then
+        verify(auctionRepository, times(2)).findById(auctionId);
+    }
+
+    @Test
+    @DisplayName("동시 경매 삭제 시 낙관적 잠금 실패 테스트")
+    void 경매가_동시에_삭제되면_낙관적_잠금_실패하는_테스트() throws InterruptedException {
+        // given
+        Long userId = 1L;
+        Long auctionId = 1L;
+
+        when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
+
+        // when
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+
+        executorService.submit(() -> {
+            try {
+                auctionCommandService.delete(userId, auctionId);
+            } catch (OptimisticLockingFailureException e) {
+                assertThat(e).isInstanceOf(OptimisticLockingFailureException.class);
+            }
+        });
+
+        executorService.submit(() -> {
+            try {
+                auctionCommandService.delete(userId, auctionId);
+            } catch (OptimisticLockingFailureException e) {
+                assertThat(e).isInstanceOf(OptimisticLockingFailureException.class);
+            }
+        });
+
+        executorService.shutdown();
+        executorService.awaitTermination(5, TimeUnit.SECONDS);
+
+        // then
+        verify(auctionRepository, times(2)).findById(auctionId);
+        verify(auctionRepository, never()).save(any(Auction.class));
     }
 }
