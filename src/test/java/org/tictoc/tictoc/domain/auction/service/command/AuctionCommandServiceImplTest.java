@@ -35,9 +35,9 @@ class AuctionCommandServiceImplTest {
     private AuctionRepository auctionRepository;
 
     private Auction auction;
+    private AuctionRequestDTO.Register registerRequestDTO;
     private AuctionRequestDTO.Update updateRequestDTO1;
     private AuctionRequestDTO.Update updateRequestDTO2;
-    private AuctionRequestDTO.Register registerRequestDTO;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +63,15 @@ class AuctionCommandServiceImplTest {
                 .version(0)
                 .build();
 
+        registerRequestDTO = new AuctionRequestDTO.Register(
+                "테스트 제목", "테스트 내용", 1000,
+                LocalDateTime.of(2024, 12, 15, 12, 0, 0),
+                LocalDateTime.of(2024, 12, 15, 20, 0, 0),
+                LocalDateTime.of(2024, 12, 14, 15, 0, 0),
+                List.of(),
+                AuctionType.ALL
+        );
+
         updateRequestDTO1 = new AuctionRequestDTO.Update(
                 "수정된 제목 1", "수정된 내용 1", 1500,
                 LocalDateTime.of(2024, 12, 16, 12, 0, 0),
@@ -80,20 +89,11 @@ class AuctionCommandServiceImplTest {
                 List.of(),
                 AuctionType.ALL
         );
-
-        registerRequestDTO = new AuctionRequestDTO.Register(
-                "테스트 제목", "테스트 내용", 1000,
-                LocalDateTime.of(2024, 12, 15, 12, 0, 0),
-                LocalDateTime.of(2024, 12, 15, 20, 0, 0),
-                LocalDateTime.of(2024, 12, 14, 15, 0, 0),
-                List.of(),
-                AuctionType.ALL
-        );
     }
 
     @Test
     @DisplayName("정상적으로 경매가 등록되는 테스트")
-    void 정상적으로_경매가_등록되는_테스트() {
+    void 정상적으로_경매가_등록되는_테스트() throws Exception {
         // given
         Long userId = 1L;
 
@@ -109,7 +109,7 @@ class AuctionCommandServiceImplTest {
 
     @Test
     @DisplayName("정상적으로 경매가 수정되는 테스트")
-    void 정상적으로_경매가_수정되는_테스트() {
+    void 정상적으로_경매가_수정되는_테스트() throws Exception {
         // given
         Long userId = 1L;
         Long auctionId = 1L;
@@ -204,7 +204,7 @@ class AuctionCommandServiceImplTest {
 
     @Test
     @DisplayName("정상적으로 경매가 삭제되는 테스트")
-    void 정상적으로_경매가_삭제되는_테스트() {
+    void 정상적으로_경매가_삭제되는_테스트() throws Exception {
         // given
         Long userId = 1L;
         Long auctionId = 1L;

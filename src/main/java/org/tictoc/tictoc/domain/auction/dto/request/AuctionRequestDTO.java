@@ -1,5 +1,6 @@
 package org.tictoc.tictoc.domain.auction.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotNull;
 import org.tictoc.tictoc.domain.auction.entity.Zone;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
@@ -12,9 +13,15 @@ public class AuctionRequestDTO {
             @NotNull String title,
             @NotNull String content,
             @NotNull Integer startPrice,
-            @NotNull LocalDateTime sellStartTime,
-            @NotNull LocalDateTime sellEndTime,
-            @NotNull LocalDateTime auctionCloseTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime sellStartTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime sellEndTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime auctionCloseTime,
             @NotNull List<Zone> zones,
             @NotNull AuctionType type
     ) {}
@@ -22,9 +29,15 @@ public class AuctionRequestDTO {
             @NotNull String title,
             @NotNull String content,
             @NotNull Integer startPrice,
-            @NotNull LocalDateTime sellStartTime,
-            @NotNull LocalDateTime sellEndTime,
-            @NotNull LocalDateTime auctionCloseTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime sellStartTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime sellEndTime,
+            @NotNull
+            @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
+            LocalDateTime auctionCloseTime,
             @NotNull List<Zone> zones,
             @NotNull AuctionType type
     ) {}
