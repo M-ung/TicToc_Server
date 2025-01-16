@@ -29,8 +29,6 @@ class AuctionCommandControllerTest {
     private AuctionCommandController auctionCommandController;
     @Mock
     private AuctionCommandServiceImpl auctionCommandService;
-    @Mock
-    private AuctionRepository auctionRepository;
 
     private ObjectMapper objectMapper;
     private String jwtToken;
@@ -92,7 +90,7 @@ class AuctionCommandControllerTest {
         // given
         Long userId = 1L;
         Long auctionId = 1L;
-        String registerRequestJson = objectMapper.writeValueAsString(registerRequestDTO);
+        String registerRequestJson = objectMapper.writeValueAsString(updateRequestDTO);
 
         // when
         doNothing().when(auctionCommandService).update(eq(userId), eq(auctionId), any(AuctionRequestDTO.Update.class));
