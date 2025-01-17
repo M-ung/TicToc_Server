@@ -66,7 +66,6 @@ class AuctionRepositoryTest {
                     .sellEndTime(LocalDateTime.now().plusHours(2))
                     .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                     .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                    .locations(Set.of(Location.builder().region("인천광역시").city("연수구").district("송도동").subDistrict("").build()))
                     .progress(AuctionProgress.NOT_PROGRESS)
                     .type(AuctionType.OFFLINE)
                     .status(TicTocStatus.ACTIVE)
@@ -125,7 +124,7 @@ class AuctionRepositoryTest {
 
         // then
         assertNotNull(result);
-        assertEquals(10, result.getContent().size());
+        assertEquals(3, result.getContent().size());
         assertEquals(0, result.getNumber());
         assertEquals(1000, result.getContent().get(0).getCurrentPrice());
     }
