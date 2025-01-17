@@ -47,6 +47,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         try {
             findAuction.update(requestDTO);
             if(!requestDTO.type().equals(AuctionType.ONLINE)) {
+                //TODO 위치 저장이 아닌 수정을 해야 함
                 saveAuctionLocations(auctionId, requestDTO.locations());
             }
         } catch (OptimisticLockingFailureException e) {

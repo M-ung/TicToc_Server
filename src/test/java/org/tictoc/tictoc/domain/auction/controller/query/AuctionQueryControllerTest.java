@@ -76,7 +76,7 @@ class AuctionQueryControllerTest {
                 null,
                 null,
                 null,
-                Set.of(),
+                null,
                 null,
                 AuctionType.ONLINE
         );
