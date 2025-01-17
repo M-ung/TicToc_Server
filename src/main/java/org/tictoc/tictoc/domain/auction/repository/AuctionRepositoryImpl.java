@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import static org.tictoc.tictoc.domain.auction.entity.QAuction.auction;
+import static org.tictoc.tictoc.domain.auction.entity.location.QAuctionLocation.auctionLocation;
+import static org.tictoc.tictoc.domain.auction.entity.location.QLocation.location;
 
 public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
@@ -38,12 +40,15 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
                         auction.type
                 ))
                 .from(auction)
+                .leftJoin(auctionLocation).on(auction.id.eq(auctionLocation.auctionId))
+                .leftJoin(location).on(auctionLocation.locationId.eq(location.id))
                 .where(
                         auction.status.eq(TicTocStatus.ACTIVE),
                         filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
                         filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
                         filterProgress(requestDTO.progress()),
-                        filterType(requestDTO.type())
+                        filterType(requestDTO.type()),
+                        filterLocations(requestDTO.locations())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -72,25 +77,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression filterLocations(List<Location> locations) {
-        if (locations != null && !locations.isEmpty()) {
-            BooleanExpression condition = null;
-            for (Location location : locations) {
-                BooleanExpression regionCondition = auction.locations.any().region.eq(location.getRegion());
-                BooleanExpression cityCondition = auction.locations.any().city.eq(location.getCity());
-                BooleanExpression districtCondition = auction.locations.any().district.eq(location.getDistrict());
-                BooleanExpression subDistrictCondition = auction.locations.any().subDistrict.eq(location.getSubDistrict());
-                if (condition == null) {
-                    condition = regionCondition.and(cityCondition).and(districtCondition).and(subDistrictCondition);
-                } else {
-                    condition = condition.or(regionCondition.and(cityCondition).and(districtCondition).and(subDistrictCondition));
-                }
-            }
-            return condition;
-        }
-        return null;
-    }
-
     private BooleanExpression filterProgress(AuctionProgress progress) {
         return progress != null
                 ? auction.progress.eq(progress)
@@ -101,6 +87,32 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         return type != null
                 ? auction.type.eq(type)
                 : null;
+    }
+
+    private BooleanExpression filterLocations(List<AuctionRequestDTO.Location> locations) {
+        if (locations != null && !locations.isEmpty()) {
+            BooleanExpression condition = null;
+            for (AuctionRequestDTO.Location loc : locations) {
+                BooleanExpression regionCondition = loc.region() != null ? location.region.eq(loc.region()) : null;
+                BooleanExpression cityCondition = loc.city() != null ? location.city.eq(loc.city()) : null;
+                BooleanExpression districtCondition = loc.district() != null ? location.district.eq(loc.district()) : null;
+                BooleanExpression subDistrictCondition = loc.subDistrict() != null ? location.subDistrict.eq(loc.subDistrict()) : null;
+                BooleanExpression locationCondition = combineConditions(regionCondition, cityCondition, districtCondition, subDistrictCondition);
+                condition = condition == null ? locationCondition : condition.or(locationCondition);
+            }
+            return condition;
+        }
+        return null;
+    }
+
+    private BooleanExpression combineConditions(BooleanExpression... conditions) {
+        BooleanExpression result = null;
+        for (BooleanExpression condition : conditions) {
+            if (condition != null) {
+                result = result == null ? condition : result.and(condition);
+            }
+        }
+        return result;
     }
 
     private long getTotal() {

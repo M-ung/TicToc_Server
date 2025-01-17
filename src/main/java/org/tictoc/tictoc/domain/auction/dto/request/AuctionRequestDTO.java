@@ -38,8 +38,17 @@ public class AuctionRequestDTO {
             @NotNull
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
             LocalDateTime auctionCloseTime,
-            @NotNull List<Location> locations,
+            @NotNull List<AuctionRequestDTO.Location> locations,
             @NotNull AuctionType type
+    ) {}
+    public record Filter(
+            @Nullable Integer startPrice,
+            @Nullable Integer endPrice,
+            @Nullable LocalDateTime sellStartTime,
+            @Nullable LocalDateTime sellEndTime,
+            @Nullable List<AuctionRequestDTO.Location> locations,
+            @Nullable AuctionProgress progress,
+            @Nullable AuctionType type
     ) {}
     public record Location(
             @Nullable String region,
@@ -47,13 +56,4 @@ public class AuctionRequestDTO {
             @Nullable String district,
             @Nullable String subDistrict
     ){}
-    public record Filter(
-            @Nullable Integer startPrice,
-            @Nullable Integer endPrice,
-            @Nullable LocalDateTime sellStartTime,
-            @Nullable LocalDateTime sellEndTime,
-            @Nullable List<Location> locations,
-            @Nullable AuctionProgress progress,
-            @Nullable AuctionType type
-    ) {}
 }
