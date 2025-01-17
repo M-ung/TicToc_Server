@@ -9,7 +9,7 @@ import org.tictoc.tictoc.domain.auction.entity.Auction;
 import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.*;
-import org.tictoc.tictoc.domain.auction.repository.AuctionHistoryRepository;
+import org.tictoc.tictoc.domain.auction.repository.history.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
