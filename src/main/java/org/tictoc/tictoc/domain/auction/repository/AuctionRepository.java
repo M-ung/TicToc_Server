@@ -9,7 +9,7 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface AuctionRepository extends JpaRepository<Auction, Long> {
+public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
     @Query("SELECT COUNT(a) > 0 FROM Auction a " +
             "WHERE a.auctioneerId = :userId " +
             "AND a.sellStartTime <= :sellEndTime " +

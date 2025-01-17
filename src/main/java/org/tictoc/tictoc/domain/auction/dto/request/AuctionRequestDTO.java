@@ -1,10 +1,10 @@
 package org.tictoc.tictoc.domain.auction.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotNull;
-import org.tictoc.tictoc.domain.auction.entity.Zone;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class AuctionRequestDTO {
             @NotNull
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
             LocalDateTime auctionCloseTime,
-            @NotNull List<Zone> zones,
+            @Nullable List<AuctionRequestDTO.Location> locations,
             @NotNull AuctionType type
     ) {}
     public record Update(
@@ -38,7 +38,22 @@ public class AuctionRequestDTO {
             @NotNull
             @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm", timezone = "Asia/Seoul")
             LocalDateTime auctionCloseTime,
-            @NotNull List<Zone> zones,
+            @NotNull List<AuctionRequestDTO.Location> locations,
             @NotNull AuctionType type
     ) {}
+    public record Filter(
+            @Nullable Integer startPrice,
+            @Nullable Integer endPrice,
+            @Nullable LocalDateTime sellStartTime,
+            @Nullable LocalDateTime sellEndTime,
+            @Nullable List<AuctionRequestDTO.Location> locations,
+            @Nullable AuctionProgress progress,
+            @Nullable AuctionType type
+    ) {}
+    public record Location(
+            @Nullable String region,
+            @Nullable String city,
+            @Nullable String district,
+            @Nullable String subDistrict
+    ){}
 }

@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
-import org.tictoc.tictoc.domain.auction.entity.Zone;
+import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
@@ -21,7 +21,6 @@ import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
@@ -56,7 +55,7 @@ class AuctionCommandServiceImplTest {
                 .sellEndTime(LocalDateTime.now().plusHours(2))
                 .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                 .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                .zones(List.of(Zone.builder().city("City").localNameOfCity("Local").province("Province").build()))
+                .locations(List.of(Location.builder().region("인천광역시").city("연수구").district("송도동").subDistrict("").build()))
                 .progress(AuctionProgress.NOT_PROGRESS)
                 .type(AuctionType.OFFLINE)
                 .status(TicTocStatus.ACTIVE)
@@ -128,7 +127,7 @@ class AuctionCommandServiceImplTest {
         assertThat(auction.getSellStartTime()).isEqualTo(updateRequestDTO1.sellStartTime());
         assertThat(auction.getSellEndTime()).isEqualTo(updateRequestDTO1.sellEndTime());
         assertThat(auction.getAuctionCloseTime()).isEqualTo(updateRequestDTO1.auctionCloseTime());
-        assertThat(auction.getZones()).isEqualTo(updateRequestDTO1.zones());
+        assertThat(auction.getLocations()).isEqualTo(updateRequestDTO1.locations());
         assertThat(auction.getType()).isEqualTo(updateRequestDTO1.type());
     }
 

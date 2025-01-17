@@ -3,6 +3,7 @@ package org.tictoc.tictoc.domain.auction.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
@@ -10,7 +11,10 @@ import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.domain.auction.exception.AuctionAlreadyStartedException;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.FINISHED;
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
@@ -25,7 +29,7 @@ public class Auction extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long auctioneerId ;
+    private Long auctioneerId;
     private String title;
     @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
@@ -36,9 +40,6 @@ public class Auction extends BaseTimeEntity {
     private LocalDateTime sellEndTime;
     private LocalDateTime auctionOpenTime;
     private LocalDateTime auctionCloseTime;
-    @ElementCollection
-    @CollectionTable(name = "zones", joinColumns = @JoinColumn(name = "auction_id"))
-    private List<Zone> zones;
     @Enumerated(EnumType.STRING)
     private AuctionProgress progress;
     @Enumerated(EnumType.STRING)
@@ -60,7 +61,6 @@ public class Auction extends BaseTimeEntity {
                 .sellEndTime(requestDTO.sellEndTime())
                 .auctionOpenTime(LocalDateTime.now())
                 .auctionCloseTime(requestDTO.auctionCloseTime())
-                .zones(requestDTO.zones())
                 .progress(NOT_PROGRESS)
                 .type(requestDTO.type())
                 .status(TicTocStatus.ACTIVE)
@@ -77,7 +77,6 @@ public class Auction extends BaseTimeEntity {
         this.sellStartTime = requestDTO.sellStartTime();
         this.sellEndTime = requestDTO.sellEndTime();
         this.auctionCloseTime = requestDTO.auctionCloseTime();
-        this.zones = requestDTO.zones();
         this.type = requestDTO.type();
     }
 
