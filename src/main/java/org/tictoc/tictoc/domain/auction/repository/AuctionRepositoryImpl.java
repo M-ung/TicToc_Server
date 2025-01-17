@@ -7,16 +7,14 @@ import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Pageable;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
-import org.tictoc.tictoc.domain.auction.entity.Zone;
+import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import static org.tictoc.tictoc.domain.auction.entity.QAuction.auction;
 
 public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
@@ -36,7 +34,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
                         auction.sellEndTime,
                         auction.auctionOpenTime,
                         auction.auctionCloseTime,
-                        auction.zones,
                         auction.progress,
                         auction.type
                 ))
@@ -45,7 +42,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
                         auction.status.eq(TicTocStatus.ACTIVE),
                         filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
                         filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
-                        filterZones(requestDTO.zones()),
                         filterProgress(requestDTO.progress()),
                         filterType(requestDTO.type())
                 )
@@ -76,10 +72,23 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         return null;
     }
 
-    private BooleanExpression filterZones(List<Zone> zones) {
-        return zones != null && !zones.isEmpty()
-                ? auction.zones.any().in(zones)
-                : null;
+    private BooleanExpression filterLocations(List<Location> locations) {
+        if (locations != null && !locations.isEmpty()) {
+            BooleanExpression condition = null;
+            for (Location location : locations) {
+                BooleanExpression regionCondition = auction.locations.any().region.eq(location.getRegion());
+                BooleanExpression cityCondition = auction.locations.any().city.eq(location.getCity());
+                BooleanExpression districtCondition = auction.locations.any().district.eq(location.getDistrict());
+                BooleanExpression subDistrictCondition = auction.locations.any().subDistrict.eq(location.getSubDistrict());
+                if (condition == null) {
+                    condition = regionCondition.and(cityCondition).and(districtCondition).and(subDistrictCondition);
+                } else {
+                    condition = condition.or(regionCondition.and(cityCondition).and(districtCondition).and(subDistrictCondition));
+                }
+            }
+            return condition;
+        }
+        return null;
     }
 
     private BooleanExpression filterProgress(AuctionProgress progress) {

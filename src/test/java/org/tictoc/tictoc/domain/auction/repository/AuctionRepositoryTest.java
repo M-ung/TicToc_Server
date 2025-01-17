@@ -6,19 +6,24 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.transaction.annotation.Transactional;
+import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.Auction;
-import org.tictoc.tictoc.domain.auction.entity.Zone;
+import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.user.entity.User;
 import org.tictoc.tictoc.domain.user.entity.type.UserRole;
 import org.tictoc.tictoc.domain.user.repository.UserRepository;
+import org.tictoc.tictoc.global.common.entity.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
@@ -61,7 +66,7 @@ class AuctionRepositoryTest {
                     .sellEndTime(LocalDateTime.now().plusHours(2))
                     .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                     .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                    .zones(List.of(Zone.builder().city("City").localNameOfCity("Local").province("Province").build()))
+                    .locations(Set.of(Location.builder().region("인천광역시").city("연수구").district("송도동").subDistrict("").build()))
                     .progress(AuctionProgress.NOT_PROGRESS)
                     .type(AuctionType.OFFLINE)
                     .status(TicTocStatus.ACTIVE)
@@ -98,5 +103,30 @@ class AuctionRepositoryTest {
 
         // then
         assertEquals(3, auctions.size());
+    }
+
+    @Test
+    @DisplayName("필터 조건에 따라 경매 목록을 페이징 조회하는 테스트")
+    void 필터_조건에_따라_경매_목록을_페이징_조회하는_테스트() {
+        // given
+        AuctionRequestDTO.Filter filter = new AuctionRequestDTO.Filter(
+                1000, 5000,
+                null,
+                null,
+                null,
+                AuctionProgress.NOT_PROGRESS,
+                AuctionType.OFFLINE
+        );
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        // when
+        PageCustom<AuctionResponseDTO.Auctions> result = auctionRepository.findAuctionsByFilterWithPageable(filter, pageable);
+
+        // then
+        assertNotNull(result);
+        assertEquals(10, result.getContent().size());
+        assertEquals(0, result.getNumber());
+        assertEquals(1000, result.getContent().get(0).getCurrentPrice());
     }
 }

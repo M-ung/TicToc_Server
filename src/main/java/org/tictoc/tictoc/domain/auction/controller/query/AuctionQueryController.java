@@ -17,7 +17,7 @@ import org.tictoc.tictoc.global.common.entity.PageCustom;
 public class AuctionQueryController {
     private final AuctionQueryService auctionQueryService;
 
-    @GetMapping("/")
+    @GetMapping("")
     @Operation(summary = "경매 필터링 조회 API", description = "경매 필터링 조회 API 입니다.")
     public ResponseEntity<PageCustom<AuctionResponseDTO.Auctions>> getAuctions (@RequestBody @Valid AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
         return ResponseEntity.ok().body(auctionQueryService.getAuctionsByFilter(requestDTO, pageable));

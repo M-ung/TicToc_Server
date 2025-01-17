@@ -22,6 +22,8 @@ import org.tictoc.tictoc.global.common.entity.PageCustom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
@@ -74,7 +76,7 @@ class AuctionQueryControllerTest {
                 null,
                 null,
                 null,
-                List.of(),
+                Set.of(),
                 null,
                 AuctionType.ONLINE
         );
@@ -122,7 +124,7 @@ class AuctionQueryControllerTest {
                 .thenReturn(result);
 
         // then
-        mockMvc.perform(get("/api/v1/member/auction/")
+        mockMvc.perform(get("/api/v1/member/auction")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         .content(registerRequestJson)

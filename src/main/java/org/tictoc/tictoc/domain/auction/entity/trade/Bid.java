@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.entity;
+package org.tictoc.tictoc.domain.auction.entity.trade;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,10 +12,12 @@ import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Trade extends BaseTimeEntity {
+public class Bid extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long auctioneerId;
+    private Long bidderId;
     private Long auctionId;
-    private Long bidId;
+    private Integer price;
 }
