@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.repository;
+package org.tictoc.tictoc.domain.auction.repository.auction;
 
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -7,7 +7,6 @@ import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Pageable;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
-import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.PageCustom;

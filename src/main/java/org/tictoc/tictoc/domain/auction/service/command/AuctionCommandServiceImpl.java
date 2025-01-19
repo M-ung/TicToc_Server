@@ -5,18 +5,18 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.entity.Auction;
+import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.domain.auction.exception.*;
+import org.tictoc.tictoc.domain.auction.exception.auction.*;
+import org.tictoc.tictoc.domain.auction.exception.location.LocationIdNotFoundException;
 import org.tictoc.tictoc.domain.auction.repository.history.AuctionHistoryRepository;
-import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
+import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.tictoc.tictoc.global.error.ErrorCode.*;
 
@@ -32,8 +32,8 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     @Override
     public void register(final Long userId, AuctionRequestDTO.Register requestDTO) {
         checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        Auction auction = auctionRepository.save(Auction.of(userId, requestDTO));
-        Long auctionId = auction.getId();
+        var auction = auctionRepository.save(Auction.of(userId, requestDTO));
+        var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             saveAuctionLocations(auctionId, requestDTO.locations());
         }
@@ -43,7 +43,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     public void update(final Long userId, final Long auctionId, AuctionRequestDTO.Update requestDTO) {
         validateAuctionAccess(userId, auctionId);
         checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        Auction findAuction = findAuctionById(auctionId);
+        var findAuction = findAuctionById(auctionId);
         try {
             findAuction.update(requestDTO);
             if(!requestDTO.type().equals(AuctionType.ONLINE)) {
@@ -67,17 +67,18 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
     private void saveAuctionLocations(Long auctionId, List<AuctionRequestDTO.Location> locations) {
         for (AuctionRequestDTO.Location location : locations) {
-            Optional<Long> optionalLocationId = locationRepository.findLocationIdByFilter(location);
-            if (optionalLocationId.isPresent()) {
-                Long locationId = optionalLocationId.get();
-                auctionLocationRepository.save(AuctionLocation.of(auctionId, locationId));
-            }
+            auctionLocationRepository.save(AuctionLocation.of(auctionId, findLocationIdByLocation(location)));
         }
     }
 
     private Auction findAuctionById(final Long auctionId) {
         return auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+    }
+
+    private Long findLocationIdByLocation(AuctionRequestDTO.Location location) {
+        return locationRepository.findLocationIdByFilter(location)
+                .orElseThrow(() -> new LocationIdNotFoundException(LOCATION_NOT_FOUND));
     }
 
     private void validateAuctionAccess(final Long userId, final Long auctioneerId) {
