@@ -59,7 +59,7 @@ class AuctionQueryServiceImplTest {
                         .sellEndTime(LocalDateTime.now().plusDays(1))
                         .auctionOpenTime(LocalDateTime.now().minusDays(2))
                         .auctionCloseTime(LocalDateTime.now().plusDays(2))
-                        .progress(AuctionProgress.PROGRESS)
+                        .progress(AuctionProgress.IN_PROGRESS)
                         .type(AuctionType.ONLINE)
                         .locations(null)
                         .build(),
@@ -72,7 +72,7 @@ class AuctionQueryServiceImplTest {
                         .sellEndTime(LocalDateTime.now().plusDays(1))
                         .auctionOpenTime(LocalDateTime.now().minusDays(2))
                         .auctionCloseTime(LocalDateTime.now().plusDays(2))
-                        .progress(AuctionProgress.PROGRESS)
+                        .progress(AuctionProgress.IN_PROGRESS)
                         .type(AuctionType.ONLINE)
                         .locations(null)
                         .build()

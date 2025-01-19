@@ -11,8 +11,7 @@ import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedE
 
 import java.time.LocalDateTime;
 
-import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.FINISHED;
-import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;
+import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_ALREADY_STARTED;
 
 @Getter
@@ -56,7 +55,7 @@ public class Auction extends BaseTimeEntity {
                 .sellEndTime(requestDTO.sellEndTime())
                 .auctionOpenTime(LocalDateTime.now())
                 .auctionCloseTime(requestDTO.auctionCloseTime())
-                .progress(NOT_PROGRESS)
+                .progress(NOT_STARTED)
                 .type(requestDTO.type())
                 .status(TicTocStatus.ACTIVE)
                 .build();
@@ -83,13 +82,18 @@ public class Auction extends BaseTimeEntity {
     public void increaseBid(Integer price) {
         this.currentPrice = price;
     }
-    public void finished() {
+    public void bid() {
         this.finalPrice = this.currentPrice;
-        this.progress = FINISHED;
+        this.progress = BID;
+    }
+    public void notBid() {
+        this.currentPrice = 0;
+        this.finalPrice = 0;
+        this.progress = NOT_BID;
     }
 
     public void checkAuctionNotStarted() {
-        if(!this.getProgress().equals(NOT_PROGRESS)) {
+        if(!this.getProgress().equals(NOT_STARTED)) {
             throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
         }
     }

@@ -64,7 +64,7 @@ class AuctionRepositoryTest {
                     .sellEndTime(LocalDateTime.now().plusHours(2))
                     .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                     .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                    .progress(AuctionProgress.NOT_PROGRESS)
+                    .progress(AuctionProgress.NOT_STARTED)
                     .type(AuctionType.OFFLINE)
                     .status(TicTocStatus.ACTIVE)
                     .version(0)
@@ -96,7 +96,7 @@ class AuctionRepositoryTest {
         LocalDateTime checkTime = LocalDateTime.of(2024, 12, 15, 20, 0, 0);
 
         // when
-        List<Auction> auctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.FINISHED, checkTime);
+        List<Auction> auctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.BID, checkTime);
 
         // then
         assertEquals(3, auctions.size());
@@ -111,7 +111,7 @@ class AuctionRepositoryTest {
                 null,
                 null,
                 null,
-                AuctionProgress.NOT_PROGRESS,
+                AuctionProgress.NOT_STARTED,
                 AuctionType.OFFLINE
         );
 

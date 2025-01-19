@@ -58,7 +58,7 @@ class AuctionCommandServiceImplTest {
                 .sellEndTime(LocalDateTime.now().plusHours(2))
                 .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                 .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                .progress(AuctionProgress.NOT_PROGRESS)
+                .progress(AuctionProgress.NOT_STARTED)
                 .type(AuctionType.OFFLINE)
                 .status(TicTocStatus.ACTIVE)
                 .version(0)
