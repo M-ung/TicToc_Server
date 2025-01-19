@@ -80,7 +80,11 @@ public class Auction extends BaseTimeEntity {
         this.status = TicTocStatus.DISACTIVE;
     }
 
+    public void increaseBid(Integer price) {
+        this.currentPrice = price;
+    }
     public void finished() {
+        this.finalPrice = this.currentPrice;
         this.progress = FINISHED;
     }
 
