@@ -14,7 +14,8 @@ import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import static org.tictoc.tictoc.domain.auction.entity.QAuction.auction;
+
+import static org.tictoc.tictoc.domain.auction.entity.auction.QAuction.auction;
 import static org.tictoc.tictoc.domain.auction.entity.location.QAuctionLocation.auctionLocation;
 import static org.tictoc.tictoc.domain.auction.entity.location.QLocation.location;
 

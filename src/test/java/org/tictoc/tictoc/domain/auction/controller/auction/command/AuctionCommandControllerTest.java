@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.controller.command;
+package org.tictoc.tictoc.domain.auction.controller.auction.command;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

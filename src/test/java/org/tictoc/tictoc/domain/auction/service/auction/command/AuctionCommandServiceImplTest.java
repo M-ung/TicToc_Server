@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.service.command;
+package org.tictoc.tictoc.domain.auction.service.auction.command;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -10,9 +10,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
+import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
+import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandServiceImpl;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
@@ -32,6 +34,8 @@ class AuctionCommandServiceImplTest {
 
     @Mock
     private AuctionRepository auctionRepository;
+    @Mock
+    private AuctionLocationRepository auctionLocationRepository;
 
     private Auction auction;
     private AuctionRequestDTO.Register registerRequestDTO;
@@ -124,6 +128,8 @@ class AuctionCommandServiceImplTest {
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
         when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
                 .thenReturn(false);
+        when(auctionLocationRepository.findByAuctionId(any()))
+                .thenReturn(Optional.of(new AuctionLocation()));
 
         // when
         auctionCommandService.update(userId, auctionId, updateRequestDTO1);
@@ -135,7 +141,6 @@ class AuctionCommandServiceImplTest {
         assertThat(auction.getSellStartTime()).isEqualTo(updateRequestDTO1.sellStartTime());
         assertThat(auction.getSellEndTime()).isEqualTo(updateRequestDTO1.sellEndTime());
         assertThat(auction.getAuctionCloseTime()).isEqualTo(updateRequestDTO1.auctionCloseTime());
-//        assertThat(auction.get()).isEqualTo(updateRequestDTO1.locations());
         assertThat(auction.getType()).isEqualTo(updateRequestDTO1.type());
     }
 

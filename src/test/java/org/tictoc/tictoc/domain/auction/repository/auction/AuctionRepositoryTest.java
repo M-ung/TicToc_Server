@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.repository;
+package org.tictoc.tictoc.domain.auction.repository.auction;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +14,6 @@ import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.user.entity.User;
 import org.tictoc.tictoc.domain.user.entity.type.UserRole;
 import org.tictoc.tictoc.domain.user.repository.UserRepository;
