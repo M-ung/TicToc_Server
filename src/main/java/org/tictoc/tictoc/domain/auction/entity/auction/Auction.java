@@ -2,7 +2,7 @@ package org.tictoc.tictoc.domain.auction.entity.auction;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;

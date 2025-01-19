@@ -2,14 +2,14 @@ package org.tictoc.tictoc.domain.auction.entity.bid;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.tictoc.tictoc.domain.auction.entity.type.AuctionStatus;
+import org.tictoc.tictoc.domain.auction.entity.type.BidStatus;
 
 @Getter
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BidHistory {
+public class Bid {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,5 +17,5 @@ public class BidHistory {
     private Long bidderId;
     private Integer price;
     @Enumerated(EnumType.STRING)
-    private AuctionStatus status;
+    private BidStatus status;
 }

@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
@@ -32,8 +32,8 @@ class AuctionQueryServiceImplTest {
 
     private AuctionRequestDTO.Filter filterRequestDTO;
     private Pageable pageable;
-    private List<AuctionResponseDTO.Auctions> auctions;
-    private PageCustom<AuctionResponseDTO.Auctions> pageCustom;
+    private List<AuctionResponseDTO.Auction> auctions;
+    private PageCustom<AuctionResponseDTO.Auction> pageCustom;
 
     @BeforeEach
     void setUp() {
@@ -50,7 +50,7 @@ class AuctionQueryServiceImplTest {
         pageable = PageRequest.of(0, 10);
 
         auctions = List.of(
-                AuctionResponseDTO.Auctions.builder()
+                AuctionResponseDTO.Auction.builder()
                         .auctionId(1L)
                         .title("Auction 1")
                         .startPrice(1000)
@@ -63,7 +63,7 @@ class AuctionQueryServiceImplTest {
                         .type(AuctionType.ONLINE)
                         .locations(null)
                         .build(),
-                AuctionResponseDTO.Auctions.builder()
+                AuctionResponseDTO.Auction.builder()
                         .auctionId(2L)
                         .title("Auction 2")
                         .startPrice(1500)
@@ -78,7 +78,7 @@ class AuctionQueryServiceImplTest {
                         .build()
         );
 
-        PageImpl<AuctionResponseDTO.Auctions> pageImpl = new PageImpl<>(auctions, pageable, auctions.size());
+        PageImpl<AuctionResponseDTO.Auction> pageImpl = new PageImpl<>(auctions, pageable, auctions.size());
         pageCustom = new PageCustom<>(
                 pageImpl.getContent(),
                 pageImpl.getTotalPages(),
@@ -96,7 +96,7 @@ class AuctionQueryServiceImplTest {
                 .thenReturn(pageCustom);
 
         // When
-        PageCustom<AuctionResponseDTO.Auctions> result =
+        PageCustom<AuctionResponseDTO.Auction> result =
                 auctionQueryService.getAuctionsByFilter(filterRequestDTO, pageable);
 
         // Then

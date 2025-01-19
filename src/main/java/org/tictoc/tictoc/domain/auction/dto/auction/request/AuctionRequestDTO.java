@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.dto.request;
+package org.tictoc.tictoc.domain.auction.dto.auction.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.annotation.Nullable;

@@ -1,6 +1,6 @@
 package org.tictoc.tictoc.domain.auction.repository.location;
 
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 
 import java.util.Optional;
 

@@ -5,8 +5,8 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Pageable;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
@@ -26,8 +26,15 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
     }
 
     @Override
-    public PageCustom<AuctionResponseDTO.Auctions> findAuctionsByFilterWithPageable(AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
-        var results = queryFactory.select(Projections.constructor(AuctionResponseDTO.Auctions.class,
+    public PageCustom<AuctionResponseDTO.Auction> findAuctionsByFilterWithPageable(AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
+        var results = queryFilteredAuctions(requestDTO, pageable);
+        long total = getTotalByFilter(requestDTO);
+        int totalPages = calculateTotalPages(total, pageable.getPageSize());
+        return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
+    }
+
+    private List<AuctionResponseDTO.Auction> queryFilteredAuctions(AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
+        return queryFactory.select(Projections.constructor(AuctionResponseDTO.Auction.class,
                         auction.id,
                         auction.title,
                         auction.startPrice,
@@ -53,11 +60,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
-
-        long total = getTotal();
-        int totalPages = (int) Math.ceil((double) total / pageable.getPageSize());
-
-        return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
     }
 
     private BooleanExpression filterPrice(Integer startPrice, Integer endPrice) {
@@ -115,11 +117,22 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         return result;
     }
 
-    private long getTotal() {
+    private int calculateTotalPages(long total, int pageSize) {
+        return (int) Math.ceil((double) total / pageSize);
+    }
+
+    private long getTotalByFilter(AuctionRequestDTO.Filter requestDTO) {
         return Optional.ofNullable(
                 queryFactory.select(auction.count())
                         .from(auction)
-                        .where(auction.status.eq(TicTocStatus.ACTIVE))
+                        .where(
+                                auction.status.eq(TicTocStatus.ACTIVE),
+                                filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
+                                filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
+                                filterProgress(requestDTO.progress()),
+                                filterType(requestDTO.type()),
+                                filterLocations(requestDTO.locations())
+                        )
                         .fetchOne()
         ).orElse(0L);
     }

@@ -9,8 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
@@ -52,7 +52,7 @@ class AuctionRepositoryTest {
     @DisplayName("[setup] Auction")
     void 테스트_전_경매_세팅() {
         for (int i = 1; i <= 3; i++) {
-            Auction auction = Auction.builder()
+            Auction auction = org.tictoc.tictoc.domain.auction.entity.auction.Auction.builder()
                     .id((long) i)
                     .auctioneerId((long) i)
                     .title("title" + i)
@@ -118,7 +118,7 @@ class AuctionRepositoryTest {
         Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        PageCustom<AuctionResponseDTO.Auctions> result = auctionRepository.findAuctionsByFilterWithPageable(filter, pageable);
+        PageCustom<AuctionResponseDTO.Auction> result = auctionRepository.findAuctionsByFilterWithPageable(filter, pageable);
 
         // then
         assertNotNull(result);

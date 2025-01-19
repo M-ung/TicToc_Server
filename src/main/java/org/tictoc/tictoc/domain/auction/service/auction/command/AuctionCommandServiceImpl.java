@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
