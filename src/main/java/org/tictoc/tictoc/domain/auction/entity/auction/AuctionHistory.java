@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.entity.history;
+package org.tictoc.tictoc.domain.auction.entity.auction;
 
 import jakarta.persistence.*;
 import lombok.*;

@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.controller.query;
+package org.tictoc.tictoc.domain.auction.controller.auction.query;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
-import org.tictoc.tictoc.domain.auction.service.query.AuctionQueryService;
+import org.tictoc.tictoc.domain.auction.service.auction.query.AuctionQueryService;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
 
 @RestController

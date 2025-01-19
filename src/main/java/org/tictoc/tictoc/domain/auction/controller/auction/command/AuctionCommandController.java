@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.controller.command;
+package org.tictoc.tictoc.domain.auction.controller.auction.command;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.service.command.AuctionCommandService;
+import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandService;
 import org.tictoc.tictoc.global.auth.resolver.UserId;
 
 @RestController

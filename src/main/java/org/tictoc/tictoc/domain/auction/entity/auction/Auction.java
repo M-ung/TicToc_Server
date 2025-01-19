@@ -1,20 +1,15 @@
-package org.tictoc.tictoc.domain.auction.entity;
+package org.tictoc.tictoc.domain.auction.entity.auction;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.entity.location.Location;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
-import org.tictoc.tictoc.domain.auction.exception.AuctionAlreadyStartedException;
+import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.FINISHED;
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.NOT_PROGRESS;

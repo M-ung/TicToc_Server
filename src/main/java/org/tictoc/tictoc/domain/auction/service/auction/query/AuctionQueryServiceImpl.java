@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.service.query;
+package org.tictoc.tictoc.domain.auction.service.auction.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
-import org.tictoc.tictoc.domain.auction.repository.AuctionRepository;
+import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
 
 

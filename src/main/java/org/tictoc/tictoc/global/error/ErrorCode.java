@@ -18,6 +18,10 @@ public enum ErrorCode {
     CONFLICT_AUCTION_UPDATE(HttpStatus.BAD_REQUEST,"경매 수정이 충돌나서 할 수 없습니다."),
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),
 
+    // Location
+    LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 지역 정보입니다."),
+    AUCTION_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 AuctionLocation 입니다."),
+
     // Server
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "리소스 접근 권한이 없습니다."),

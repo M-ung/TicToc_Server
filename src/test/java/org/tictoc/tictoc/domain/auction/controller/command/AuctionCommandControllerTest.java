@@ -11,9 +11,10 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.tictoc.tictoc.domain.auction.controller.auction.command.AuctionCommandController;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.domain.auction.service.command.AuctionCommandServiceImpl;
+import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandServiceImpl;
 import java.time.LocalDateTime;
 import java.util.List;
 

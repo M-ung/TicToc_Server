@@ -11,10 +11,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
-import org.tictoc.tictoc.domain.auction.entity.Auction;
-import org.tictoc.tictoc.domain.auction.entity.location.Location;
+import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
+import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.user.entity.User;
 import org.tictoc.tictoc.domain.user.entity.type.UserRole;
 import org.tictoc.tictoc.domain.user.repository.UserRepository;
@@ -22,7 +22,6 @@ import org.tictoc.tictoc.global.common.entity.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 

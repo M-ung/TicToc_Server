@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.repository;
+package org.tictoc.tictoc.domain.auction.repository.auction;
 
 import org.springframework.data.domain.Pageable;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
