@@ -11,7 +11,6 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.*;
 import org.tictoc.tictoc.domain.auction.exception.location.AuctionLocationNotFoundException;
 import org.tictoc.tictoc.domain.auction.exception.location.LocationIdNotFoundException;
-import org.tictoc.tictoc.domain.auction.repository.history.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
