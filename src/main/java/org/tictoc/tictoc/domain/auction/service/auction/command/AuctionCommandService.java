@@ -1,6 +1,6 @@
 package org.tictoc.tictoc.domain.auction.service.auction.command;
 
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 
 public interface AuctionCommandService {
     void register(final Long userId, AuctionRequestDTO.Register requestDTO);

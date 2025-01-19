@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.dto.response;
+package org.tictoc.tictoc.domain.auction.dto.auction.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ public class AuctionResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class Auctions {
+    public static class Auction {
         private Long auctionId;
         private String title;
         private Integer startPrice;
@@ -27,7 +27,7 @@ public class AuctionResponseDTO {
         private AuctionProgress progress;
         private AuctionType type;
         private List<AuctionResponseDTO.Location> locations;
-        public Auctions(Long auctionId, String title, Integer startPrice, Integer currentPrice, LocalDateTime sellStartTime, LocalDateTime sellEndTime, LocalDateTime auctionOpenTime, LocalDateTime auctionCloseTime, AuctionProgress progress, AuctionType type) {
+        public Auction(Long auctionId, String title, Integer startPrice, Integer currentPrice, LocalDateTime sellStartTime, LocalDateTime sellEndTime, LocalDateTime auctionOpenTime, LocalDateTime auctionCloseTime, AuctionProgress progress, AuctionType type) {
             this.auctionId = auctionId;
             this.title = title;
             this.startPrice = startPrice;

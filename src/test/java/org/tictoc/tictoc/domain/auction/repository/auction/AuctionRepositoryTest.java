@@ -9,8 +9,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
@@ -52,7 +52,7 @@ class AuctionRepositoryTest {
     @DisplayName("[setup] Auction")
     void 테스트_전_경매_세팅() {
         for (int i = 1; i <= 3; i++) {
-            Auction auction = Auction.builder()
+            Auction auction = org.tictoc.tictoc.domain.auction.entity.auction.Auction.builder()
                     .id((long) i)
                     .auctioneerId((long) i)
                     .title("title" + i)
@@ -64,7 +64,7 @@ class AuctionRepositoryTest {
                     .sellEndTime(LocalDateTime.now().plusHours(2))
                     .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                     .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                    .progress(AuctionProgress.NOT_PROGRESS)
+                    .progress(AuctionProgress.NOT_STARTED)
                     .type(AuctionType.OFFLINE)
                     .status(TicTocStatus.ACTIVE)
                     .version(0)
@@ -96,7 +96,7 @@ class AuctionRepositoryTest {
         LocalDateTime checkTime = LocalDateTime.of(2024, 12, 15, 20, 0, 0);
 
         // when
-        List<Auction> auctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.FINISHED, checkTime);
+        List<Auction> auctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.BID, checkTime);
 
         // then
         assertEquals(3, auctions.size());
@@ -111,14 +111,14 @@ class AuctionRepositoryTest {
                 null,
                 null,
                 null,
-                AuctionProgress.NOT_PROGRESS,
+                AuctionProgress.NOT_STARTED,
                 AuctionType.OFFLINE
         );
 
         Pageable pageable = PageRequest.of(0, 10);
 
         // when
-        PageCustom<AuctionResponseDTO.Auctions> result = auctionRepository.findAuctionsByFilterWithPageable(filter, pageable);
+        PageCustom<AuctionResponseDTO.Auction> result = auctionRepository.findAuctionsByFilterWithPageable(filter, pageable);
 
         // then
         assertNotNull(result);

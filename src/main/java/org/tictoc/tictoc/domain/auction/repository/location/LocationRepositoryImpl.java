@@ -3,7 +3,7 @@ package org.tictoc.tictoc.domain.auction.repository.location;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import java.util.Optional;
 
 import static org.tictoc.tictoc.domain.auction.entity.location.QLocation.location;

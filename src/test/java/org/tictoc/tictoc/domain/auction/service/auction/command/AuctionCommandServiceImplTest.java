@@ -8,14 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.dao.OptimisticLockingFailureException;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
-import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandServiceImpl;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -59,7 +58,7 @@ class AuctionCommandServiceImplTest {
                 .sellEndTime(LocalDateTime.now().plusHours(2))
                 .auctionOpenTime(LocalDateTime.of(2024, 12, 15, 12, 0, 0))
                 .auctionCloseTime(LocalDateTime.of(2024, 12, 15, 20, 0, 0))
-                .progress(AuctionProgress.NOT_PROGRESS)
+                .progress(AuctionProgress.NOT_STARTED)
                 .type(AuctionType.OFFLINE)
                 .status(TicTocStatus.ACTIVE)
                 .version(0)

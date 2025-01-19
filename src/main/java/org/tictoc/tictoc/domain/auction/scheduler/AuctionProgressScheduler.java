@@ -20,11 +20,14 @@ public class AuctionProgressScheduler {
     @Transactional
     public void updateAuctionProgress() {
         LocalDateTime now = LocalDateTime.now();
+        List<Auction> finishedAuctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.BID, now);
 
-        List<Auction> finishedAuctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.FINISHED, now);
-
-        finishedAuctions.forEach(Auction::finished);
-
-        //TODO 입찰될 수 있게 해야 함.
+        finishedAuctions.forEach(auction -> {
+            if (auction.getProgress().equals(AuctionProgress.NOT_STARTED)) {
+                auction.notBid();
+            } else if (auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
+                auction.bid();
+            }
+        });
     }
 }

@@ -1,5 +1,5 @@
 package org.tictoc.tictoc.domain.auction.entity.type;
 
-public enum AuctionStatus {
-    WIN, FAILED
+public enum BidStatus {
+    WIN, PROGRESS, FAILED
 }

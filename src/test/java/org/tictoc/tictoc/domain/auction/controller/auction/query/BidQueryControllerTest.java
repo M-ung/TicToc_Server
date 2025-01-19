@@ -14,9 +14,8 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.tictoc.tictoc.domain.auction.controller.auction.query.AuctionQueryController;
-import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
-import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
+import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.service.auction.query.AuctionQueryServiceImpl;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
@@ -29,7 +28,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AuctionQueryControllerTest {
+class BidQueryControllerTest {
     private MockMvc mockMvc;
 
     @InjectMocks
@@ -40,7 +39,7 @@ class AuctionQueryControllerTest {
     private ObjectMapper objectMapper;
     private String jwtToken;
     private Pageable pageable;
-    private PageCustom<AuctionResponseDTO.Auctions> result;
+    private PageCustom<AuctionResponseDTO.Auction> result;
     private AuctionRequestDTO.Filter filterRequestDTO1;
     private AuctionRequestDTO.Filter filterRequestDTO2;
     private AuctionRequestDTO.Filter filterRequestDTO3;
