@@ -14,15 +14,14 @@ import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.tictoc.tictoc.domain.auction.controller.auction.query.AuctionQueryController;
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.domain.auction.service.query.AuctionQueryServiceImpl;
+import org.tictoc.tictoc.domain.auction.service.auction.query.AuctionQueryServiceImpl;
 import org.tictoc.tictoc.global.common.entity.PageCustom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;

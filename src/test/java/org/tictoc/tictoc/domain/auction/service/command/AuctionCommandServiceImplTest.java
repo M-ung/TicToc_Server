@@ -13,6 +13,7 @@ import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
+import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandServiceImpl;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;

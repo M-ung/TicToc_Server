@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.service.query;
+package org.tictoc.tictoc.domain.auction.service.auction.query;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

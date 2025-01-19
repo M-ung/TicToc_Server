@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     // Location
     LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 지역 정보입니다."),
+    AUCTION_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 AuctionLocation 입니다."),
 
     // Server
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),

@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.service.command;
+package org.tictoc.tictoc.domain.auction.service.auction.command;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -9,6 +9,7 @@ import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.*;
+import org.tictoc.tictoc.domain.auction.exception.location.AuctionLocationNotFoundException;
 import org.tictoc.tictoc.domain.auction.exception.location.LocationIdNotFoundException;
 import org.tictoc.tictoc.domain.auction.repository.history.AuctionHistoryRepository;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
@@ -25,7 +26,6 @@ import static org.tictoc.tictoc.global.error.ErrorCode.*;
 @RequiredArgsConstructor
 public class AuctionCommandServiceImpl implements AuctionCommandService {
     private final AuctionRepository auctionRepository;
-    private final AuctionHistoryRepository auctionHistoryRepository;
     private final AuctionLocationRepository auctionLocationRepository;
     private final LocationRepository locationRepository;
 
@@ -43,11 +43,10 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     public void update(final Long userId, final Long auctionId, AuctionRequestDTO.Update requestDTO) {
         validateAuctionAccess(userId, auctionId);
         checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        var findAuction = findAuctionById(auctionId);
         try {
-            findAuction.update(requestDTO);
+            findAuctionById(auctionId).update(requestDTO);
+            deleteAuctionLocationByAuctionId(auctionId);
             if(!requestDTO.type().equals(AuctionType.ONLINE)) {
-                //TODO 위치 저장이 아닌 수정을 해야 함
                 saveAuctionLocations(auctionId, requestDTO.locations());
             }
         } catch (OptimisticLockingFailureException e) {
@@ -74,6 +73,15 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     private Auction findAuctionById(final Long auctionId) {
         return auctionRepository.findById(auctionId)
                 .orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+    }
+
+    private void deleteAuctionLocationByAuctionId(final Long auctionId) {
+        auctionLocationRepository.delete(findAuctionLocationByAuctionId(auctionId));
+    }
+
+    private AuctionLocation findAuctionLocationByAuctionId(final Long auctionId) {
+        return auctionLocationRepository.findByAuctionId(auctionId)
+                .orElseThrow(() -> new AuctionLocationNotFoundException(AUCTION_LOCATION_NOT_FOUND));
     }
 
     private Long findLocationIdByLocation(AuctionRequestDTO.Location location) {

@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.domain.auction.service.command;
+package org.tictoc.tictoc.domain.auction.service.auction.command;
 
 import org.tictoc.tictoc.domain.auction.dto.request.AuctionRequestDTO;
 
