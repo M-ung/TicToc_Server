@@ -11,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.tictoc.tictoc.global.common.entity.Constants;
+import org.tictoc.tictoc.global.common.entity.AuthConstants;
 import org.tictoc.tictoc.global.error.ErrorCode;
 import org.tictoc.tictoc.global.error.ErrorResponse;
 import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
@@ -49,7 +49,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
 
     private void setResponse(HttpServletResponse response, HttpStatus httpStatus, ErrorCode errorCode) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding(Constants.CHARACTER_TYPE);
+        response.setCharacterEncoding(AuthConstants.CHARACTER_TYPE);
         response.setStatus(httpStatus.value());
         PrintWriter writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(ErrorResponse.of(errorCode)));

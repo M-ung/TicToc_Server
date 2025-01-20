@@ -14,20 +14,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AuctionProgressScheduler {
 
-    private final AuctionRepository auctionRepository;
-
-    @Scheduled(fixedRate = 60000) // 1분 간격으로 실행
-    @Transactional
-    public void updateAuctionProgress() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Auction> finishedAuctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.BID, now);
-
-        finishedAuctions.forEach(auction -> {
-            if (auction.getProgress().equals(AuctionProgress.NOT_STARTED)) {
-                auction.notBid();
-            } else if (auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
-                auction.bid();
-            }
-        });
-    }
+//    private final AuctionRepository auctionRepository;
+//
+//    @Scheduled(fixedRate = 60000) // 1분 간격으로 실행
+//    @Transactional
+//    public void updateAuctionProgress() {
+//        LocalDateTime now = LocalDateTime.now();
+//        List<Auction> finishedAuctions = auctionRepository.findByProgressNotAndAuctionCloseTime(AuctionProgress.BID, now);
+//
+//        finishedAuctions.forEach(auction -> {
+//            if (auction.getProgress().equals(AuctionProgress.NOT_STARTED)) {
+//                auction.notBid();
+//            } else if (auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
+//                auction.bid();
+//            }
+//        });
+//    }
 }
