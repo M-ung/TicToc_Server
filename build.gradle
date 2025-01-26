@@ -72,6 +72,9 @@ dependencies {
 
     // kafaka
     implementation 'org.springframework.kafka:spring-kafka'
+
+    // jackson
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 tasks.named('test') {

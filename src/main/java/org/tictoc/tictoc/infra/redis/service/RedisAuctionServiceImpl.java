@@ -16,13 +16,14 @@ import static org.tictoc.tictoc.global.error.ErrorCode.REDIS_AUCTION_PARSING_ERR
 @RequiredArgsConstructor
 public class RedisAuctionServiceImpl implements RedisAuctionService {
     private final StringRedisTemplate redisTemplate;
+    private final ObjectMapper objectMapper;
     private static final String KEY = "AuctionClose";
     private static final String FIELD_PREFIX = "auction:close:";
 
     @Override
     public void save(RedisAuctionMessageDTO.auctionClose messageDTO) throws JsonProcessingException {
         var field = FIELD_PREFIX + messageDTO.auctionId();
-        var auctionJson = new ObjectMapper().writeValueAsString(messageDTO.auction());
+        var auctionJson = objectMapper.writeValueAsString(messageDTO.auction());
         redisTemplate.opsForHash().put(KEY, field, auctionJson);
     }
 

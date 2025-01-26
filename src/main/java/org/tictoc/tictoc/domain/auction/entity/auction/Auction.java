@@ -1,5 +1,6 @@
 package org.tictoc.tictoc.domain.auction.entity.auction;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
@@ -33,9 +34,13 @@ public class Auction extends BaseTimeEntity {
     private Integer startPrice;
     private Integer currentPrice;
     private Integer finalPrice;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sellStartTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sellEndTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime auctionOpenTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime auctionCloseTime;
     @Enumerated(EnumType.STRING)
     private AuctionProgress progress;
@@ -84,15 +89,6 @@ public class Auction extends BaseTimeEntity {
 
     public void increaseBid(Integer price) {
         this.currentPrice = price;
-    }
-    public void bid() {
-        this.finalPrice = this.currentPrice;
-        this.progress = BID;
-    }
-    public void notBid() {
-        this.currentPrice = 0;
-        this.finalPrice = 0;
-        this.progress = NOT_BID;
     }
 
     public void checkAuctionNotStarted() {
