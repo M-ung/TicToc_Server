@@ -18,6 +18,13 @@ public enum ErrorCode {
     CONFLICT_AUCTION_UPDATE(HttpStatus.BAD_REQUEST,"경매 수정이 충돌나서 할 수 없습니다."),
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),
 
+    // Redis Auction
+    REDIS_AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"레디스에서 찾을 수 없는 경매입니다."),
+    REDIS_AUCTION_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"레디스에서 경매 데이터를 파싱하는 데 실패했습니다."),
+
+    // Kafka Auction
+    KAFKA_AUCTION_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"카프카에서 경매 종료 진행을 실패했습니다."),
+
     // Location
     LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 지역 정보입니다."),
     AUCTION_LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 AuctionLocation 입니다."),

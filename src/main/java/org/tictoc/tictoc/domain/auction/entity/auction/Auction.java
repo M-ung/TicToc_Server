@@ -5,13 +5,16 @@ import lombok.*;
 import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
+import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNoAccessException;
 import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedException;
+import org.tictoc.tictoc.global.error.ErrorCode;
 
 import java.time.LocalDateTime;
 
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.*;
+import static org.tictoc.tictoc.global.error.ErrorCode.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_ALREADY_STARTED;
 
 @Getter
@@ -95,6 +98,19 @@ public class Auction extends BaseTimeEntity {
     public void checkAuctionNotStarted() {
         if(!this.getProgress().equals(NOT_STARTED)) {
             throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
+        }
+    }
+
+    public void close() {
+        if (this.progress.equals(IN_PROGRESS)) {
+            this.finalPrice = this.currentPrice;
+            this.progress = BID;
+        } else if (this.progress.equals(NOT_STARTED)) {
+            this.currentPrice = 0;
+            this.finalPrice = 0;
+            this.progress = NOT_BID;
+        } else {
+            throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
         }
     }
 }
