@@ -21,21 +21,21 @@ public class RedisAuctionServiceImpl implements RedisAuctionService {
 
     @Override
     public void save(RedisAuctionMessageDTO.auctionClose messageDTO) throws JsonProcessingException {
-        String field = FIELD_PREFIX + messageDTO.auctionId();
-        String auctionJson = new ObjectMapper().writeValueAsString(messageDTO.auction());
+        var field = FIELD_PREFIX + messageDTO.auctionId();
+        var auctionJson = new ObjectMapper().writeValueAsString(messageDTO.auction());
         redisTemplate.opsForHash().put(KEY, field, auctionJson);
     }
 
     @Override
     public boolean exists(Long auctionId) {
-        String field = FIELD_PREFIX + auctionId;
+        var field = FIELD_PREFIX + auctionId;
         return redisTemplate.opsForHash().hasKey(KEY, field);
     }
 
     @Override
     public Auction find(Long auctionId) {
-        String field = FIELD_PREFIX + auctionId;
-        Object json = redisTemplate.opsForHash().get(KEY, field);
+        var field = FIELD_PREFIX + auctionId;
+        var json = redisTemplate.opsForHash().get(KEY, field);
         if (json == null) {
             throw new RedisAuctionNotFoundException(REDIS_AUCTION_NOT_FOUND);
         }
@@ -44,7 +44,7 @@ public class RedisAuctionServiceImpl implements RedisAuctionService {
 
     @Override
     public void delete(Long auctionId) {
-        String field = FIELD_PREFIX + auctionId;
+        var field = FIELD_PREFIX + auctionId;
         redisTemplate.opsForHash().delete(KEY, field);
     }
 

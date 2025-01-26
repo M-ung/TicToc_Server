@@ -19,7 +19,6 @@ import org.tictoc.tictoc.infra.kafka.dto.KafkaAuctionMessageDTO;
 import org.tictoc.tictoc.infra.kafka.producer.AuctionCloseProducer;
 import org.tictoc.tictoc.infra.redis.dto.RedisAuctionMessageDTO;
 import org.tictoc.tictoc.infra.redis.service.RedisAuctionService;
-
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -38,14 +37,12 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     @Override
     public void register(final Long userId, AuctionRequestDTO.Register requestDTO) throws JsonProcessingException {
         checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        var auction = auctionRepository.save(Auction.of(userId, requestDTO));
+        var auction = saveAuction(userId, requestDTO);
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             saveAuctionLocations(auctionId, requestDTO.locations());
         }
-        long delayMillis = ChronoUnit.MILLIS.between(LocalDateTime.now(), auction.getAuctionCloseTime());
-        redisAuctionService.save(RedisAuctionMessageDTO.auctionClose.of(auctionId, delayMillis, auction));
-        auctionCloseProducer.send(KafkaAuctionMessageDTO.auctionClose.of(auctionId, delayMillis));
+        scheduleAuctionClose(auctionId, auction);
     }
 
     @Override
@@ -53,12 +50,9 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         validateAuctionAccess(userId, auctionId);
         checkAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
-            findAuctionById(auctionId).update(requestDTO);
-            deleteAuctionLocationByAuctionId(auctionId);
-            if(!requestDTO.type().equals(AuctionType.ONLINE)) {
-                saveAuctionLocations(auctionId, requestDTO.locations());
-            }
-        } catch (OptimisticLockingFailureException e) {
+            var auction = updateAuction(auctionId, requestDTO);
+            scheduleAuctionClose(auctionId, auction);
+        } catch (OptimisticLockingFailureException | JsonProcessingException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
     }
@@ -68,9 +62,14 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         validateAuctionAccess(userId, auctionId);
         try {
             findAuctionById(auctionId).deactivate();
+            redisAuctionService.delete(auctionId);
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }
+    }
+
+    private Auction saveAuction(final Long userId, AuctionRequestDTO.Register requestDTO) {
+        return auctionRepository.save(Auction.of(userId, requestDTO));
     }
 
     private void saveAuctionLocations(Long auctionId, List<AuctionRequestDTO.Location> locations) {
@@ -79,13 +78,24 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         }
     }
 
-    private Auction findAuctionById(final Long auctionId) {
-        return auctionRepository.findById(auctionId)
-                .orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
+    private Auction updateAuction(final Long auctionId, AuctionRequestDTO.Update requestDTO) throws JsonProcessingException {
+        var auction = findAuctionById(auctionId);
+        auction.update(requestDTO);
+        deleteAuctionLocationByAuctionId(auctionId);
+        if (!requestDTO.type().equals(AuctionType.ONLINE)) {
+            saveAuctionLocations(auctionId, requestDTO.locations());
+        }
+        redisAuctionService.delete(auctionId);
+        return auction;
     }
 
     private void deleteAuctionLocationByAuctionId(final Long auctionId) {
         auctionLocationRepository.delete(findAuctionLocationByAuctionId(auctionId));
+    }
+
+    private Auction findAuctionById(final Long auctionId) {
+        return auctionRepository.findById(auctionId)
+                .orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
     }
 
     private AuctionLocation findAuctionLocationByAuctionId(final Long auctionId) {
@@ -108,5 +118,15 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         if(auctionRepository.existsAuctionInTimeRange(userId, sellStartTime, sellEndTime)) {
             throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
         }
+    }
+
+    private void scheduleAuctionClose(final Long auctionId, Auction auction) throws JsonProcessingException {
+        var delayMillis = ChronoUnit.MILLIS.between(LocalDateTime.now(), auction.getAuctionCloseTime());
+        redisAuctionService.save(
+                RedisAuctionMessageDTO.auctionClose.of(auctionId, delayMillis, auction)
+        );
+        auctionCloseProducer.send(
+                KafkaAuctionMessageDTO.auctionClose.of(auctionId, delayMillis)
+        );
     }
 }

@@ -18,7 +18,7 @@ public class AuctionCloseHandlerServiceImpl implements AuctionCloseHandlerServic
 
     @Override
     public void process(KafkaAuctionMessageDTO.auctionClose message) {
-        Long auctionId = message.auctionId();
+        var auctionId = message.auctionId();
 
         if (redisAuctionService.exists(auctionId)) {
             handleFromRedis(auctionId);
@@ -28,14 +28,14 @@ public class AuctionCloseHandlerServiceImpl implements AuctionCloseHandlerServic
     }
 
     private void handleFromRedis(Long auctionId) {
-        Auction auction = redisAuctionService.find(auctionId);
+        var auction = redisAuctionService.find(auctionId);
         auction.close();
         redisAuctionService.delete(auctionId);
         auctionRepository.save(auction);
     }
 
     private void handleFromDB(Long auctionId) {
-        Auction auction = findAuctionById(auctionId);
+        var auction = findAuctionById(auctionId);
         auction.close();
         auctionRepository.save(auction);
     }
