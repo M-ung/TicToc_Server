@@ -116,7 +116,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     }
 
     private void checkAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
-        if(auctionRepository.existsAuctionInTimeRange(userId, sellStartTime, sellEndTime)) {
+        if(auctionRepository.existsAuctionInTimeRange(userId, sellStartTime, sellEndTime, TicTocStatus.ACTIVE)) {
             throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
         }
     }

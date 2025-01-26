@@ -10,5 +10,4 @@ import java.time.LocalDateTime;
 
 public interface AuctionRepositoryCustom {
     PageCustom<AuctionResponseDTO.Auction> findAuctionsByFilterWithPageable(AuctionRequestDTO.Filter requestDTO, Pageable pageable);
-    boolean existsAuctionInTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime);
 }

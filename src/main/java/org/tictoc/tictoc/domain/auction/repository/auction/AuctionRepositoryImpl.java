@@ -32,15 +32,6 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
     }
 
-    @Override
-    public boolean existsAuctionInTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
-        return queryFactory
-                .selectOne()
-                .from(auction)
-                .where(auction.auctioneerId.eq(userId).and(auction.status.eq(TicTocStatus.ACTIVE)).and(auction.sellStartTime.lt(sellEndTime)).and(auction.sellEndTime.gt(sellStartTime)))
-                .fetchFirst() != null;
-    }
-
     private List<AuctionResponseDTO.Auction> queryFilteredAuctions(AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
         return queryFactory.select(Projections.constructor(AuctionResponseDTO.Auction.class,
                         auction.id,
