@@ -15,6 +15,7 @@ import org.tictoc.tictoc.domain.auction.exception.location.LocationIdNotFoundExc
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
+import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.infra.kafka.dto.KafkaAuctionMessageDTO;
 import org.tictoc.tictoc.infra.kafka.producer.AuctionCloseProducer;
 import org.tictoc.tictoc.infra.redis.dto.RedisAuctionMessageDTO;

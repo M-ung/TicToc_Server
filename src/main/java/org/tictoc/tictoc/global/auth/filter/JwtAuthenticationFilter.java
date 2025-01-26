@@ -36,7 +36,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
     }
 
-    private void doAuthentication(final String token, final long userId) {
+    private void doAuthentication(final String token, final Long userId) {
         var tokenAuthentication = TokenAuthentication.createTokenAuthentication(token, userId);
         var securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(tokenAuthentication);

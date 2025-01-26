@@ -83,7 +83,7 @@ class AuctionRepositoryTest {
         LocalDateTime endTime = LocalDateTime.now().plusHours(2);    // 경매 종료 시간
 
         // when
-        boolean exists = auctionRepository.existsAuctionInTimeRange(userId, startTime, endTime);
+        boolean exists = auctionRepository.existsAuctionInTimeRange(userId, startTime, endTime, TicTocStatus.ACTIVE);
 
         // then
         assertTrue(exists);
@@ -122,8 +122,8 @@ class AuctionRepositoryTest {
 
         // then
         assertNotNull(result);
-        assertEquals(3, result.getContent().size());
-        assertEquals(0, result.getNumber());
-        assertEquals(1000, result.getContent().get(0).getCurrentPrice());
+        assertEquals(3, result.content().size());
+        assertEquals(0, result.number());
+        assertEquals(1000, result.content().get(0).getCurrentPrice());
     }
 }

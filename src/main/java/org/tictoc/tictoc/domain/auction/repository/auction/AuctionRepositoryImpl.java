@@ -14,7 +14,6 @@ import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import static org.tictoc.tictoc.domain.auction.entity.auction.QAuction.auction;
 import static org.tictoc.tictoc.domain.auction.entity.location.QAuctionLocation.auctionLocation;
 import static org.tictoc.tictoc.domain.auction.entity.location.QLocation.location;
@@ -31,6 +30,15 @@ public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
         long total = getTotalByFilter(requestDTO);
         int totalPages = calculateTotalPages(total, pageable.getPageSize());
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
+    }
+
+    @Override
+    public boolean existsAuctionInTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
+        return queryFactory
+                .selectOne()
+                .from(auction)
+                .where(auction.auctioneerId.eq(userId).and(auction.status.eq(TicTocStatus.ACTIVE)).and(auction.sellStartTime.lt(sellEndTime)).and(auction.sellEndTime.gt(sellStartTime)))
+                .fetchFirst() != null;
     }
 
     private List<AuctionResponseDTO.Auction> queryFilteredAuctions(AuctionRequestDTO.Filter requestDTO, Pageable pageable) {
