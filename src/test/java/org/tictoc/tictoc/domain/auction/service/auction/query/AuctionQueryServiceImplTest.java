@@ -101,10 +101,10 @@ class AuctionQueryServiceImplTest {
 
         // Then
         assertNotNull(result);
-        assertThat(result.getContent()).hasSize(2);
-        assertEquals("Auction 1", result.getContent().get(0).getTitle());
-        assertEquals("Auction 2", result.getContent().get(1).getTitle());
-        assertEquals(1000, result.getContent().get(0).getStartPrice());
-        assertEquals(1500, result.getContent().get(1).getStartPrice());
+        assertThat(result.content()).hasSize(2);
+        assertEquals("Auction 1", result.content().get(0).getTitle());
+        assertEquals("Auction 2", result.content().get(1).getTitle());
+        assertEquals(1000, result.content().get(0).getStartPrice());
+        assertEquals(1500, result.content().get(1).getStartPrice());
     }
 }

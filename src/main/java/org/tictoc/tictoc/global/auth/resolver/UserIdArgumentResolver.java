@@ -7,6 +7,7 @@ import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
+import org.tictoc.tictoc.global.annotation.UserId;
 
 @Component
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
