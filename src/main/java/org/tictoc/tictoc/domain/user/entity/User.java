@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.tictoc.tictoc.domain.user.entity.type.UserRole;
-import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
+import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 
 @Getter

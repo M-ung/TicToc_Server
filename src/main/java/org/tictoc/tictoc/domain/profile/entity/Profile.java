@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
+import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 
 @Getter
 @Entity

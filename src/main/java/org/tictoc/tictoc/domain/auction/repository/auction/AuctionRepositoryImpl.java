@@ -9,12 +9,11 @@ import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-
 import static org.tictoc.tictoc.domain.auction.entity.auction.QAuction.auction;
 import static org.tictoc.tictoc.domain.auction.entity.location.QAuctionLocation.auctionLocation;
 import static org.tictoc.tictoc.domain.auction.entity.location.QLocation.location;

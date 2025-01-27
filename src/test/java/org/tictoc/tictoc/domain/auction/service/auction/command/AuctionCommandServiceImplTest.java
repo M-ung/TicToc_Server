@@ -105,7 +105,7 @@ class AuctionCommandServiceImplTest {
                 .startPrice(registerRequestDTO.startPrice())
                 .build();
 
-        when(auctionRepository.existsAuctionInTimeRange(userId, registerRequestDTO.sellStartTime(), registerRequestDTO.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, registerRequestDTO.sellStartTime(), registerRequestDTO.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
         when(auctionRepository.save(any(Auction.class)))
                 .thenReturn(mockAuction);
@@ -125,7 +125,7 @@ class AuctionCommandServiceImplTest {
         Long auctionId = 1L;
 
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
         when(auctionLocationRepository.findByAuctionId(any()))
                 .thenReturn(Optional.of(new AuctionLocation()));
@@ -151,9 +151,9 @@ class AuctionCommandServiceImplTest {
         Long auctionId = 1L;
 
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
 
         // when
@@ -181,9 +181,9 @@ class AuctionCommandServiceImplTest {
         Long auctionId = 1L;
 
         when(auctionRepository.findById(auctionId)).thenReturn(Optional.of(auction));
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO1.sellStartTime(), updateRequestDTO1.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
-        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime()))
+        when(auctionRepository.existsAuctionInTimeRange(userId, updateRequestDTO2.sellStartTime(), updateRequestDTO2.sellEndTime(), TicTocStatus.ACTIVE))
                 .thenReturn(false);
 
         // when

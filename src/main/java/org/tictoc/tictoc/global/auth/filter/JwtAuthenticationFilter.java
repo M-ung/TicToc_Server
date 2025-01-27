@@ -6,12 +6,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tictoc.tictoc.global.auth.jwt.JwtProvider;
-import org.tictoc.tictoc.global.common.entity.Constants;
+import org.tictoc.tictoc.global.common.entity.constants.AuthConstants;
 import org.tictoc.tictoc.global.error.ErrorCode;
 import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
 
@@ -31,13 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private String getAccessToken(final HttpServletRequest request) {
         final var accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(accessToken) && accessToken.startsWith(Constants.BEARER)) {
-            return accessToken.substring(Constants.BEARER.length());
+        if (StringUtils.hasText(accessToken) && accessToken.startsWith(AuthConstants.BEARER)) {
+            return accessToken.substring(AuthConstants.BEARER.length());
         }
         throw new UnauthorizedException(ErrorCode.UNAUTHORIZED);
     }
 
-    private void doAuthentication(final String token, final long userId) {
+    private void doAuthentication(final String token, final Long userId) {
         var tokenAuthentication = TokenAuthentication.createTokenAuthentication(token, userId);
         var securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(tokenAuthentication);

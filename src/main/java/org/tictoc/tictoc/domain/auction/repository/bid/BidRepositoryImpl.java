@@ -9,7 +9,7 @@ import org.tictoc.tictoc.domain.auction.dto.bid.request.BidRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.bid.response.BidResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.BidStatus;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.util.List;
 import java.util.Optional;

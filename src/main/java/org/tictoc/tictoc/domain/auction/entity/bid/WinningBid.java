@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
-import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
+import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 
 @Getter
 @Entity

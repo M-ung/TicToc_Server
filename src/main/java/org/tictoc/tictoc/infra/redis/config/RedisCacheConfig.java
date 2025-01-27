@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.infra.redis.cache;
+package org.tictoc.tictoc.infra.redis.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;

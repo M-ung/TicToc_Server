@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
-import org.tictoc.tictoc.global.common.entity.Constants;
+import org.tictoc.tictoc.global.common.entity.constants.AuthConstants;
 import org.tictoc.tictoc.global.error.ErrorCode;
 import org.tictoc.tictoc.global.error.ErrorResponse;
 
@@ -32,7 +32,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     private void setResponse(HttpServletResponse response, HttpStatus httpStatus, ErrorCode failureCode) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setCharacterEncoding(Constants.CHARACTER_TYPE);
+        response.setCharacterEncoding(AuthConstants.CHARACTER_TYPE);
         response.setStatus(httpStatus.value());
         PrintWriter writer = response.getWriter();
         writer.write(objectMapper.writeValueAsString(ErrorResponse.of(failureCode)));

@@ -17,7 +17,7 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.user.entity.User;
 import org.tictoc.tictoc.domain.user.entity.type.UserRole;
 import org.tictoc.tictoc.domain.user.repository.UserRepository;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -83,7 +83,7 @@ class AuctionRepositoryTest {
         LocalDateTime endTime = LocalDateTime.now().plusHours(2);    // 경매 종료 시간
 
         // when
-        boolean exists = auctionRepository.existsAuctionInTimeRange(userId, startTime, endTime);
+        boolean exists = auctionRepository.existsAuctionInTimeRange(userId, startTime, endTime, TicTocStatus.ACTIVE);
 
         // then
         assertTrue(exists);
@@ -122,8 +122,8 @@ class AuctionRepositoryTest {
 
         // then
         assertNotNull(result);
-        assertEquals(3, result.getContent().size());
-        assertEquals(0, result.getNumber());
-        assertEquals(1000, result.getContent().get(0).getCurrentPrice());
+        assertEquals(3, result.content().size());
+        assertEquals(0, result.number());
+        assertEquals(1000, result.content().get(0).getCurrentPrice());
     }
 }

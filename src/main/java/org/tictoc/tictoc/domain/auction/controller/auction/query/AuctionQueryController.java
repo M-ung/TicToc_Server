@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.service.auction.query.AuctionQueryService;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 
 @RestController
 @RequiredArgsConstructor
