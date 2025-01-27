@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.common.entity;
+package org.tictoc.tictoc.global.common.entity.base;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

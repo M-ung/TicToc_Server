@@ -15,7 +15,7 @@ import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 import java.time.LocalDateTime;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;

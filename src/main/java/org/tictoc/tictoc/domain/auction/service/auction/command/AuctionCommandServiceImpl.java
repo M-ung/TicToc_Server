@@ -127,7 +127,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
                 RedisAuctionMessageDTO.auctionClose.of(auctionId, delayMillis, auction)
         );
         auctionCloseProducer.send(
-                KafkaAuctionMessageDTO.auctionClose.of(auctionId, delayMillis)
+                KafkaAuctionMessageDTO.AuctionClose.of(auctionId, delayMillis)
         );
     }
 }

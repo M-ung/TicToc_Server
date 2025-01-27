@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.common.entity;
+package org.tictoc.tictoc.global.common.entity.constants;
 
 public abstract class AuthConstants {
     public static final String BEARER = "Bearer ";

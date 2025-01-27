@@ -7,10 +7,9 @@ import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNoAccessException;
-import org.tictoc.tictoc.global.common.entity.BaseTimeEntity;
+import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedException;
-import org.tictoc.tictoc.global.error.ErrorCode;
 
 import java.time.LocalDateTime;
 
@@ -34,13 +33,13 @@ public class Auction extends BaseTimeEntity {
     private Integer startPrice;
     private Integer currentPrice;
     private Integer finalPrice;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sellStartTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime sellEndTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime auctionOpenTime;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime auctionCloseTime;
     @Enumerated(EnumType.STRING)
     private AuctionProgress progress;

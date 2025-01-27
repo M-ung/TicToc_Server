@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.common.entity;
+package org.tictoc.tictoc.global.common.entity.page;
 
 import java.util.List;
 

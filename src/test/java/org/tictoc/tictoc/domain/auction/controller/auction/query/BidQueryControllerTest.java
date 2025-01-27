@@ -18,7 +18,7 @@ import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.auction.response.AuctionResponseDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.service.auction.query.AuctionQueryServiceImpl;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 

@@ -51,7 +51,7 @@ public class RedisAuctionServiceImpl implements RedisAuctionService {
 
     private Auction parse(String json) {
         try {
-            return new ObjectMapper().readValue(json, Auction.class);
+            return objectMapper.readValue(json, Auction.class);
         } catch (JsonProcessingException e) {
             throw new RedisAuctionParsingException(REDIS_AUCTION_PARSING_ERROR);
         }

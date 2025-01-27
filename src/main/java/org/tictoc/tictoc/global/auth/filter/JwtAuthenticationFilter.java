@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.tictoc.tictoc.global.auth.jwt.JwtProvider;
-import org.tictoc.tictoc.global.common.entity.AuthConstants;
+import org.tictoc.tictoc.global.common.entity.constants.AuthConstants;
 import org.tictoc.tictoc.global.error.ErrorCode;
 import org.tictoc.tictoc.global.error.exception.UnauthorizedException;
 

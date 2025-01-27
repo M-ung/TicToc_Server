@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.global.common.entity;
+package org.tictoc.tictoc.global.common.entity.constants;
 
 public abstract class KafkaConstants {
     public static final String AUCTION_CLOSE_TOPIC = "auction-close-topic";

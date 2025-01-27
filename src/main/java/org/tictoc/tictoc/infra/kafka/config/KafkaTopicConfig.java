@@ -4,7 +4,7 @@ import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.TopicBuilder;
-import org.tictoc.tictoc.global.common.entity.KafkaConstants;
+import org.tictoc.tictoc.global.common.entity.constants.KafkaConstants;
 
 @Configuration
 public class KafkaTopicConfig {

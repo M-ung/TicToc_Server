@@ -1,11 +1,11 @@
 package org.tictoc.tictoc.infra.kafka.dto;
 
 public class KafkaAuctionMessageDTO {
-    public record auctionClose (
+    public record AuctionClose(
             Long auctionId,
             long delayMillis ) {
-        public static auctionClose of(Long auctionId, long delayMillis) {
-            return new auctionClose(auctionId, delayMillis);
+        public static AuctionClose of(Long auctionId, long delayMillis) {
+            return new AuctionClose(auctionId, delayMillis);
         }
     }
 }

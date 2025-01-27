@@ -13,7 +13,7 @@ import org.tictoc.tictoc.domain.auction.dto.bid.request.BidRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.bid.response.BidResponseDTO;
 import org.tictoc.tictoc.domain.auction.service.bid.query.BidQueryService;
 import org.tictoc.tictoc.global.auth.resolver.UserId;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 
 @RestController
 @RequiredArgsConstructor

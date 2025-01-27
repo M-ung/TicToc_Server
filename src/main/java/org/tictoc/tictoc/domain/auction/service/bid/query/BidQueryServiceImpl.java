@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.bid.request.BidRequestDTO;
 import org.tictoc.tictoc.domain.auction.dto.bid.response.BidResponseDTO;
 import org.tictoc.tictoc.domain.auction.repository.bid.BidRepository;
-import org.tictoc.tictoc.global.common.entity.PageCustom;
+import org.tictoc.tictoc.global.common.entity.page.PageCustom;
 
 @Service
 @Transactional(readOnly = true)

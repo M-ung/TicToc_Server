@@ -1,4 +1,4 @@
-package org.tictoc.tictoc.infra.kafka.service;
+package org.tictoc.tictoc.infra.kafka.consumer.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,14 +12,12 @@ import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_NOT_FOUND;
 @Service
 @RequiredArgsConstructor
 public class AuctionCloseHandlerServiceImpl implements AuctionCloseHandlerService {
-
     private final AuctionRepository auctionRepository;
     private final RedisAuctionService redisAuctionService;
 
     @Override
-    public void process(KafkaAuctionMessageDTO.auctionClose message) {
+    public void process(KafkaAuctionMessageDTO.AuctionClose message) {
         var auctionId = message.auctionId();
-
         if (redisAuctionService.exists(auctionId)) {
             handleFromRedis(auctionId);
         } else {
