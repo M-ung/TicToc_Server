@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.service.auction.command.AuctionCommandService;
-import org.tictoc.tictoc.global.auth.resolver.UserId;
+import org.tictoc.tictoc.global.annotation.UserId;
 
 @RestController
 @RequiredArgsConstructor

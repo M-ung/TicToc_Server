@@ -27,7 +27,6 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AuctionCommandServiceImplTest {
-
     @InjectMocks
     private AuctionCommandServiceImpl auctionCommandService;
 
