@@ -19,6 +19,11 @@ public enum ErrorCode {
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),
     INVALID_AUCTION_TIME_RANGE(HttpStatus.BAD_REQUEST,"sellStartTime은 sellEndTime보다 이전이어야 합니다."),
 
+    // Bid
+    AUCTION_ALREADY_BID(HttpStatus.BAD_REQUEST, "이미 경매가 종료되었습니다."),
+    INVALID_BID_PRICE(HttpStatus.BAD_REQUEST,"현재 경매가보다 낮은 입찰가를 입력했습니다."),
+    BID_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 입찰입니다."),
+
     // Redis Auction
     REDIS_AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"레디스에서 찾을 수 없는 경매입니다."),
     REDIS_AUCTION_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"레디스에서 경매 데이터를 파싱하는 데 실패했습니다."),

@@ -7,12 +7,12 @@ import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNoAccessException;
+import org.tictoc.tictoc.domain.auction.exception.bid.AuctionAlreadyBidException;
+import org.tictoc.tictoc.domain.auction.exception.bid.InvalidBidPriceException;
 import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedException;
-
 import java.time.LocalDateTime;
-
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_ALREADY_STARTED;
@@ -69,7 +69,7 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void update(AuctionRequestDTO.Update requestDTO) {
-        checkAuctionNotStarted();
+        validateAuctionNotStarted();
         this.title = requestDTO.title();
         this.content = requestDTO.content();
         this.startPrice = requestDTO.startPrice();
@@ -82,18 +82,27 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void deactivate() {
-        checkAuctionNotStarted();
+        validateAuctionNotStarted();
         this.status = TicTocStatus.DISACTIVE;
+    }
+
+    public void validateAuctionNotStarted() {
+        if(!this.getProgress().equals(NOT_STARTED)) {
+            throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
+        }
+    }
+
+    public void validateBid(Integer bidPrice) {
+        if (this.progress == AuctionProgress.BID || this.progress == AuctionProgress.NOT_BID) {
+            throw new AuctionAlreadyBidException(AUCTION_ALREADY_BID);
+        }
+        if (this.currentPrice >= bidPrice) {
+            throw new InvalidBidPriceException(INVALID_BID_PRICE);
+        }
     }
 
     public void increaseBid(Integer price) {
         this.currentPrice = price;
-    }
-
-    public void checkAuctionNotStarted() {
-        if(!this.getProgress().equals(NOT_STARTED)) {
-            throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
-        }
     }
 
     public void close() {
