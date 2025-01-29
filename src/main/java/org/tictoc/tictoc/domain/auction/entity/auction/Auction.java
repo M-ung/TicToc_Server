@@ -70,7 +70,7 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void update(AuctionRequestDTO.Update requestDTO) {
-        validateAuctionNotStarted();
+        validateAuctionAlreadyStarted();
         this.title = requestDTO.title();
         this.content = requestDTO.content();
         this.startPrice = requestDTO.startPrice();
@@ -84,13 +84,27 @@ public class Auction extends BaseTimeEntity {
 
     public void deactivate(final Long userId) {
         validateAuctionAccess(userId);
-        validateAuctionNotStarted();
+        validateAuctionAlreadyStarted();
         this.status = TicTocStatus.DISACTIVE;
     }
 
     public void validateAuctionAccess(final Long userId) {
         if(!userId.equals(this.auctioneerId)) {
             throw new BidNoAccessException(BID_NO_ACCESS);
+        }
+    }
+
+    private void validateAuctionAlreadyStarted() {
+        if(!this.getProgress().equals(NOT_STARTED)) {
+            throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
+        }
+    }
+
+    public void startAuction(final Long userId) {
+        this.validateBidAccess(userId);
+        this.validateAuctionProgress();
+        if (this.progress == NOT_STARTED) {
+            this.progress = IN_PROGRESS;
         }
     }
 
@@ -106,19 +120,13 @@ public class Auction extends BaseTimeEntity {
         }
     }
 
-    private void validateAuctionNotStarted() {
-        if(!this.getProgress().equals(NOT_STARTED)) {
-            throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
-        }
-    }
-
     public void increaseBid(final Integer price) {
-        validateBid(price);
+        validatePrice(price);
         this.currentPrice = price;
         this.finalPrice = price;
     }
 
-    private void validateBid(final Integer price) {
+    private void validatePrice(final Integer price) {
         if (this.currentPrice >= price) {
             throw new InvalidBidPriceException(INVALID_BID_PRICE);
         }
@@ -131,12 +139,5 @@ public class Auction extends BaseTimeEntity {
         this.currentPrice = 0;
         this.finalPrice = 0;
         this.progress = NOT_BID;
-    }
-    public void startAuction(final Long userId) {
-        if (this.progress == NOT_STARTED) {
-            this.progress = IN_PROGRESS;
-        }
-        this.validateBidAccess(userId);
-        this.validateAuctionProgress();
     }
 }
