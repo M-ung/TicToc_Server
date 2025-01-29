@@ -14,6 +14,7 @@ import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
 import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
 import org.tictoc.tictoc.domain.auction.service.location.LocationCommandService;
+import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.infra.kafka.dto.KafkaAuctionMessageDTO;
 import org.tictoc.tictoc.infra.kafka.producer.AuctionCloseProducer;
 import org.tictoc.tictoc.infra.redis.dto.RedisAuctionMessageDTO;
@@ -34,7 +35,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
     @Override
     public void register(final Long userId, AuctionRequestDTO.Register requestDTO) throws JsonProcessingException {
-        auctionRepository.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         var auction = auctionRepository.save(Auction.of(userId, requestDTO));
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
@@ -47,7 +48,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     public void update(final Long userId, final Long auctionId, AuctionRequestDTO.Update requestDTO) {
         var findAuction = auctionRepository.findByIdOrThrow(auctionId);
         findAuction.validateAuctionAccess(userId);
-        auctionRepository.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
             scheduleAuctionClose(auctionId, updateAuction(findAuction, requestDTO));
         } catch (OptimisticLockingFailureException | JsonProcessingException e) {
@@ -57,7 +58,7 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
 
     @Override
     public void delete(final Long userId, final Long auctionId) {
-        Auction findAuction = auctionRepository.findByIdOrThrow(auctionId);
+        var findAuction = auctionRepository.findByIdOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
             redisAuctionService.delete(auctionId);
@@ -74,6 +75,12 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         }
         redisAuctionService.delete(auction.getId());
         return auction;
+    }
+
+    private void validateAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
+        if (auctionRepository.existsAuctionInTimeRange(userId, sellStartTime, sellEndTime, TicTocStatus.ACTIVE)) {
+            throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
+        }
     }
 
     private void scheduleAuctionClose(final Long auctionId, Auction auction) throws JsonProcessingException {

@@ -25,10 +25,4 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, Auction
     default Auction findByIdOrThrow(Long id) {
         return findById(id).orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
     }
-
-    default void validateAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
-        if (existsAuctionInTimeRange(userId, sellStartTime, sellEndTime, TicTocStatus.ACTIVE)) {
-            throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
-        }
-    }
 }
