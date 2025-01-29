@@ -7,12 +7,13 @@ import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNoAccessException;
+import org.tictoc.tictoc.domain.auction.exception.bid.AuctionAlreadyBidException;
+import org.tictoc.tictoc.domain.auction.exception.bid.BidNoAccessException;
+import org.tictoc.tictoc.domain.auction.exception.bid.InvalidBidPriceException;
 import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionAlreadyStartedException;
-
 import java.time.LocalDateTime;
-
 import static org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.*;
 import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_ALREADY_STARTED;
@@ -69,7 +70,7 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void update(AuctionRequestDTO.Update requestDTO) {
-        checkAuctionNotStarted();
+        validateAuctionAlreadyStarted();
         this.title = requestDTO.title();
         this.content = requestDTO.content();
         this.startPrice = requestDTO.startPrice();
@@ -81,31 +82,62 @@ public class Auction extends BaseTimeEntity {
         this.type = requestDTO.type();
     }
 
-    public void deactivate() {
-        checkAuctionNotStarted();
+    public void deactivate(final Long userId) {
+        validateAuctionAccess(userId);
+        validateAuctionAlreadyStarted();
         this.status = TicTocStatus.DISACTIVE;
     }
 
-    public void increaseBid(Integer price) {
-        this.currentPrice = price;
+    public void validateAuctionAccess(final Long userId) {
+        if(!userId.equals(this.auctioneerId)) {
+            throw new BidNoAccessException(BID_NO_ACCESS);
+        }
     }
 
-    public void checkAuctionNotStarted() {
+    private void validateAuctionAlreadyStarted() {
         if(!this.getProgress().equals(NOT_STARTED)) {
             throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
         }
     }
 
-    public void close() {
-        if (this.progress.equals(IN_PROGRESS)) {
-            this.finalPrice = this.currentPrice;
-            this.progress = BID;
-        } else if (this.progress.equals(NOT_STARTED)) {
-            this.currentPrice = 0;
-            this.finalPrice = 0;
-            this.progress = NOT_BID;
-        } else {
+    public void startAuction(final Long userId) {
+        this.validateBidAccess(userId);
+        this.validateAuctionProgress();
+        if (this.progress == NOT_STARTED) {
+            this.progress = IN_PROGRESS;
+        }
+    }
+
+    private void validateBidAccess(final Long userId) {
+        if(userId.equals(this.auctioneerId)) {
             throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
         }
+    }
+
+    private void validateAuctionProgress() {
+        if (this.progress == AuctionProgress.BID || this.progress == AuctionProgress.NOT_BID) {
+            throw new AuctionAlreadyBidException(AUCTION_ALREADY_FINISHED);
+        }
+    }
+
+    public void increaseBid(final Integer price) {
+        validatePrice(price);
+        this.currentPrice = price;
+        this.finalPrice = price;
+    }
+
+    private void validatePrice(final Integer price) {
+        if (this.currentPrice >= price) {
+            throw new InvalidBidPriceException(INVALID_BID_PRICE);
+        }
+    }
+    public void bid() {
+        this.finalPrice = this.currentPrice;
+        this.progress = BID;
+    }
+    public void notBid() {
+        this.currentPrice = 0;
+        this.finalPrice = 0;
+        this.progress = NOT_BID;
     }
 }

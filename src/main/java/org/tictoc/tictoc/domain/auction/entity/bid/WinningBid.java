@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 
 @Getter
@@ -20,4 +21,12 @@ public class WinningBid extends BaseTimeEntity {
     private Long winningBidderId;
     private Long auctionId;
     private Integer price;
+
+    public static WinningBid of(Auction auction, Bid bid) {
+        return WinningBid.builder()
+                .auctioneerId(auction.getAuctioneerId())
+                .winningBidderId(bid.getBidderId())
+                .auctionId(bid.getAuctionId())
+                .build();
+    }
 }

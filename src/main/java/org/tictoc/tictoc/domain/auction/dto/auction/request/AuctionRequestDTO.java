@@ -6,8 +6,7 @@ import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
-import org.tictoc.tictoc.domain.auction.exception.auction.ValidateAuctionTimesException;
-import org.tictoc.tictoc.global.error.ErrorCode;
+import org.tictoc.tictoc.domain.auction.exception.auction.InvalidAuctionTimesException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -70,7 +69,7 @@ public class AuctionRequestDTO {
 
     private static void validateIsBefore(LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
         if (!sellStartTime.isBefore(sellEndTime)) {
-            throw new ValidateAuctionTimesException(INVALID_AUCTION_TIME_RANGE);
+            throw new InvalidAuctionTimesException(INVALID_AUCTION_TIME_RANGE);
         }
     }
 }
