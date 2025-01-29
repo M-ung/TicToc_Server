@@ -81,27 +81,42 @@ public class Auction extends BaseTimeEntity {
         this.type = requestDTO.type();
     }
 
-    public void deactivate() {
+    public void deactivate(final Long userId) {
+        validateAuctionAccess(userId);
         validateAuctionNotStarted();
         this.status = TicTocStatus.DISACTIVE;
     }
 
-    public void validateAuctionNotStarted() {
+    public void validateAuctionAccess(final Long userId) {
+        if(!userId.equals(this.auctioneerId)) {
+            throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
+        }
+    }
+
+    private void validateAuctionNotStarted() {
         if(!this.getProgress().equals(NOT_STARTED)) {
             throw new AuctionAlreadyStartedException(AUCTION_ALREADY_STARTED);
         }
     }
 
-    public void validateBid(Integer bidPrice) {
+    public void validateBid(final Integer bidPrice) {
+        validateAuctionProgress();
+        validateBidPrice(bidPrice);
+    }
+
+    private void validateAuctionProgress() {
         if (this.progress == AuctionProgress.BID || this.progress == AuctionProgress.NOT_BID) {
             throw new AuctionAlreadyBidException(AUCTION_ALREADY_BID);
         }
+    }
+
+    private void validateBidPrice(final Integer bidPrice) {
         if (this.currentPrice >= bidPrice) {
             throw new InvalidBidPriceException(INVALID_BID_PRICE);
         }
     }
 
-    public void increaseBid(Integer price) {
+    public void increaseBid(final Integer price) {
         this.currentPrice = price;
     }
 
