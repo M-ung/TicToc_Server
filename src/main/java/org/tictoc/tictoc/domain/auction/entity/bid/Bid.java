@@ -34,4 +34,8 @@ public class Bid {
     public void fail() {
         this.status = BidStatus.FAILED;
     }
+
+    public void win() {
+        this.status = BidStatus.WIN;
+    }
 }

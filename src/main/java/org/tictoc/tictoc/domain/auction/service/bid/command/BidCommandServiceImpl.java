@@ -23,7 +23,7 @@ public class BidCommandServiceImpl implements BidCommandService {
     public void bid(final Long userId, BidRequestDTO.Bid requestDTO) {
         var findAuction = auctionRepository.findByIdOrThrow(requestDTO.auctionId());
         findAuction.validateAuctionProgress();
-        bidRepository.findByAuctionIdAndStatusOrThrow(requestDTO.auctionId(), BidStatus.PROGRESS).fail();
+        bidRepository.findByAuctionIdAndStatusOrThrow(requestDTO.auctionId()).fail();
         bidRepository.save(Bid.of(userId, requestDTO));
         findAuction.increaseBid(requestDTO.price());
     }
