@@ -6,12 +6,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNotFoundException;
-import org.tictoc.tictoc.domain.auction.exception.auction.DuplicateAuctionDateException;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 import static org.tictoc.tictoc.global.error.ErrorCode.AUCTION_NOT_FOUND;
-import static org.tictoc.tictoc.global.error.ErrorCode.DUPLICATE_AUCTION_DATE;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
     @Query("SELECT COUNT(a) > 0 FROM Auction a " +

@@ -8,6 +8,7 @@ import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.AuctionNoAccessException;
 import org.tictoc.tictoc.domain.auction.exception.bid.AuctionAlreadyBidException;
+import org.tictoc.tictoc.domain.auction.exception.bid.BidNoAccessException;
 import org.tictoc.tictoc.domain.auction.exception.bid.InvalidBidPriceException;
 import org.tictoc.tictoc.global.common.entity.base.BaseTimeEntity;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
@@ -89,13 +90,19 @@ public class Auction extends BaseTimeEntity {
 
     public void validateAuctionAccess(final Long userId) {
         if(!userId.equals(this.auctioneerId)) {
+            throw new BidNoAccessException(BID_NO_ACCESS);
+        }
+    }
+
+    private void validateBidAccess(final Long userId) {
+        if(userId.equals(this.auctioneerId)) {
             throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
         }
     }
 
-    public void validateAuctionProgress() {
+    private void validateAuctionProgress() {
         if (this.progress == AuctionProgress.BID || this.progress == AuctionProgress.NOT_BID) {
-            throw new AuctionAlreadyBidException(AUCTION_ALREADY_BID);
+            throw new AuctionAlreadyBidException(AUCTION_ALREADY_FINISHED);
         }
     }
 
@@ -108,6 +115,7 @@ public class Auction extends BaseTimeEntity {
     public void increaseBid(final Integer price) {
         validateBid(price);
         this.currentPrice = price;
+        this.finalPrice = price;
     }
 
     private void validateBid(final Integer price) {
@@ -115,17 +123,20 @@ public class Auction extends BaseTimeEntity {
             throw new InvalidBidPriceException(INVALID_BID_PRICE);
         }
     }
-
-    public void close() {
-        if (this.progress.equals(IN_PROGRESS)) {
-            this.finalPrice = this.currentPrice;
-            this.progress = BID;
-        } else if (this.progress.equals(NOT_STARTED)) {
-            this.currentPrice = 0;
-            this.finalPrice = 0;
-            this.progress = NOT_BID;
-        } else {
-            throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
+    public void bid() {
+        this.finalPrice = this.currentPrice;
+        this.progress = BID;
+    }
+    public void notBid() {
+        this.currentPrice = 0;
+        this.finalPrice = 0;
+        this.progress = NOT_BID;
+    }
+    public void startAuction(final Long userId) {
+        if (this.progress == NOT_STARTED) {
+            this.progress = IN_PROGRESS;
         }
+        this.validateBidAccess(userId);
+        this.validateAuctionProgress();
     }
 }

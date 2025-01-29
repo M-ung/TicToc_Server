@@ -4,13 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.bid.request.BidRequestDTO;
+import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
 import org.tictoc.tictoc.domain.auction.entity.bid.Bid;
-import org.tictoc.tictoc.domain.auction.entity.type.BidStatus;
-import org.tictoc.tictoc.domain.auction.exception.bid.BidNotFoundException;
+import org.tictoc.tictoc.domain.auction.entity.type.AuctionProgress;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
 import org.tictoc.tictoc.domain.auction.repository.bid.BidRepository;
-import org.tictoc.tictoc.domain.auction.repository.bid.WinningBidRepository;
-import static org.tictoc.tictoc.global.error.ErrorCode.*;
 
 @Service
 @Transactional
@@ -21,10 +19,16 @@ public class BidCommandServiceImpl implements BidCommandService {
 
     @Override
     public void bid(final Long userId, BidRequestDTO.Bid requestDTO) {
-        var findAuction = auctionRepository.findByIdOrThrow(requestDTO.auctionId());
-        findAuction.validateAuctionProgress();
-        bidRepository.findByAuctionIdAndStatusOrThrow(requestDTO.auctionId()).fail();
+        var auction = auctionRepository.findByIdOrThrow(requestDTO.auctionId());
+        checkBeforeBid(auction);
+        auction.startAuction(userId);
         bidRepository.save(Bid.of(userId, requestDTO));
-        findAuction.increaseBid(requestDTO.price());
+        auction.increaseBid(requestDTO.price());
+    }
+
+    private void checkBeforeBid(Auction auction) {
+        if (auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
+            bidRepository.findByAuctionIdAndStatusOrThrow(auction.getId()).fail();
+        }
     }
 }
