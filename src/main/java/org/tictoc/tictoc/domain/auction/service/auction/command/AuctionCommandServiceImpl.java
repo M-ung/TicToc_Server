@@ -7,21 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.tictoc.tictoc.domain.auction.dto.auction.request.AuctionRequestDTO;
 import org.tictoc.tictoc.domain.auction.entity.auction.Auction;
-import org.tictoc.tictoc.domain.auction.entity.location.AuctionLocation;
 import org.tictoc.tictoc.domain.auction.entity.type.AuctionType;
 import org.tictoc.tictoc.domain.auction.exception.auction.*;
 import org.tictoc.tictoc.domain.auction.repository.auction.AuctionRepository;
-import org.tictoc.tictoc.domain.auction.repository.location.AuctionLocationRepository;
-import org.tictoc.tictoc.domain.auction.repository.location.LocationRepository;
 import org.tictoc.tictoc.domain.auction.service.location.LocationCommandService;
 import org.tictoc.tictoc.global.common.entity.type.TicTocStatus;
-import org.tictoc.tictoc.infra.kafka.dto.KafkaAuctionMessageDTO;
-import org.tictoc.tictoc.infra.kafka.producer.AuctionCloseProducer;
 import org.tictoc.tictoc.infra.redis.dto.RedisAuctionMessageDTO;
 import org.tictoc.tictoc.infra.redis.service.RedisAuctionService;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.List;
 import static org.tictoc.tictoc.global.error.ErrorCode.*;
 
 @Service
@@ -31,7 +25,6 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
     private final RedisAuctionService redisAuctionService;
     private final LocationCommandService locationCommandService;
     private final AuctionRepository auctionRepository;
-    private final AuctionCloseProducer auctionCloseProducer;
 
     @Override
     public void register(final Long userId, AuctionRequestDTO.Register requestDTO) throws JsonProcessingException {
@@ -88,8 +81,27 @@ public class AuctionCommandServiceImpl implements AuctionCommandService {
         redisAuctionService.save(
                 RedisAuctionMessageDTO.auctionClose.of(auctionId, delayMillis, auction)
         );
-        auctionCloseProducer.send(
-                KafkaAuctionMessageDTO.AuctionClose.of(auctionId, delayMillis)
-        );
+//        auctionCloseProducer.send(
+//                KafkaAuctionMessageDTO.AuctionClose.of(auctionId, delayMillis)
+//        );
+//        public void process(KafkaAuctionMessageDTO.AuctionClose message) {
+//            var auctionId = message.auctionId();
+//            var isInRedis = redisAuctionService.exists(auctionId);
+//            var auction = isInRedis ? redisAuctionService.find(auctionId) : auctionRepository.findByIdOrThrow(auctionId);
+//            close(auction, isInRedis);
+//        }
+//
+//        private void close(Auction auction, boolean isInRedis) {
+//            if(auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
+//                auction.bid();
+//                var bid = bidRepository.findByAuctionIdAndStatusOrThrow(auction.getId());
+//                bid.win();
+//                winningBidRepository.save(WinningBid.of(auction, bid));
+//            } else {
+//                auction.notBid();
+//            }
+//            if (isInRedis) redisAuctionService.delete(auction.getId());
+//            auctionRepository.save(auction);
+//        }
     }
 }
