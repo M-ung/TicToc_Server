@@ -1,1 +1,5 @@
 rootProject.name = 'TicToc'
+include 'tictoc-common'
+include 'tictoc-api'
+include 'tictoc-domain'
+include 'tictoc-infrastructure'
