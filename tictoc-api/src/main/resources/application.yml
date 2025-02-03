@@ -11,47 +11,14 @@ server:
     accept-count: 100
 
 spring:
+  profiles:
+    active: local
+    include:
+      - domain
+      - infrastructure
   threads:
     virtual:
       enabled: true
-  cache:
-    type: redis
-  data:
-    redis:
-      host: ${REDIS_HOST:localhost}
-      port: ${REDIS_PORT:6379}
-      timeout: 2000ms
-      jedis:
-        pool:
-          max-active: 10
-          max-idle: 5
-          min-idle: 1
-          max-wait: 1000ms
-
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3306}/${DB_NAME:tic_toc_db}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    username: ${DB_USER:mung}
-    password: ${DB_PASSWORD}
-
-    hikari:
-      connection-timeout: 50000
-      maximum-pool-size: 1000
-      idle-timeout: 300000
-      max-lifetime: 1800000
-
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
-        use_sql_comments: true
-    database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
-    hibernate:
-      ddl-auto: update
-    generate-ddl: false
-
   servlet:
     multipart:
       max-file-size: 5MB

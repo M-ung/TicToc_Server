@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tictoc.jwt.util.JwtProvider;
+import tictoc.config.security.jwt.util.JwtProvider;
 import tictoc.constants.AuthConstants;
 import tictoc.error.ErrorCode;
 import tictoc.error.exception.UnauthorizedException;
