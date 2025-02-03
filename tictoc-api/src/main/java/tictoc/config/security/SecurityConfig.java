@@ -15,7 +15,7 @@ import tictoc.config.CorsFilter;
 import tictoc.config.security.exception.ExceptionHandlerFilter;
 import tictoc.config.security.exception.JwtAuthenticationEntryPoint;
 import tictoc.config.security.filter.JwtAuthenticationFilter;
-import tictoc.jwt.util.JwtProvider;
+import tictoc.config.security.jwt.util.JwtProvider;
 
 
 @RequiredArgsConstructor

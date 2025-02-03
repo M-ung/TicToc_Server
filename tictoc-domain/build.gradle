@@ -5,4 +5,10 @@ jar.enabled = true
 dependencies {
     implementation project(':tictoc-common')
     implementation project(':tictoc-infrastructure')
+
+    // mysql
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    // h2
+    testImplementation 'com.h2database:h2'
 }

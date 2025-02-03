@@ -1,9 +1,9 @@
-package tictoc.jwt.util;
+package tictoc.config.security.jwt.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import tictoc.jwt.RefreshToken;
-import tictoc.jwt.repository.RefreshTokenRepository;
+import tictoc.config.security.jwt.RefreshToken;
+import tictoc.config.security.jwt.repository.RefreshTokenRepository;
 
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;

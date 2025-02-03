@@ -1,4 +1,4 @@
-package tictoc.jwt;
+package tictoc.config.security.jwt;
 
 import lombok.Getter;
 import lombok.Setter;

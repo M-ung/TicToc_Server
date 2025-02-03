@@ -1,11 +1,11 @@
-package tictoc.jwt.util;
+package tictoc.config.security.jwt.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import tictoc.jwt.JwtProperties;
-import tictoc.jwt.dto.JwtResDTO;
+import tictoc.config.security.jwt.JwtProperties;
+import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.error.ErrorCode;
 import tictoc.error.exception.UnauthorizedException;
 import io.jsonwebtoken.security.SignatureException;

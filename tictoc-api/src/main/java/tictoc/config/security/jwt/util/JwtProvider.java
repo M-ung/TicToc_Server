@@ -1,8 +1,8 @@
-package tictoc.jwt.util;
+package tictoc.config.security.jwt.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import tictoc.jwt.dto.JwtResDTO;
+import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.error.ErrorCode;
 
 @RequiredArgsConstructor

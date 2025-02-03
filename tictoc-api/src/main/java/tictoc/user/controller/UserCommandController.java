@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tictoc.jwt.dto.JwtResDTO;
+import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.user.dto.request.UserReqDTO;
 import tictoc.user.mapper.UserReqMapper;
 import tictoc.user.port.in.UserCommandUseCase;
