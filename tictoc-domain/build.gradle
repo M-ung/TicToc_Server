@@ -12,3 +12,17 @@ dependencies {
     // h2
     testImplementation 'com.h2database:h2'
 }
+
+def generated = layout.buildDirectory.dir("generated/querydsl")
+
+sourceSets {
+    main {
+        java {
+            srcDirs += generated
+        }
+    }
+}
+
+clean.doLast {
+    file(generated).deleteDir()
+}

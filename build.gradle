@@ -20,16 +20,6 @@ subprojects {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
 
-    def generated = layout.buildDirectory.dir("generated/querydsl")
-
-    sourceSets {
-        main {
-            java {
-                srcDirs += generated
-            }
-        }
-    }
-
     configurations {
         compileOnly {
             extendsFrom annotationProcessor
