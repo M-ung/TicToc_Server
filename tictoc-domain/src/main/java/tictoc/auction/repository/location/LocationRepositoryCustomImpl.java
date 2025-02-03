@@ -1,16 +1,15 @@
-package tictoc.auction.location;
+package tictoc.auction.repository.location;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import java.util.Optional;
-
 import static tictoc.auction.model.location.QLocation.location;
 
-public class LocationRepositoryImpl implements LocationRepositoryCustom {
+public class LocationRepositoryCustomImpl implements LocationRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    public LocationRepositoryImpl(EntityManager em) {
+    public LocationRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 

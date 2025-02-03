@@ -8,11 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.model.Auction;
 import tictoc.auction.port.in.AuctionCommandUseCase;
-import tictoc.auction.port.out.AuctionAdaptor;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
 import tictoc.auction.port.in.location.LocationCommandUseCase;
+import tictoc.auction.port.out.AuctionRepositoryPort;
+
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import static tictoc.error.ErrorCode.*;
@@ -22,12 +23,12 @@ import static tictoc.error.ErrorCode.*;
 @RequiredArgsConstructor
 public class AuctionCommandService implements AuctionCommandUseCase {
     private final LocationCommandUseCase locationCommandUseCase;
-    private final AuctionAdaptor auctionAdaptor;
+    private final AuctionRepositoryPort auctionRepositoryPort;
 
     @Override
     public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) throws JsonProcessingException {
-        auctionAdaptor.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        var auction = auctionAdaptor.saveAuctionEntity(Auction.of(userId, requestDTO));
+        auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        var auction = auctionRepositoryPort.saveAuction(Auction.of(userId, requestDTO));
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
@@ -37,9 +38,9 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     @Override
     public void update(final Long userId, final Long auctionId, AuctionUseCaseReqDTO.Update requestDTO) {
-        var findAuction = auctionAdaptor.findAuctionByIdOrThrow(auctionId);
+        var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
         findAuction.validateAuctionAccess(userId);
-        auctionAdaptor.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
             scheduleAuctionClose(auctionId, updateAuction(findAuction, requestDTO));
         } catch (OptimisticLockingFailureException | JsonProcessingException e) {
@@ -49,7 +50,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     @Override
     public void delete(final Long userId, final Long auctionId) {
-        var findAuction = auctionAdaptor.findAuctionByIdOrThrow(auctionId);
+        var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
 //            redisAuctionService.delete(auctionId);

@@ -1,4 +1,4 @@
-package tictoc.user.service.command;
+package tictoc.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ import tictoc.user.exception.UserNotFoundException;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserCommandUseCaseImpl implements UserCommandUseCase {
+public class UserCommandService implements UserCommandUseCase {
     private final UserAdaptor userAdaptor;
     private final JwtProvider jwtProvider;
 

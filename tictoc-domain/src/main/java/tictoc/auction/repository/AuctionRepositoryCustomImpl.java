@@ -18,9 +18,9 @@ import static tictoc.auction.model.QAuction.auction;
 import static tictoc.auction.model.location.QAuctionLocation.auctionLocation;
 import static tictoc.auction.model.location.QLocation.location;
 
-public class AuctionRepositoryImpl implements AuctionRepositoryCustom {
+public class AuctionRepositoryCustomImpl implements AuctionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
-    public AuctionRepositoryImpl(EntityManager em) {
+    public AuctionRepositoryCustomImpl(EntityManager em) {
         this.queryFactory = new JPAQueryFactory(em);
     }
 

@@ -1,8 +1,7 @@
-package tictoc.auction.location;
+package tictoc.auction.repository.location;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import tictoc.auction.model.location.AuctionLocation;
-
 import java.util.Optional;
 
 public interface AuctionLocationRepository extends JpaRepository<AuctionLocation, Long> {
