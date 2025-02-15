@@ -1,6 +1,6 @@
-package tictoc.config.security.jwt.dto;
+package tictoc.database.security.jwt.dto;
 
-import tictoc.config.security.jwt.RefreshToken;
+import tictoc.database.security.jwt.RefreshToken;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 

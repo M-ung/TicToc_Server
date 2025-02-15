@@ -1,7 +1,7 @@
-package tictoc.config.security.jwt.repository;
+package tictoc.database.security.jwt.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import tictoc.config.security.jwt.RefreshToken;
+import tictoc.database.security.jwt.RefreshToken;
 
 public interface RefreshTokenRepository extends CrudRepository<RefreshToken, String> {
     void deleteByUserId(final Long userId);

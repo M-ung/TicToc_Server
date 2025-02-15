@@ -1,4 +1,4 @@
-package tictoc.config.security.filter;
+package tictoc.database.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
-import tictoc.config.security.jwt.util.JwtProvider;
+import tictoc.database.security.jwt.util.JwtProvider;
 import tictoc.constants.AuthConstants;
 import tictoc.error.ErrorCode;
 import tictoc.error.exception.UnauthorizedException;

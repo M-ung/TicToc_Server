@@ -1,4 +1,4 @@
-package tictoc.config.security.jwt;
+package tictoc.database.security.jwt;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;

@@ -1,4 +1,4 @@
-package tictoc.config.security.filter;
+package tictoc.database.security.filter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

@@ -1,4 +1,4 @@
-package tictoc.config.security.exception;
+package tictoc.database.security.exception;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

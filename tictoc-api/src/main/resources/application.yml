@@ -11,11 +11,14 @@ server:
     accept-count: 100
 
 spring:
+  config:
+    import: optional:file:.env[.properties]
   profiles:
     active: local
     include:
       - domain
       - infrastructure
+      - common
   threads:
     virtual:
       enabled: true

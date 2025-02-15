@@ -1,4 +1,4 @@
-package tictoc.config.security.resolver;
+package tictoc.database.security.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.context.SecurityContextHolder;

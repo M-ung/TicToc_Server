@@ -1,4 +1,4 @@
-package tictoc.config.security.jwt.model;
+package tictoc.database.security.jwt.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;

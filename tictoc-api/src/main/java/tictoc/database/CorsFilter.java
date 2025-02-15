@@ -1,4 +1,4 @@
-package tictoc.config;
+package tictoc.database;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
