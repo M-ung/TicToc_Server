@@ -14,8 +14,8 @@ import tictoc.auction.model.type.AuctionType;
 import tictoc.model.baseTime.BaseTimeEntity;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
-import static tictoc.error.ErrorCode.*;
 import static tictoc.auction.model.type.AuctionProgress.*;
+import static tictoc.error.ErrorCode.*;
 
 @Getter
 @Entity
