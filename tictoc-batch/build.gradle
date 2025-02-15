@@ -1,19 +1,12 @@
-plugins {
-    id 'java'
-}
+bootJar.enabled = false
 
-group = 'talkPick'
-version = 'unspecified'
-
-repositories {
-    mavenCentral()
-}
+jar.enabled = true
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-}
+    // Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.batch:spring-batch-core'
 
-test {
-    useJUnitPlatform()
+    // Quartz
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
 }
