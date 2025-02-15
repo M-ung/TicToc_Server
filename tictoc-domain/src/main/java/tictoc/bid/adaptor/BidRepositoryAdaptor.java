@@ -5,17 +5,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import tictoc.auction.model.Auction;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
+import tictoc.bid.dto.request.WinningBidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
 import tictoc.bid.model.Bid;
 import tictoc.bid.port.out.BidRepositoryPort;
 import tictoc.bid.repository.BidRepository;
 import tictoc.auction.model.type.AuctionProgress;
+import tictoc.bid.repository.WinningBidRepository;
 import tictoc.model.page.PageCustom;
 
 @Component
 @RequiredArgsConstructor
 public class BidRepositoryAdaptor implements BidRepositoryPort {
     private final BidRepository bidRepository;
+    private final WinningBidRepository winningBidRepository;
 
     @Override
     public PageCustom<BidUseCaseResDTO.Bid> findBidsByFilterWithPageable(Long userId, BidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
@@ -32,5 +35,10 @@ public class BidRepositoryAdaptor implements BidRepositoryPort {
     @Override
     public void saveBid(Bid bid) {
         bidRepository.save(bid);
+    }
+
+    @Override
+    public PageCustom<BidUseCaseResDTO.WinningBid> getWinningBidsByFilterWithPageable(WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
+        return winningBidRepository.findWinningBidsByFilterWithPageable(requestDTO, pageable);
     }
 }
