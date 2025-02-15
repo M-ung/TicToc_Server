@@ -10,6 +10,5 @@ public interface BidReqMapper {
     BidReqMapper INSTANCE = Mappers.getMapper(BidReqMapper.class);
 
     BidUseCaseReqDTO.Bid toUseCaseDTO(BidReqDTO.Bid requestDTO);
-
     BidUseCaseReqDTO.Filter toUseCaseDTO(BidReqDTO.Filter requestDTO);
 }
