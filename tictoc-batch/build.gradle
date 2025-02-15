@@ -1,0 +1,15 @@
+bootJar.enabled = false
+
+jar.enabled = true
+
+dependencies {
+    // Spring Batch
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation 'org.springframework.batch:spring-batch-core'
+
+    // Quartz
+    implementation 'org.springframework.boot:spring-boot-starter-quartz'
+
+    implementation project(':tictoc-common')
+    implementation project(':tictoc-domain')
+}

@@ -18,6 +18,7 @@ spring:
     include:
       - domain
       - common
+      - batch
       - infrastructure
   threads:
     virtual:

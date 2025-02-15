@@ -13,9 +13,7 @@ import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
 import tictoc.auction.port.in.location.LocationCommandUseCase;
 import tictoc.auction.port.out.AuctionRepositoryPort;
-
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
+import tictoc.redis.auction.port.out.AuctionRedisPort;
 import static tictoc.error.ErrorCode.*;
 
 @Service
@@ -24,6 +22,7 @@ import static tictoc.error.ErrorCode.*;
 public class AuctionCommandService implements AuctionCommandUseCase {
     private final LocationCommandUseCase locationCommandUseCase;
     private final AuctionRepositoryPort auctionRepositoryPort;
+    private final AuctionRedisPort auctionRedisPort;
 
     @Override
     public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) throws JsonProcessingException {
@@ -33,7 +32,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
         }
-        scheduleAuctionClose(auctionId, auction);
+        auctionRedisPort.saveAuctionClose(auctionId, requestDTO.sellEndTime());
     }
 
     @Override
@@ -42,8 +41,14 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         findAuction.validateAuctionAccess(userId);
         auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
-            scheduleAuctionClose(auctionId, updateAuction(findAuction, requestDTO));
-        } catch (OptimisticLockingFailureException | JsonProcessingException e) {
+            findAuction.update(requestDTO);
+            locationCommandUseCase.deleteAuctionLocations(auctionId);
+            if (!requestDTO.type().equals(AuctionType.ONLINE)) {
+                locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
+            }
+            auctionRedisPort.deleteAuctionClose(auctionId);
+            auctionRedisPort.saveAuctionClose(auctionId, requestDTO.sellEndTime());
+        } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
     }
@@ -53,48 +58,9 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
-//            redisAuctionService.delete(auctionId);
+            auctionRedisPort.deleteAuctionClose(auctionId);
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }
-    }
-
-    private Auction updateAuction(Auction auction, AuctionUseCaseReqDTO.Update requestDTO) throws JsonProcessingException {
-        auction.update(requestDTO);
-        locationCommandUseCase.deleteAuctionLocations(auction.getId());
-        if (!requestDTO.type().equals(AuctionType.ONLINE)) {
-            locationCommandUseCase.saveAuctionLocations(auction.getId(), requestDTO.locations());
-        }
-//        redisAuctionService.delete(auctionEntity.getId());
-        return auction;
-    }
-
-    private void scheduleAuctionClose(final Long auctionId, Auction auctionDomain) throws JsonProcessingException {
-        var delayMillis = ChronoUnit.MILLIS.between(LocalDateTime.now(), auctionDomain.getAuctionCloseTime());
-//        redisAuctionService.save(
-//                RedisAuctionMessageDTO.auctionClose.of(auctionId, delayMillis, auctionEntity)
-//        );
-//        auctionCloseProducer.send(
-//                KafkaAuctionMessageDTO.AuctionClose.of(auctionId, delayMillis)
-//        );
-//        public void process(KafkaAuctionMessageDTO.AuctionClose message) {
-//            var auctionId = message.auctionId();
-//            var isInRedis = redisAuctionService.exists(auctionId);
-//            var auctionEntity = isInRedis ? redisAuctionService.find(auctionId) : auctionRepository.findByIdOrThrow(auctionId);
-//            close(auctionEntity, isInRedis);
-//        }
-//
-//        private void close(Auction auctionEntity, boolean isInRedis) {
-//            if(auctionEntity.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
-//                auctionEntity.bid();
-//                var bid = bidRepository.findByAuctionIdAndStatusOrThrow(auctionEntity.getId());
-//                bid.win();
-//                winningBidRepository.save(WinningBid.of(auctionEntity, bid));
-//            } else {
-//                auctionEntity.notBid();
-//            }
-//            if (isInRedis) redisAuctionService.delete(auctionEntity.getId());
-//            auctionRepository.save(auctionEntity);
-//        }
     }
 }
