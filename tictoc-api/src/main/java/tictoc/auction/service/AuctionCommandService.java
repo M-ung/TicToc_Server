@@ -46,7 +46,8 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
                 locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
             }
-            auctionRedisPort.updateAuctionClose(auctionId, requestDTO.sellEndTime());
+            auctionRedisPort.deleteAuctionClose(auctionId);
+            auctionRedisPort.saveAuctionClose(auctionId, requestDTO.sellEndTime());
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
