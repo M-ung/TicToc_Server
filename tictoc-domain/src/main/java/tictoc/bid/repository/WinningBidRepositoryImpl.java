@@ -44,6 +44,7 @@ public class WinningBidRepositoryImpl implements WinningBidRepositoryCustom {
                         filterBidDate(requestDTO.winningBidDate()),
                         filterSellTime(requestDTO)
                 )
+                .orderBy(winningBid.updatedAt.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
