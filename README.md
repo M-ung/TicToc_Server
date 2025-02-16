@@ -70,4 +70,5 @@
   
 ## 📚 참고 자료
 
-https://pinomaker.com/146
+- **Mysql Master/Slave**
+    - https://pinomaker.com/146
