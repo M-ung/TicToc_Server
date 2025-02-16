@@ -65,3 +65,9 @@
     - 예시
         - UserResponseDTO
         - PostRequestDTO
+     
+<br>
+  
+## 📚 참고 자료
+
+https://pinomaker.com/146
