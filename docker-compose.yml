@@ -1,0 +1,53 @@
+version: '3.7'
+
+services:
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    environment:
+      REDIS_TIMEOUT: ${REDIS_TIMEOUT}
+    networks:
+      - net-mysql
+
+  db-master:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${MASTER_DB_PORT}:${DB_PORT}"
+    volumes:
+      - my-db-master:/var/lib/mysql
+      - my-db-master:/var/lib/mysql-files
+      - ./replication/master/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - net-mysql
+
+  db-slave:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "${SLAVE_DB_PORT}:${DB_PORT}"
+    volumes:
+      - my-db-slave:/var/lib/mysql
+      - my-db-slave:/var/lib/mysql-files
+      - ./replication/slave/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - net-mysql
+
+volumes:
+  my-db-master:
+  my-db-slave:
+
+networks:
+  net-mysql:
+    driver: bridge
