@@ -12,4 +12,6 @@ public interface AuctionRepositoryPort {
     Auction findAuctionByIdOrThrow(Long auctionId);
     void validateAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime);
     PageCustom<AuctionUseCaseResDTO.Auction> findAuctionsByFilterWithPageable(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable);
+    AuctionUseCaseResDTO.Detail findDetailById(Long auctionId);
+    PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable);
 }

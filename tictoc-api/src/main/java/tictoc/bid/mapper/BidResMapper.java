@@ -12,11 +12,11 @@ import java.util.stream.Collectors;
 public interface BidResMapper {
     BidResMapper INSTANCE = Mappers.getMapper(BidResMapper.class);
 
-    BidResDTO.Bid toDTO(BidUseCaseResDTO.Bid responseDTO);
+    BidResDTO.Bid toBid(BidUseCaseResDTO.Bid responseDTO);
 
-    default PageCustom<BidResDTO.Bid> toPageDTO(PageCustom<BidUseCaseResDTO.Bid> page) {
+    default PageCustom<BidResDTO.Bid> toBidPage(PageCustom<BidUseCaseResDTO.Bid> page) {
         List<BidResDTO.Bid> content = page.content().stream()
-                .map(this::toDTO)
+                .map(this::toBid)
                 .collect(Collectors.toList());
 
         return new PageCustom<>(

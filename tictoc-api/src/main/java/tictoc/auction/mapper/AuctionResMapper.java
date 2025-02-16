@@ -13,11 +13,12 @@ public interface AuctionResMapper {
 
     AuctionResMapper INSTANCE = Mappers.getMapper(AuctionResMapper.class);
 
-    AuctionResDTO.Auction toDTO(AuctionUseCaseResDTO.Auction responseDTO);
+    AuctionResDTO.Auction toAuction(AuctionUseCaseResDTO.Auction responseDTO);
+    AuctionResDTO.Detail toDetail(AuctionUseCaseResDTO.Detail responseDTO);
 
-    default PageCustom<AuctionResDTO.Auction> toPageDTO(PageCustom<AuctionUseCaseResDTO.Auction> page) {
+    default PageCustom<AuctionResDTO.Auction> toAuctionPage(PageCustom<AuctionUseCaseResDTO.Auction> page) {
         List<AuctionResDTO.Auction> content = page.content().stream()
-                .map(this::toDTO)
+                .map(this::toAuction)
                 .collect(Collectors.toList());
         return new PageCustom<>(
                 content,
