@@ -8,67 +8,46 @@ services:
     environment:
       REDIS_TIMEOUT: ${REDIS_TIMEOUT}
     networks:
-      - mysql-net
+      - net-mysql
 
-  mysql-master:
-    image: 'mysql:8.0'
-    env_file:
-      - .env
+  db-master:
+    image: mysql:8.0
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${MASTER_DB_NAME}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_REPLICATION_MODE: master
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
-      - '${MASTER_DB_PORT}:${MASTER_DB_PORT}'
+      - "${MASTER_DB_PORT}:${DB_PORT}"
     volumes:
-      - mysql_master_data:/var/lib/mysql
-    command: >
-      --server-id=1
-      --log-bin=mysql-bin
-      --binlog-do-db=${MASTER_DB_NAME}  
-      --bind-address=0.0.0.0
+      - my-db-master:/var/lib/mysql
+      - my-db-master:/var/lib/mysql-files
+      - ./master/my.cnf:/etc/mysql/my.cnf
     networks:
-      - mysql-net
+      - net-mysql
 
-  mysql-slave:
-    image: 'mysql:8.0'
-    env_file:
-      - .env
+  db-slave:
+    image: mysql:8.0
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: ${SLAVE_DB_NAME}
+      MYSQL_DATABASE: ${DB_NAME}
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_REPLICATION_MODE: slave
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     ports:
-      - '${SLAVE_DB_PORT}:${MASTER_DB_PORT}'
-    depends_on:
-      - mysql-master
-    command: >
-      --server-id=2
-      --relay-log=slave-relay-bin
-      --log-bin=mysql-bin
-      --binlog-do-db=${SLAVE_DB_NAME}
-      --read-only=1 
-      --bind-address=0.0.0.0
+      - "${SLAVE_DB_PORT}:${DB_PORT}"
+    volumes:
+      - my-db-slave:/var/lib/mysql
+      - my-db-slave:/var/lib/mysql-files
+      - ./slave/my.cnf:/etc/mysql/my.cnf
     networks:
-      - mysql-net
-    entrypoint: |
-      bash -c "
-        /etc/init.d/mysql start && \
-        sleep 10 && \
-        mysql -u root -p${DB_PASSWORD} -e 'CHANGE MASTER TO MASTER_HOST=\"mysql-master\", MASTER_PORT=3306, MASTER_USER=\"${DB_USER}\", MASTER_PASSWORD=\"${DB_PASSWORD}\", MASTER_LOG_FILE=\"mysql-bin.000001\", MASTER_LOG_POS=4;' && \
-        mysql -u root -p${DB_PASSWORD} -e 'START SLAVE;'
-      "
+      - net-mysql
 
 volumes:
-  mysql_master_data:
-    driver: local
-  mysql_slave_data:
-    driver: local
+  my-db-master:
+  my-db-slave:
 
 networks:
-  mysql-net:
+  net-mysql:
     driver: bridge
