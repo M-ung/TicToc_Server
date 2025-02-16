@@ -21,4 +21,4 @@
 # 복붙
 mysql-bin :
 master-ip :
-command:
+command :
