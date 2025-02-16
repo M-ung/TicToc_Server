@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tictoc.annotation.UserId;
 import tictoc.auction.dto.request.AuctionReqDTO;
 import tictoc.auction.dto.response.AuctionResDTO;
 import tictoc.auction.mapper.AuctionReqMapper;
@@ -25,10 +26,18 @@ public class AuctionQueryController {
     @GetMapping("")
     @Operation(summary = "경매 필터링 조회 API", description = "경매 필터링 조회 API 입니다.")
     public ResponseEntity<PageCustom<AuctionResDTO.Auction>> getAuctions (@RequestBody @Valid AuctionReqDTO.Filter requestDTO, Pageable pageable) {
-        return ResponseEntity.ok().body(auctionResMapper.toPageDTO(auctionQueryUseCase.getAuctionsByFilter(auctionReqMapper.toUseCaseDTO(requestDTO), pageable)));
+        return ResponseEntity.ok().body(auctionResMapper.toAuctionPage(auctionQueryUseCase.getAuctionsByFilter(auctionReqMapper.toUseCaseDTO(requestDTO), pageable)));
     }
 
-    //TODO 경매 상세 조회
+    @GetMapping("/{auctionId}/detail")
+    @Operation(summary = "경매 상세 조회 API", description = "경매 상세 조회 API 입니다.")
+    public ResponseEntity<AuctionResDTO.Detail> getDetail (@PathVariable("auctionId") Long auctionId) {
+        return ResponseEntity.ok().body(auctionResMapper.toDetail(auctionQueryUseCase.getDetail(auctionId)));
+    }
 
-    //TODO 내 경매 목록 조회 API 추가해야 함.
+    @GetMapping("/my")
+    @Operation(summary = "내 경매 목록 조회 API", description = "내 경매 목록 조회 API 입니다.")
+    public ResponseEntity<PageCustom<AuctionResDTO.Auction>> getMyAuctions (@UserId final Long userId, Pageable pageable) {
+        return ResponseEntity.ok().body(auctionResMapper.toAuctionPage(auctionQueryUseCase.getMyAuctionsByUserId(userId, pageable)));
+    }
 }

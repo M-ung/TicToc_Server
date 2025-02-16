@@ -13,11 +13,11 @@ import java.util.stream.Collectors;
 public interface WinningBidResMapper {
     WinningBidResMapper INSTANCE = Mappers.getMapper(WinningBidResMapper.class);
 
-    BidResDTO.WinningBid toDTO(BidUseCaseResDTO.WinningBid responseDTO);
+    BidResDTO.WinningBid toWinningBid(BidUseCaseResDTO.WinningBid responseDTO);
 
-    default PageCustom<BidResDTO.WinningBid> toPageDTO(PageCustom<BidUseCaseResDTO.WinningBid> page) {
+    default PageCustom<BidResDTO.WinningBid> toWinningBidPage(PageCustom<BidUseCaseResDTO.WinningBid> page) {
         List<BidResDTO.WinningBid> content = page.content().stream()
-                .map(this::toDTO)
+                .map(this::toWinningBid)
                 .collect(Collectors.toList());
 
         return new PageCustom<>(

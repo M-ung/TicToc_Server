@@ -20,4 +20,14 @@ public class AuctionQueryService implements AuctionQueryUseCase {
     public PageCustom<AuctionUseCaseResDTO.Auction> getAuctionsByFilter(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
         return auctionRepositoryPort.findAuctionsByFilterWithPageable(requestDTO, pageable);
     }
+
+    @Override
+    public AuctionUseCaseResDTO.Detail getDetail(Long auctionId) {
+        return auctionRepositoryPort.findDetailById(auctionId);
+    }
+
+    @Override
+    public PageCustom<AuctionUseCaseResDTO.Auction> getMyAuctionsByUserId(final Long userId, Pageable pageable) {
+        return auctionRepositoryPort.findMyAuctionsWithPageable(userId, pageable);
+    }
 }

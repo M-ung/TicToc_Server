@@ -33,12 +33,12 @@ public class BidQueryController {
     @GetMapping("")
     @Operation(summary = "입찰 필터링 조회 API", description = "입찰 필터링 조회 API 입니다.")
     public ResponseEntity<PageCustom<BidResDTO.Bid>> getBids (@UserId final Long userId, @RequestBody @Valid BidReqDTO.Filter requestDTO, Pageable pageable) {
-        return ResponseEntity.ok().body(bidResMapper.toPageDTO(bidQueryUseCase.getBidsByFilter(userId, bidReqMapper.toUseCaseDTO(requestDTO), pageable)));
+        return ResponseEntity.ok().body(bidResMapper.toBidPage(bidQueryUseCase.getBidsByFilter(userId, bidReqMapper.toUseCaseDTO(requestDTO), pageable)));
     }
 
     @GetMapping("/winning")
     @Operation(summary = "입찰가 필터링 조회 API", description = "입찰가 필터링 조회 API 입니다.")
     public ResponseEntity<PageCustom<BidResDTO.WinningBid>> getWinningBids (@UserId final Long userId, @RequestBody @Valid WinningBidReqDTO.Filter requestDTO, Pageable pageable) {
-        return ResponseEntity.ok().body(winningBidResMapper.toPageDTO(bidQueryUseCase.getWinningBidsByFilter(userId, winningBidReqMapper.toUseCaseDTO(requestDTO), pageable)));
+        return ResponseEntity.ok().body(winningBidResMapper.toWinningBidPage(bidQueryUseCase.getWinningBidsByFilter(userId, winningBidReqMapper.toUseCaseDTO(requestDTO), pageable)));
     }
 }

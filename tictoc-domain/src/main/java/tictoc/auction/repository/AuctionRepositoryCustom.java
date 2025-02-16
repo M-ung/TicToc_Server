@@ -7,4 +7,6 @@ import tictoc.model.page.PageCustom;
 
 public interface AuctionRepositoryCustom {
     PageCustom<AuctionUseCaseResDTO.Auction> findAuctionsByFilterWithPageable(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable);
+    AuctionUseCaseResDTO.Detail findDetailById(Long auctionId);
+    PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable);
 }

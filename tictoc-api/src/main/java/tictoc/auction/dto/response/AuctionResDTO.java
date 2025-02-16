@@ -39,7 +39,38 @@ public class AuctionResDTO {
             this.progress = progress;
             this.type = type;
         }
+    }
 
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Detail {
+        private Long auctionId;
+        private String title;
+        private String content;
+        private Integer startPrice;
+        private Integer currentPrice;
+        private LocalDateTime sellStartTime;
+        private LocalDateTime sellEndTime;
+        private LocalDateTime auctionOpenTime;
+        private LocalDateTime auctionCloseTime;
+        private AuctionProgress progress;
+        private AuctionType type;
+        private List<AuctionResDTO.Location> locations;
+        public Detail(Long auctionId, String title, String content, Integer startPrice, Integer currentPrice, LocalDateTime sellStartTime, LocalDateTime sellEndTime, LocalDateTime auctionOpenTime, LocalDateTime auctionCloseTime, AuctionProgress progress, AuctionType type) {
+            this.auctionId = auctionId;
+            this.title = title;
+            this.content = content;
+            this.startPrice = startPrice;
+            this.currentPrice = currentPrice;
+            this.sellStartTime = sellStartTime;
+            this.sellEndTime = sellEndTime;
+            this.auctionOpenTime = auctionOpenTime;
+            this.auctionCloseTime = auctionCloseTime;
+            this.progress = progress;
+            this.type = type;
+        }
     }
 
     @Getter

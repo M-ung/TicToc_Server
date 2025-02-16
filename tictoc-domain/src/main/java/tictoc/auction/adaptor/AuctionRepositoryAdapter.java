@@ -42,4 +42,14 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     public PageCustom<AuctionUseCaseResDTO.Auction> findAuctionsByFilterWithPageable(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
         return auctionRepository.findAuctionsByFilterWithPageable(requestDTO, pageable);
     }
+
+    @Override
+    public AuctionUseCaseResDTO.Detail findDetailById(Long auctionId) {
+        return auctionRepository.findDetailById(auctionId);
+    }
+
+    @Override
+    public PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable) {
+        return auctionRepository.findMyAuctionsWithPageable(userId, pageable);
+    }
 }
