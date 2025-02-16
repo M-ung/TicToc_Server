@@ -20,6 +20,7 @@ spring:
       - common
       - batch
       - infrastructure
+      - external
   threads:
     virtual:
       enabled: true

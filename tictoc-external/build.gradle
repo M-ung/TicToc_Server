@@ -1,0 +1,13 @@
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+    implementation project(':tictoc-common')
+
+    // openFeign
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+    // oauth2
+    implementation 'org.springframework.security:spring-security-oauth2-client'
+    implementation 'org.springframework.security:spring-security-oauth2-jose'
+}
