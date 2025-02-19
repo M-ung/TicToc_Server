@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import tictoc.kakao.dto.KakaoResDTO;
 
-@FeignClient(name = "${feign.kakao.name}", url = "${feign.kakao.get-token-url}")
+@FeignClient(name = "${feign.kakao.kakao_get_token_name}", url = "${feign.kakao.get-kauth-url}")
 public interface KakaoGetTokenFeignApi {
     @PostMapping(value = "/oauth/token")
     KakaoResDTO.KakaoAccessToken getKakaoAccessToken(

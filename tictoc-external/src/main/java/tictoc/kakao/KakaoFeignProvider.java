@@ -46,7 +46,7 @@ public class KakaoFeignProvider {
 
     // 카카오 액세스 토큰으로 카카오의 userID 가져오기
     private String getSocialId(final String accessToken) {
-        KakaoResDTO.KakaoTokenInfo kakaoAccessTokenInfoRes = kakaoGetTokenInfoFeignApi.getKakaoSocialId(accessToken);
+        KakaoResDTO.KakaoTokenInfo kakaoAccessTokenInfoRes = kakaoGetTokenInfoFeignApi.getKakaoTokenInfo(accessToken);
         return String.valueOf(kakaoAccessTokenInfoRes.id());
     }
 }
