@@ -9,5 +9,5 @@ import tictoc.kakao.dto.KakaoResDTO;
 @FeignClient(name = "${feign.kakao.kakao_get_profile_name}", url = "${feign.kakao.get-kapi-url}")
 public interface KakaoGetProfileFeignApi {
     @GetMapping("/v2/user/me")
-    KakaoResDTO.KakaoProfile getKakaoProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) final String accessToken);
+    KakaoResDTO.KakaoUserInfo getKakaoProfile(@RequestHeader(HttpHeaders.AUTHORIZATION) final String accessToken);
 }

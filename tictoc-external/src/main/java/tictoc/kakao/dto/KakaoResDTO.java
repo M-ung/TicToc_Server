@@ -7,8 +7,7 @@ public class KakaoResDTO {
             Long id,
             Integer expiresInMillis,
             Integer expires_in,
-            Integer app_id,
-            Integer appId
+            Integer app_id
     ) {}
 
     public record KakaoAccessToken(
@@ -16,23 +15,20 @@ public class KakaoResDTO {
             @JsonProperty("access_token") String accessToken,
             @JsonProperty("expires_in") Integer expiresIn,
             @JsonProperty("refresh_token") String refreshToken,
-            @JsonProperty("refresh_token_expires_in") Integer refreshTokenExpiresIn,
-            @JsonProperty("scope") String scope
+            @JsonProperty("refresh_token_expires_in") Integer refreshTokenExpiresIn
     ) {}
 
-    public record KakaoProfile(
-            @JsonProperty("id") Long id,
+    public record KakaoUserInfo(
             @JsonProperty("kakao_account") KakaoAccount kakaoAccount
-    ) {}
-
-    public record KakaoAccount(
-            @JsonProperty("profile") KakaoProfileInfo profile,
-            @JsonProperty("name") String name
-    ) {}
-
-    public record KakaoProfileInfo(
-            @JsonProperty("nickname") String nickname,
-            @JsonProperty("thumbnail_image_url") String thumbnailImageUrl,
-            @JsonProperty("profile_image_url") String profileImageUrl
-    ) {}
+    ) {
+        public record KakaoAccount(
+                @JsonProperty("email") String email,
+                @JsonProperty("profile") Profile profile
+        ) {
+            public record Profile(
+                    @JsonProperty("nickname") String nickname,
+                    @JsonProperty("thumbnail_image_url") String profileImgUrl
+            ) {}
+        }
+    }
 }

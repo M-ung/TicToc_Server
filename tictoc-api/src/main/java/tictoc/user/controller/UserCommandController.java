@@ -16,12 +16,6 @@ import tictoc.user.port.UserCommandUseCase;
 public class UserCommandController {
     private final UserReqMapper userReqMapper;
     private final UserCommandUseCase userCommandUseCase;
-//
-//    @PostMapping("/login")
-//    @Operation(summary = "로그인 API", description = "로그인 API 입니다.")
-//    public ResponseEntity<JwtResDTO.Login> login (@RequestBody UserReqDTO.Login requestDTO) {
-//        return ResponseEntity.ok(userCommandUseCase.login(userReqMapper.toUseCaseDTO(requestDTO)));
-//    }
 
     @PostMapping("/login")
     public ResponseEntity<JwtResDTO.Login> login(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authenticationCode) {
