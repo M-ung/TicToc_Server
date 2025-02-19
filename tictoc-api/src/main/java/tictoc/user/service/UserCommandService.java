@@ -41,6 +41,8 @@ public class UserCommandService implements UserCommandUseCase {
         }
     }
 
+    //TODO 카카오 소셜 로그아웃 기능 구현해야 함.
+
     private JwtResDTO.Login createUser(String kakaoId, String accessToken) {
         KakaoResDTO.KakaoUserInfo kakaoUserInfo = kakaoFeignProvider.getKakaoProfile(accessToken);
 
