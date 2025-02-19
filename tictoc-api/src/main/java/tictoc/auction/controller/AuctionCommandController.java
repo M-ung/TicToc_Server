@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import tictoc.annotation.UserId;
 import tictoc.auction.dto.request.AuctionReqDTO;
 import tictoc.auction.mapper.AuctionReqMapper;
-import tictoc.auction.port.in.AuctionCommandUseCase;
+import tictoc.auction.port.AuctionCommandUseCase;
 
 @RestController
 @RequiredArgsConstructor

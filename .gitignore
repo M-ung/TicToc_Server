@@ -39,3 +39,6 @@ out/
 ### .env ###
 tictoc-api/.env
 .env
+
+### redis ###
+redis.conf

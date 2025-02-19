@@ -7,8 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.dto.request.WinningBidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
-import tictoc.bid.port.in.BidQueryUseCase;
-import tictoc.bid.port.out.BidRepositoryPort;
+import tictoc.bid.port.BidQueryUseCase;
+import tictoc.bid.port.BidRepositoryPort;
 import tictoc.model.page.PageCustom;
 
 @Service

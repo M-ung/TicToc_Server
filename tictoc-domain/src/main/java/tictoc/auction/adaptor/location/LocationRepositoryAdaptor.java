@@ -6,7 +6,7 @@ import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.exception.location.AuctionLocationNotFoundException;
 import tictoc.auction.exception.location.LocationIdNotFoundException;
 import tictoc.auction.model.location.AuctionLocation;
-import tictoc.auction.port.out.location.LocationRepositoryPort;
+import tictoc.auction.port.location.LocationRepositoryPort;
 import tictoc.auction.repository.location.AuctionLocationRepository;
 import tictoc.auction.repository.location.LocationRepository;
 import static tictoc.error.ErrorCode.AUCTION_LOCATION_NOT_FOUND;

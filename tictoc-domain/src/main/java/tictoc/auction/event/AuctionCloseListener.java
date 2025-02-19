@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionProgress;
-import tictoc.auction.port.out.AuctionRepositoryPort;
+import tictoc.auction.port.AuctionRepositoryPort;
 
 @Component
 @RequiredArgsConstructor

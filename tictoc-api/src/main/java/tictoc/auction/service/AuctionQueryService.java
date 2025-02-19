@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.dto.response.AuctionUseCaseResDTO;
-import tictoc.auction.port.in.AuctionQueryUseCase;
-import tictoc.auction.port.out.AuctionRepositoryPort;
+import tictoc.auction.port.AuctionQueryUseCase;
+import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.model.page.PageCustom;
 
 @Service

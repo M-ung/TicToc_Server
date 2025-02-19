@@ -15,7 +15,7 @@ import tictoc.bid.mapper.BidReqMapper;
 import tictoc.bid.mapper.BidResMapper;
 import tictoc.bid.mapper.WinningBidReqMapper;
 import tictoc.bid.mapper.WinningBidResMapper;
-import tictoc.bid.port.in.BidQueryUseCase;
+import tictoc.bid.port.BidQueryUseCase;
 import tictoc.bid.dto.request.BidReqDTO;
 import tictoc.bid.dto.response.BidResDTO;
 import tictoc.model.page.PageCustom;

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
+import tictoc.auction.model.Auction;
 import tictoc.model.baseTime.BaseTimeEntity;
 import tictoc.model.tictoc.TicTocStatus;
 import tictoc.user.model.type.UserRole;
@@ -25,4 +27,13 @@ public class User extends BaseTimeEntity {
     private UserRole role;
     @Enumerated(EnumType.STRING)
     private TicTocStatus status;
+
+    public static User of(String kakaoId, String name) {
+        return User.builder()
+                .kakaoId(kakaoId)
+                .name(name)
+                .role(UserRole.USER)
+                .status(TicTocStatus.ACTIVE)
+                .build();
+    }
 }

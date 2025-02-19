@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.model.Auction;
-import tictoc.auction.port.in.AuctionCommandUseCase;
+import tictoc.auction.port.AuctionCommandUseCase;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
-import tictoc.auction.port.in.location.LocationCommandUseCase;
-import tictoc.auction.port.out.AuctionRepositoryPort;
+import tictoc.auction.port.location.LocationCommandUseCase;
+import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.redis.auction.port.out.AuctionRedisPort;
 import static tictoc.error.ErrorCode.*;
 

@@ -3,15 +3,20 @@ version: '3.7'
 services:
   redis:
     image: 'redis:alpine'
-    ports:
-      - '${REDIS_PORT}:${REDIS_PORT}'
+    container_name: redis
     environment:
       REDIS_TIMEOUT: ${REDIS_TIMEOUT}
+    ports:
+      - '${REDIS_PORT}:${REDIS_PORT}'
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
     networks:
       - net-mysql
 
   db-master:
     image: mysql:8.0
+    container_name: db-master
     restart: always
     environment:
       MYSQL_DATABASE: ${DB_NAME}
@@ -29,6 +34,7 @@ services:
 
   db-slave:
     image: mysql:8.0
+    container_name: db-slave
     restart: always
     environment:
       MYSQL_DATABASE: ${DB_NAME}
@@ -41,6 +47,17 @@ services:
       - my-db-slave:/var/lib/mysql
       - my-db-slave:/var/lib/mysql-files
       - ./replication/slave/my.cnf:/etc/mysql/my.cnf
+    networks:
+      - net-mysql
+
+  spring:
+    image: app
+    container_name: spring
+    depends_on:
+      - db-master
+      - db-slave
+    ports:
+      - "8080:8080"
     networks:
       - net-mysql
 

@@ -44,11 +44,7 @@ public class JwtGenerator {
     }
 
     public Key getSigningKey() {
-        return Keys.hmacShaKeyFor(encodeSecretKeyToBase64().getBytes());
-    }
-
-    private String encodeSecretKeyToBase64() {
-        return Base64.getEncoder().encodeToString(jwtProperties.getSecret().getBytes());
+        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
     }
 
     public Jws<Claims> parseToken(String token) {

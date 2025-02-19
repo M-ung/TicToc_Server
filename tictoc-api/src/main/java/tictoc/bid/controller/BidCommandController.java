@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tictoc.annotation.UserId;
 import tictoc.bid.mapper.BidReqMapper;
-import tictoc.bid.port.in.BidCommandUseCase;
+import tictoc.bid.port.BidCommandUseCase;
 import tictoc.bid.dto.request.BidReqDTO;
 
 @RestController
