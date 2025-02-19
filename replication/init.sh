@@ -21,6 +21,6 @@
 
 
 # 복붙
-mysql-bin :
-master-ip :
-command :
+mysql-bin : mysql-bin.000015
+master-ip : 172.27.0.3
+command : CHANGE MASTER TO MASTER_HOST='172.27.0.3', MASTER_USER='mung', MASTER_PASSWORD='hhs2684021@', MASTER_LOG_FILE='mysql-bin.000015', MASTER_LOG_POS=0, GET_MASTER_PUBLIC_KEY=1;

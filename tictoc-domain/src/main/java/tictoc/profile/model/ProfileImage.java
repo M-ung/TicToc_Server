@@ -22,4 +22,12 @@ public class ProfileImage {
     private String imageUrl;
     @Enumerated(EnumType.STRING)
     private TicTocStatus status;
+
+    public static ProfileImage of(Long profileId, String imageUrl) {
+        return ProfileImage.builder()
+                .profileId(profileId)
+                .imageUrl(imageUrl)
+                .status(TicTocStatus.ACTIVE)
+                .build();
+    }
 }

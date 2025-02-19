@@ -20,4 +20,12 @@ public class Profile extends BaseTimeEntity {
     private Long userId;
     private String nickname;
     private Integer money;
+
+    public static Profile of(Long userId, String nickname) {
+        return Profile.builder()
+                .userId(userId)
+                .nickname(nickname)
+                .money(0)
+                .build();
+    }
 }

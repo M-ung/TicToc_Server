@@ -8,7 +8,7 @@ import tictoc.auction.dto.response.AuctionUseCaseResDTO;
 import tictoc.auction.exception.AuctionNotFoundException;
 import tictoc.auction.exception.DuplicateAuctionDateException;
 import tictoc.auction.model.Auction;
-import tictoc.auction.port.out.AuctionRepositoryPort;
+import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.auction.repository.AuctionRepository;
 import tictoc.model.page.PageCustom;
 import tictoc.model.tictoc.TicTocStatus;

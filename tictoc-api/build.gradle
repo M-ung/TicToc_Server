@@ -6,6 +6,7 @@ dependencies {
     implementation project(':tictoc-common')
     implementation project(':tictoc-domain')
     implementation project(':tictoc-infrastructure')
+    implementation project(':tictoc-external')
 
     // Swagger
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'

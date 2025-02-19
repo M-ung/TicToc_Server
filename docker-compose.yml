@@ -50,6 +50,17 @@ services:
     networks:
       - net-mysql
 
+  spring:
+    image: app
+    container_name: spring
+    depends_on:
+      - db-master
+      - db-slave
+    ports:
+      - "8080:8080"
+    networks:
+      - net-mysql
+
 volumes:
   my-db-master:
   my-db-slave:

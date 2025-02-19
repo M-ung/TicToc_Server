@@ -3,11 +3,11 @@ package tictoc.bid.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tictoc.auction.port.out.AuctionRepositoryPort;
+import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.model.Bid;
-import tictoc.bid.port.in.BidCommandUseCase;
-import tictoc.bid.port.out.BidRepositoryPort;
+import tictoc.bid.port.BidCommandUseCase;
+import tictoc.bid.port.BidRepositoryPort;
 
 @Service
 @Transactional

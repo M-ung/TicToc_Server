@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.model.location.AuctionLocation;
-import tictoc.auction.port.in.location.LocationCommandUseCase;
-import tictoc.auction.port.out.location.LocationRepositoryPort;
+import tictoc.auction.port.location.LocationCommandUseCase;
+import tictoc.auction.port.location.LocationRepositoryPort;
 import java.util.List;
 
 @Service

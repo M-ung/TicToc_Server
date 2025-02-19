@@ -11,7 +11,7 @@ import tictoc.auction.dto.request.AuctionReqDTO;
 import tictoc.auction.dto.response.AuctionResDTO;
 import tictoc.auction.mapper.AuctionReqMapper;
 import tictoc.auction.mapper.AuctionResMapper;
-import tictoc.auction.port.in.AuctionQueryUseCase;
+import tictoc.auction.port.AuctionQueryUseCase;
 import tictoc.model.page.PageCustom;
 
 
