@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tictoc.config.security.jwt.RefreshToken;
 import tictoc.config.security.jwt.repository.RefreshTokenRepository;
-
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -41,5 +40,4 @@ public class RefreshTokenGenerator {
         buffer.putLong(System.currentTimeMillis());
         return new SecureRandom(buffer.array());
     }
-
 }
