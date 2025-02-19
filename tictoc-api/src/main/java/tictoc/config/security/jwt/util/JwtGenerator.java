@@ -23,7 +23,6 @@ public class JwtGenerator {
     public JwtResDTO.AccessToken generateAccessToken(final long userId) {
         final var now = LocalDateTime.now();
         final var expireDate = generateExpirationDate(now);
-
         var accessToken = Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setSubject(String.valueOf(userId))
@@ -44,7 +43,11 @@ public class JwtGenerator {
     }
 
     public Key getSigningKey() {
-        return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        return Keys.hmacShaKeyFor(encodeSecretKeyToBase64().getBytes());
+    }
+
+    private String encodeSecretKeyToBase64() {
+        return Base64.getEncoder().encodeToString(jwtProperties.getSecret().getBytes());
     }
 
     public Jws<Claims> parseToken(String token) {
