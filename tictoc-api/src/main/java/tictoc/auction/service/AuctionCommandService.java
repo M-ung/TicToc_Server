@@ -37,7 +37,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     @Override
     public void update(final Long userId, final Long auctionId, AuctionUseCaseReqDTO.Update requestDTO) {
-        var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
+        var findAuction = auctionRepositoryPort.findAuctionByIdForUpdateOrThrow(auctionId);
         findAuction.validateAuctionAccess(userId);
         auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         try {
@@ -55,7 +55,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     @Override
     public void delete(final Long userId, final Long auctionId) {
-        var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
+        var findAuction = auctionRepositoryPort.findAuctionByIdForUpdateOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
             auctionRedisPort.deleteAuctionClose(auctionId);
