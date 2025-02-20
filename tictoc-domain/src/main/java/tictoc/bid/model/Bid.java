@@ -20,8 +20,6 @@ public class Bid {
     private Integer price;
     @Enumerated(EnumType.STRING)
     private BidStatus status;
-    @Version
-    private Integer version;
 
     public static Bid of(final Long userId, BidUseCaseReqDTO.Bid requestDTO) {
         return Bid.builder()

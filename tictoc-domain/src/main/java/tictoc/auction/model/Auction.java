@@ -8,7 +8,6 @@ import tictoc.auction.exception.AuctionAlreadyStartedException;
 import tictoc.auction.exception.AuctionNoAccessException;
 import tictoc.bid.exception.AuctionAlreadyBidException;
 import tictoc.bid.exception.BidNoAccessException;
-import tictoc.bid.exception.InvalidBidPriceException;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.model.baseTime.BaseTimeEntity;
@@ -48,8 +47,6 @@ public class Auction extends BaseTimeEntity {
     private AuctionType type;
     @Enumerated(EnumType.STRING)
     private TicTocStatus status;
-    @Version
-    private Integer version;
 
     public static Auction of(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
         return Auction.builder()

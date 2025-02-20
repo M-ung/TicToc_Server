@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 
 public interface AuctionRepositoryPort {
     Auction saveAuction(Auction auction);
+    Auction findAuctionByIdForUpdateOrThrow(Long auctionId);
     Auction findAuctionByIdOrThrow(Long auctionId);
     void validateAuctionTimeRange(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime);
     PageCustom<AuctionUseCaseResDTO.Auction> findAuctionsByFilterWithPageable(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable);
