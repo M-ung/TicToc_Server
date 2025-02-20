@@ -115,22 +115,11 @@ public class Auction extends BaseTimeEntity {
     }
 
     private void validateAuctionProgress() {
-        if (this.progress == BID || this.progress == AuctionProgress.NOT_BID) {
+        if (this.progress == BID || this.progress == NOT_BID) {
             throw new AuctionAlreadyBidException(AUCTION_ALREADY_FINISHED);
         }
     }
 
-    public void increaseBid(final Integer price) {
-        validatePrice(price);
-        this.currentPrice = price;
-        this.finalPrice = price;
-    }
-
-    private void validatePrice(final Integer price) {
-        if (this.currentPrice >= price) {
-            throw new InvalidBidPriceException(INVALID_BID_PRICE);
-        }
-    }
     public void bid() {
         this.finalPrice = this.currentPrice;
         this.progress = BID;

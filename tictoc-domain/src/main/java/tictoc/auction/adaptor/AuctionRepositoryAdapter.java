@@ -10,6 +10,7 @@ import tictoc.auction.exception.DuplicateAuctionDateException;
 import tictoc.auction.model.Auction;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.auction.repository.AuctionRepository;
+import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.model.page.PageCustom;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
@@ -51,5 +52,10 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     @Override
     public PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable) {
         return auctionRepository.findMyAuctionsWithPageable(userId, pageable);
+    }
+
+    @Override
+    public int updateBidIfHigher(BidUseCaseReqDTO.Bid requestDTO) {
+        return auctionRepository.updateBidIfHigher(requestDTO.auctionId(), requestDTO.price());
     }
 }
