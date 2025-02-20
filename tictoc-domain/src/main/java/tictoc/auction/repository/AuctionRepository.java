@@ -1,6 +1,7 @@
 package tictoc.auction.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tictoc.auction.model.Auction;
@@ -14,4 +15,8 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, Auction
             "AND a.sellStartTime < :sellEndTime " +
             "AND a.sellEndTime > :sellStartTime")
     boolean existsAuctionInTimeRange(@Param("userId") Long userId, @Param("sellStartTime") LocalDateTime sellStartTime, @Param("sellEndTime") LocalDateTime sellEndTime, @Param("status") TicTocStatus status);
+
+    @Modifying
+    @Query("UPDATE Auction a SET a.currentPrice = :price WHERE a.id = :auctionId AND a.currentPrice < :price")
+    int updateBidIfHigher(@Param("auctionId") Long auctionId, @Param("price") Integer price);
 }

@@ -24,6 +24,7 @@ public enum ErrorCode {
     BID_NO_ACCESS(HttpStatus.FORBIDDEN,"입찰에 대한 접근 권한이 없습니다."),
     INVALID_BID_PRICE(HttpStatus.BAD_REQUEST,"현재 경매가보다 낮은 입찰가를 입력했습니다."),
     BID_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 입찰입니다."),
+    BID_FAIL(HttpStatus.BAD_REQUEST,"이미 입찰되었습니다."),
 
     // Redis Auction
     REDIS_AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"레디스에서 찾을 수 없는 경매입니다."),
