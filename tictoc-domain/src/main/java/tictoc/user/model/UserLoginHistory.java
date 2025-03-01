@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.LastModifiedDate;
-
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,6 +18,14 @@ public class UserLoginHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long userId;
     @LastModifiedDate
     private LocalDateTime loginAt;
+
+    public static UserLoginHistory of(Long userId) {
+        return UserLoginHistory.builder()
+                .userId(userId)
+                .loginAt(LocalDateTime.now())
+                .build();
+    }
 }

@@ -22,7 +22,7 @@ public class CloseAuctionListener implements MessageListener {
         String expiredKey = new String(message.getBody(), StandardCharsets.UTF_8);
         if (expiredKey.startsWith(AuctionConstants.AUCTION_CLOSE_KEY_PREFIX)) {
             Long auctionId = Long.parseLong(expiredKey.replace(AuctionConstants.AUCTION_CLOSE_KEY_PREFIX, ""));
-            Auction findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auctionId);
+            Auction findAuction = auctionRepositoryPort.findAuctionById(auctionId);
             close(findAuction);
             closeAuctionUseCase.delete(auctionId);
         }

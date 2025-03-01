@@ -87,7 +87,7 @@ public class BidCommandServiceTest {
 
         latch.await();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auction.getId());
+        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
         assertThat(updatedAuction.getCurrentPrice()).isEqualTo(BID_PRICE);
 
         assertThat(successUsers.get()).isEqualTo(1);

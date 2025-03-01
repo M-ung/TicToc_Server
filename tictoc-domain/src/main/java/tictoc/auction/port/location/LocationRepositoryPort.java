@@ -5,7 +5,7 @@ import tictoc.auction.model.location.AuctionLocation;
 
 public interface LocationRepositoryPort {
     void saveAuctionLocation(AuctionLocation auctionLocation);
-    AuctionLocation findAuctionLocationByIdOrThrow(Long auctionId);
+    AuctionLocation findAuctionLocationById(Long auctionId);
     void deleteAuctionLocation(AuctionLocation auctionLocation);
-    Long findLocationIdByFilterOrThrow(AuctionUseCaseReqDTO.Location location);
+    Long findLocationIdByFilter(AuctionUseCaseReqDTO.Location location);
 }
