@@ -25,14 +25,14 @@ public class AuctionCommandService implements AuctionCommandUseCase {
     private final AuctionRedisPort auctionRedisPort;
 
     @Override
-    public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) throws JsonProcessingException {
+    public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
         auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         var auction = auctionRepositoryPort.saveAuction(Auction.of(userId, requestDTO));
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
         }
-        auctionRedisPort.saveAuctionClose(auctionId, requestDTO.sellEndTime());
+        auctionRedisPort.saveClosedAuction(auctionId, auction.getAuctionCloseTime());
     }
 
     @Override
@@ -46,8 +46,8 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
                 locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
             }
-            auctionRedisPort.deleteAuctionClose(auctionId);
-            auctionRedisPort.saveAuctionClose(auctionId, requestDTO.sellEndTime());
+            auctionRedisPort.deleteClosedAuction(auctionId);
+            auctionRedisPort.saveClosedAuction(auctionId, findAuction.getAuctionCloseTime());
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
@@ -58,7 +58,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         var findAuction = auctionRepositoryPort.findAuctionByIdForUpdateOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
-            auctionRedisPort.deleteAuctionClose(auctionId);
+            auctionRedisPort.deleteClosedAuction(auctionId);
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }

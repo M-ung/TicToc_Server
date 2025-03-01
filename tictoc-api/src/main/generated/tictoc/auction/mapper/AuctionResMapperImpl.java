@@ -9,7 +9,7 @@ import tictoc.auction.dto.response.AuctionUseCaseResDTO;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-02-20T01:25:53+0900",
+    date = "2025-03-01T16:33:41+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.6 (Homebrew)"
 )
 @Component
