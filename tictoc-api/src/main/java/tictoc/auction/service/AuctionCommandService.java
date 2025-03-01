@@ -12,7 +12,7 @@ import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
 import tictoc.auction.port.location.LocationCommandUseCase;
 import tictoc.auction.port.AuctionRepositoryPort;
-import tictoc.redis.auction.port.out.AuctionRedisPort;
+import tictoc.redis.auction.port.out.CloseAuctionUseCase;
 import static tictoc.error.ErrorCode.*;
 
 @Service
@@ -21,7 +21,7 @@ import static tictoc.error.ErrorCode.*;
 public class AuctionCommandService implements AuctionCommandUseCase {
     private final LocationCommandUseCase locationCommandUseCase;
     private final AuctionRepositoryPort auctionRepositoryPort;
-    private final AuctionRedisPort auctionRedisPort;
+    private final CloseAuctionUseCase closeAuctionUseCase;
 
     @Override
     public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
@@ -31,7 +31,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
         }
-        auctionRedisPort.save(auctionId, auction.getAuctionCloseTime());
+        closeAuctionUseCase.save(auctionId, auction.getAuctionCloseTime());
     }
 
     @Override
@@ -45,8 +45,8 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
                 locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
             }
-            auctionRedisPort.delete(auctionId);
-            auctionRedisPort.save(auctionId, findAuction.getAuctionCloseTime());
+            closeAuctionUseCase.delete(auctionId);
+            closeAuctionUseCase.save(auctionId, findAuction.getAuctionCloseTime());
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
@@ -57,7 +57,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         var findAuction = auctionRepositoryPort.findAuctionByIdForUpdateOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
-            auctionRedisPort.delete(auctionId);
+            closeAuctionUseCase.delete(auctionId);
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }
