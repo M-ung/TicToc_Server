@@ -2,9 +2,13 @@ package tictoc.user.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import tictoc.user.dto.response.UserUseCaseResDTO;
 import tictoc.user.model.UserSchedule;
 import tictoc.user.port.UserScheduleRepositoryPort;
 import tictoc.user.repository.UserScheduleRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -14,5 +18,16 @@ public class UserScheduleRepositoryAdaptor implements UserScheduleRepositoryPort
     @Override
     public void saveUserSchedule(UserSchedule userSchedule) {
         userScheduleRepository.save(userSchedule);
+    }
+
+    @Override
+    public List<UserUseCaseResDTO.Schedules> findSchedulesByUserId(Long userId) {
+        return userScheduleRepository.findByUserId(userId).stream()
+                .map(schedule -> new UserUseCaseResDTO.Schedules(
+                        schedule.getId(),
+                        schedule.getStartTime(),
+                        schedule.getEndTime()
+                ))
+                .collect(Collectors.toList());
     }
 }
