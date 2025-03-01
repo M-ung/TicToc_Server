@@ -106,7 +106,7 @@ class AuctionCommandServiceTest {
 
         latch.await();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auction.getId());
+        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
         assertThat(updatedAuction.getTitle()).isEqualTo("Test Auction");
     }
 
@@ -138,7 +138,7 @@ class AuctionCommandServiceTest {
 
         latch.await();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionByIdOrThrow(auction.getId());
+        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
         assertThat(updatedAuction.getStatus()).isEqualTo(TicTocStatus.ACTIVE);
     }
 }

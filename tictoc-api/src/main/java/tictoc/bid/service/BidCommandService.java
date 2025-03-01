@@ -25,7 +25,7 @@ public class BidCommandService implements BidCommandUseCase {
         if(auctionRepositoryPort.updateBidIfHigher(requestDTO) == 0) {
             throw new BidException(BID_FAIL);
         }
-        var findAuction = auctionRepositoryPort.findAuctionByIdOrThrow(requestDTO.auctionId());
+        var findAuction = auctionRepositoryPort.findAuctionById(requestDTO.auctionId());
         bidRepositoryPort.checkBeforeBid(findAuction);
         findAuction.startAuction(userId);
         bidRepositoryPort.saveBid(Bid.of(userId, requestDTO));

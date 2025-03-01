@@ -18,13 +18,13 @@ public class LocationCommandService implements LocationCommandUseCase {
     @Override
     public void saveAuctionLocations(Long auctionId, List<AuctionUseCaseReqDTO.Location> locations) {
         for (AuctionUseCaseReqDTO.Location location : locations) {
-            AuctionLocation auctionLocation = AuctionLocation.of(auctionId, locationRepositoryPort.findLocationIdByFilterOrThrow(location));
+            AuctionLocation auctionLocation = AuctionLocation.of(auctionId, locationRepositoryPort.findLocationIdByFilter(location));
             locationRepositoryPort.saveAuctionLocation(auctionLocation);
         }
     }
 
     @Override
     public void deleteAuctionLocations(Long auctionId) {
-        locationRepositoryPort.deleteAuctionLocation(locationRepositoryPort.findAuctionLocationByIdOrThrow(auctionId));
+        locationRepositoryPort.deleteAuctionLocation(locationRepositoryPort.findAuctionLocationById(auctionId));
     }
 }

@@ -24,7 +24,7 @@ public class LocationRepositoryAdaptor implements LocationRepositoryPort {
     }
 
     @Override
-    public AuctionLocation findAuctionLocationByIdOrThrow(Long auctionId) {
+    public AuctionLocation findAuctionLocationById(Long auctionId) {
         return auctionLocationRepository.findByAuctionId(auctionId).orElseThrow(() -> new AuctionLocationNotFoundException(AUCTION_LOCATION_NOT_FOUND));
     }
 
@@ -34,7 +34,7 @@ public class LocationRepositoryAdaptor implements LocationRepositoryPort {
     }
 
     @Override
-    public Long findLocationIdByFilterOrThrow(AuctionUseCaseReqDTO.Location location) {
+    public Long findLocationIdByFilter(AuctionUseCaseReqDTO.Location location) {
         return locationRepository.findLocationIdByFilter(location).orElseThrow(() -> new LocationIdNotFoundException(LOCATION_NOT_FOUND));
     }
 }

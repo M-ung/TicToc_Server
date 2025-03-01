@@ -28,12 +28,12 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     }
 
     @Override
-    public Auction findAuctionByIdForUpdateOrThrow(Long auctionId) {
+    public Auction findAuctionByIdForUpdate(Long auctionId) {
         return auctionRepository.findByIdAndStatusForUpdate(auctionId, TicTocStatus.ACTIVE).orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
     }
 
     @Override
-    public Auction findAuctionByIdOrThrow(Long auctionId) {
+    public Auction findAuctionById(Long auctionId) {
         return auctionRepository.findByIdAndStatus(auctionId, TicTocStatus.ACTIVE).orElseThrow(() -> new AuctionNotFoundException(AUCTION_NOT_FOUND));
     }
 
