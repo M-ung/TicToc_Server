@@ -8,9 +8,13 @@ import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.model.Bid;
+import tictoc.bid.model.WinningBid;
 import tictoc.bid.port.BidRepositoryPort;
+import tictoc.bid.port.WinningBidRepositoryPort;
 import tictoc.constants.AuctionConstants;
 import tictoc.redis.auction.port.out.CloseAuctionUseCase;
+import tictoc.user.model.UserSchedule;
+import tictoc.user.port.UserScheduleRepositoryPort;
 import java.nio.charset.StandardCharsets;
 
 @Component
@@ -18,6 +22,8 @@ import java.nio.charset.StandardCharsets;
 public class CloseAuctionListener implements MessageListener {
     private final AuctionRepositoryPort auctionRepositoryPort;
     private final BidRepositoryPort bidRepositoryPort;
+    private final WinningBidRepositoryPort winningBidRepositoryPort;
+    private final UserScheduleRepositoryPort userScheduleRepositoryPort;
     private final CloseAuctionUseCase closeAuctionUseCase;
 
     @Override
@@ -26,20 +32,30 @@ public class CloseAuctionListener implements MessageListener {
         if (expiredKey.startsWith(AuctionConstants.AUCTION_CLOSE_KEY_PREFIX)) {
             Long auctionId = Long.parseLong(expiredKey.replace(AuctionConstants.AUCTION_CLOSE_KEY_PREFIX, ""));
             Auction findAuction = auctionRepositoryPort.findAuctionById(auctionId);
-            closeAndBid(findAuction);
+            close(findAuction);
             closeAuctionUseCase.delete(auctionId);
         }
     }
 
-    private void closeAndBid(Auction findAuction) {
+    private void close(Auction findAuction) {
         if (findAuction.getProgress().equals(AuctionProgress.NOT_STARTED)) {
             findAuction.notBid();
         } else {
             findAuction.bid();
             Bid findBid = bidRepositoryPort.findBidByAuctionId(findAuction.getId());
-            findBid.win();
-            bidRepositoryPort.saveBid(findBid);
+            processWinningBid(findAuction, findBid);
+            processUserSchedule(findAuction, findBid);
         }
         auctionRepositoryPort.saveAuction(findAuction);
+    }
+
+    private void processWinningBid(Auction auction, Bid bid) {
+        bid.win();
+        bidRepositoryPort.saveBid(bid);
+        winningBidRepositoryPort.saveWinningBid(WinningBid.of(auction, bid));
+    }
+
+    private void processUserSchedule(Auction auction, Bid bid) {
+        userScheduleRepositoryPort.saveUserSchedule(UserSchedule.of(auction, bid));
     }
 }
