@@ -15,13 +15,13 @@ public class AuctionRedisAdapter implements AuctionRedisPort {
     private final String auctionCloseKey = AuctionRedisConstants.AUCTION_CLOSE_KEY;
 
     @Override
-    public void saveClosedAuction(final Long auctionId, LocalDateTime auctionCloseTime) {
+    public void save(final Long auctionId, LocalDateTime auctionCloseTime) {
         long closedTime = auctionCloseTime.toEpochSecond(ZoneOffset.UTC);
         redisTemplate.opsForZSet().add(auctionCloseKey, auctionId.toString(), closedTime);
     }
 
     @Override
-    public void deleteClosedAuction(final Long auctionId) {
+    public void delete(final Long auctionId) {
         redisTemplate.opsForZSet().remove(auctionCloseKey, auctionId);
     }
 }

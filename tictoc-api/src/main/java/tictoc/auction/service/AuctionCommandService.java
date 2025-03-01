@@ -1,6 +1,5 @@
 package tictoc.auction.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
             locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
         }
-        auctionRedisPort.saveClosedAuction(auctionId, auction.getAuctionCloseTime());
+        auctionRedisPort.save(auctionId, auction.getAuctionCloseTime());
     }
 
     @Override
@@ -46,8 +45,8 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
                 locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
             }
-            auctionRedisPort.deleteClosedAuction(auctionId);
-            auctionRedisPort.saveClosedAuction(auctionId, findAuction.getAuctionCloseTime());
+            auctionRedisPort.delete(auctionId);
+            auctionRedisPort.save(auctionId, findAuction.getAuctionCloseTime());
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionUpdateException(CONFLICT_AUCTION_UPDATE);
         }
@@ -58,7 +57,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
         var findAuction = auctionRepositoryPort.findAuctionByIdForUpdateOrThrow(auctionId);
         try {
             findAuction.deactivate(userId);
-            auctionRedisPort.deleteClosedAuction(auctionId);
+            auctionRedisPort.delete(auctionId);
         } catch (OptimisticLockingFailureException e) {
             throw new ConflictAuctionDeleteException(CONFLICT_AUCTION_DELETE);
         }
