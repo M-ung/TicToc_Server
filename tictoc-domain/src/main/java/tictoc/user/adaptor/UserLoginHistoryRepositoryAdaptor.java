@@ -11,7 +11,7 @@ import tictoc.user.repository.UserLoginHistoryRepository;
 public class UserLoginHistoryRepositoryAdaptor implements UserLoginHistoryRepositoryPort {
     private final UserLoginHistoryRepository userLoginHistoryRepository;
 
-    public void saveUserLoginHistory(UserLoginHistory userLoginHistory) {
-        userLoginHistoryRepository.save(userLoginHistory);
+    public void saveUserLoginHistory(UserLoginHistory loginHistory) {
+        userLoginHistoryRepository.save(loginHistory);
     }
 }

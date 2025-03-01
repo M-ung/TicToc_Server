@@ -12,59 +12,26 @@ services:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
     networks:
-      - net-mysql
+      - tic-toc-net
 
-#  db-master:
-#    image: mysql:8.0
-#    container_name: db-master
-#    restart: always
-#    environment:
-#      MYSQL_DATABASE: ${DB_NAME}
-#      MYSQL_USER: ${DB_USER}
-#      MYSQL_PASSWORD: ${DB_PASSWORD}
-#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-#    ports:
-#      - "${MASTER_DB_PORT}:${DB_PORT}"
-#    volumes:
-#      - my-db-master:/var/lib/mysql
-#      - my-db-master:/var/lib/mysql-files
-#      - ./replication/master/my.cnf:/etc/mysql/my.cnf
-#    networks:
-#      - net-mysql
-#
-#  db-slave:
-#    image: mysql:8.0
-#    container_name: db-slave
-#    restart: always
-#    environment:
-#      MYSQL_DATABASE: ${DB_NAME}
-#      MYSQL_USER: ${DB_USER}
-#      MYSQL_PASSWORD: ${DB_PASSWORD}
-#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-#    ports:
-#      - "${SLAVE_DB_PORT}:${DB_PORT}"
-#    volumes:
-#      - my-db-slave:/var/lib/mysql
-#      - my-db-slave:/var/lib/mysql-files
-#      - ./replication/slave/my.cnf:/etc/mysql/my.cnf
-#    networks:
-#      - net-mysql
-#
-#  spring:
-#    image: app
-#    container_name: spring
-#    depends_on:
-#      - db-master
-#      - db-slave
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - net-mysql
-
-#volumes:
-#  my-db-master:
-#  my-db-slave:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - tic-toc-net
+    ports:
+      - '${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}'
 
 networks:
-  net-mysql:
+  tic-toc-net:
     driver: bridge
+
+volumes:
+  elasticsearch_data:
+    driver: local
