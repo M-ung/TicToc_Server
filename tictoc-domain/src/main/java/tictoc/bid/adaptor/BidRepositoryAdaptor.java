@@ -31,7 +31,7 @@ public class BidRepositoryAdaptor implements BidRepositoryPort {
     @Override
     public void checkBeforeBid(Auction auction) {
         if (auction.getProgress().equals(AuctionProgress.IN_PROGRESS)) {
-            bidRepository.findByAuctionIdAndStatus(auction.getId(), BidStatus.PROGRESS).orElseThrow(() -> new BidNotFoundException(BID_NOT_FOUND)).fail();
+            findBidByAuctionId(auction.getId()).fail();
         }
     }
 
@@ -41,7 +41,12 @@ public class BidRepositoryAdaptor implements BidRepositoryPort {
     }
 
     @Override
-    public PageCustom<BidUseCaseResDTO.WinningBid> getWinningBidsByFilterWithPageable(WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
+    public PageCustom<BidUseCaseResDTO.WinningBid> findWinningBidsByFilterWithPageable(WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
         return winningBidRepository.findWinningBidsByFilterWithPageable(requestDTO, pageable);
+    }
+
+    @Override
+    public Bid findBidByAuctionId(Long auctionId) {
+        return bidRepository.findByAuctionIdAndStatus(auctionId, BidStatus.PROGRESS).orElseThrow(() -> new BidNotFoundException(BID_NOT_FOUND));
     }
 }

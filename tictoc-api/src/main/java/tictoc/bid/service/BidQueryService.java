@@ -24,6 +24,6 @@ public class BidQueryService implements BidQueryUseCase {
 
     @Override
     public PageCustom<BidUseCaseResDTO.WinningBid> getWinningBidsByFilter(Long userId, WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
-        return bidRepositoryPort.getWinningBidsByFilterWithPageable(requestDTO, pageable);
+        return bidRepositoryPort.findWinningBidsByFilterWithPageable(requestDTO, pageable);
     }
 }
