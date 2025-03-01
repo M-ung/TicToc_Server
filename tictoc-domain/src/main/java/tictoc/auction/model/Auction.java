@@ -34,13 +34,13 @@ public class Auction extends BaseTimeEntity {
     private Integer currentPrice;
     private Integer finalPrice;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime sellStartTime;
+    private LocalDateTime sellStartTime; // 판매하고 싶은 시간(시작)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime sellEndTime;
+    private LocalDateTime sellEndTime; // 판매하고 싶은 시간(종료)
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime auctionOpenTime;
+    private LocalDateTime auctionOpenTime; // 경매 시작 시간
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime auctionCloseTime;
+    private LocalDateTime auctionCloseTime; // 경매 종료 시간
     @Enumerated(EnumType.STRING)
     private AuctionProgress progress;
     @Enumerated(EnumType.STRING)
