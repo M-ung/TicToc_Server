@@ -6,9 +6,6 @@ import tictoc.user.exception.UserNotFoundException;
 import tictoc.user.model.User;
 import tictoc.user.port.UserRepositoryPort;
 import tictoc.user.repository.UserRepository;
-
-import java.util.Optional;
-
 import static tictoc.error.ErrorCode.USER_NOT_FOUND;
 
 @Component
