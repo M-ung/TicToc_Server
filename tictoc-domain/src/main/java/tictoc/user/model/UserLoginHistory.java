@@ -1,31 +1,39 @@
 package tictoc.user.model;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.*;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
 import java.time.LocalDateTime;
 
+@Slf4j
 @Getter
-@Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "user_login_history")
+@Document(indexName = "user_login_history")
 public class UserLoginHistory {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Field(type = FieldType.Text)
     private Long userId;
-    @LastModifiedDate
+    @Field(type = FieldType.Text)
     private LocalDateTime loginAt;
+    @Field(type = FieldType.Text)
+    private String ipAddress;
+    @Field(type = FieldType.Text)
+    private String device;
 
-    public static UserLoginHistory of(Long userId) {
+    public static UserLoginHistory of(Long userId, String ipAddress, String device) {
+        log.info("[Login History] UserId: {}, IPAddress: {}, Device: {}", userId, ipAddress, device);
         return UserLoginHistory.builder()
                 .userId(userId)
                 .loginAt(LocalDateTime.now())
+                .ipAddress(ipAddress)
+                .device(device)
                 .build();
     }
 }

@@ -11,6 +11,9 @@ dependencies {
 
     // h2
     testImplementation 'com.h2database:h2'
+
+    // elasticsearch
+    implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
 }
 
 def generated = layout.buildDirectory.dir("generated/querydsl")
