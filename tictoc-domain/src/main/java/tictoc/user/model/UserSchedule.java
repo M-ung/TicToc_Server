@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import tictoc.auction.model.Auction;
+import tictoc.bid.model.Bid;
 import tictoc.model.baseTime.BaseTimeEntity;
-import tictoc.user.model.type.UserScheduleStatus;
+import tictoc.model.tictoc.TicTocStatus;
+
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,5 +27,15 @@ public class UserSchedule extends BaseTimeEntity {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Enumerated(EnumType.STRING)
-    private UserScheduleStatus status;
+    private TicTocStatus status;    //TODO 종료 시 Status를 변경시켜줘야 함.
+
+    public static UserSchedule of(Auction auction, Bid bid) {
+        return UserSchedule.builder()
+                .userId(bid.getBidderId())
+                .tradeId(1L)
+                .startTime(auction.getSellStartTime())
+                .endTime(auction.getSellEndTime())
+                .status(TicTocStatus.ACTIVE)
+                .build();
+    }
 }

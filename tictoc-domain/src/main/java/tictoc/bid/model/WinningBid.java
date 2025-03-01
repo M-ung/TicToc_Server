@@ -25,6 +25,7 @@ public class WinningBid extends BaseTimeEntity {
                 .auctioneerId(auction.getAuctioneerId())
                 .winningBidderId(bid.getBidderId())
                 .auctionId(bid.getAuctionId())
+                .price(auction.getFinalPrice())
                 .build();
     }
 }

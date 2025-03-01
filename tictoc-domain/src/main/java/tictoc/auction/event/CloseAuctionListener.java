@@ -7,14 +7,23 @@ import org.springframework.stereotype.Component;
 import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.port.AuctionRepositoryPort;
+import tictoc.bid.model.Bid;
+import tictoc.bid.model.WinningBid;
+import tictoc.bid.port.BidRepositoryPort;
+import tictoc.bid.port.WinningBidRepositoryPort;
 import tictoc.constants.AuctionConstants;
 import tictoc.redis.auction.port.out.CloseAuctionUseCase;
+import tictoc.user.model.UserSchedule;
+import tictoc.user.port.UserScheduleRepositoryPort;
 import java.nio.charset.StandardCharsets;
 
 @Component
 @RequiredArgsConstructor
 public class CloseAuctionListener implements MessageListener {
     private final AuctionRepositoryPort auctionRepositoryPort;
+    private final BidRepositoryPort bidRepositoryPort;
+    private final WinningBidRepositoryPort winningBidRepositoryPort;
+    private final UserScheduleRepositoryPort userScheduleRepositoryPort;
     private final CloseAuctionUseCase closeAuctionUseCase;
 
     @Override
@@ -33,7 +42,20 @@ public class CloseAuctionListener implements MessageListener {
             findAuction.notBid();
         } else {
             findAuction.bid();
+            Bid findBid = bidRepositoryPort.findBidByAuctionId(findAuction.getId());
+            processWinningBid(findAuction, findBid);
+            processUserSchedule(findAuction, findBid);
         }
         auctionRepositoryPort.saveAuction(findAuction);
+    }
+
+    private void processWinningBid(Auction auction, Bid bid) {
+        bid.win();
+        bidRepositoryPort.saveBid(bid);
+        winningBidRepositoryPort.saveWinningBid(WinningBid.of(auction, bid));
+    }
+
+    private void processUserSchedule(Auction auction, Bid bid) {
+        userScheduleRepositoryPort.saveUserSchedule(UserSchedule.of(auction, bid));
     }
 }

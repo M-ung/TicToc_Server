@@ -9,6 +9,7 @@ import tictoc.bid.dto.request.WinningBidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
 import tictoc.bid.port.BidQueryUseCase;
 import tictoc.bid.port.BidRepositoryPort;
+import tictoc.bid.port.WinningBidRepositoryPort;
 import tictoc.model.page.PageCustom;
 
 @Service
@@ -16,6 +17,7 @@ import tictoc.model.page.PageCustom;
 @RequiredArgsConstructor
 public class BidQueryService implements BidQueryUseCase {
     private final BidRepositoryPort bidRepositoryPort;
+    private final WinningBidRepositoryPort winningBidRepositoryPort;
 
     @Override
     public PageCustom<BidUseCaseResDTO.Bid> getBidsByFilter(final Long userId, BidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
@@ -24,6 +26,6 @@ public class BidQueryService implements BidQueryUseCase {
 
     @Override
     public PageCustom<BidUseCaseResDTO.WinningBid> getWinningBidsByFilter(Long userId, WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
-        return bidRepositoryPort.getWinningBidsByFilterWithPageable(requestDTO, pageable);
+        return winningBidRepositoryPort.findWinningBidsByFilterWithPageable(requestDTO, pageable);
     }
 }
