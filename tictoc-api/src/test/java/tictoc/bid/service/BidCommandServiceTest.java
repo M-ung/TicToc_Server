@@ -34,7 +34,7 @@ public class BidCommandServiceTest {
     private AuctionRepositoryPort auctionRepositoryPort;
 
     private static final Integer BID_PRICE = 1500;
-    private static final int NUM_USERS = 100;
+    private static final int NUM_USERS = 1000;
     private Auction auction;
 
     @BeforeEach
@@ -54,7 +54,7 @@ public class BidCommandServiceTest {
                 Collections.emptyList(),
                 AuctionType.ONLINE
         );
-        auction = auctionRepositoryPort.saveAuction(Auction.of(1L, requestDTO));
+        auction = auctionRepositoryPort.saveAuction(Auction.of(9999L, requestDTO));
     }
 
     @Test
