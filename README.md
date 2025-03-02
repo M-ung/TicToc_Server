@@ -72,3 +72,5 @@
 
 - **Mysql Master/Slave**
     - https://pinomaker.com/146
+- **git 커밋 메세지**
+    - https://meetup.nhncloud.com/posts/106
