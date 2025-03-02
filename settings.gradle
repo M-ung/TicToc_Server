@@ -5,4 +5,3 @@ include 'tictoc-domain'
 include 'tictoc-infrastructure'
 include 'tictoc-batch'
 include 'tictoc-external'
-

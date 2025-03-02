@@ -1,0 +1,35 @@
+name: CD - Deploy to EC2
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚀 Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest
+            
+            if docker ps | grep -q tictoc-blue; then
+              echo "현재 Blue가 실행 중입니다. Green으로 배포합니다."
+              docker-compose -f ~/tictoc-deploy/docker-compose.green.yml up -d
+              sleep 5
+              sudo sed -i 's/proxy_pass http:\/\/blue;/proxy_pass http:\/\/green;/' /etc/nginx/conf.d/app.conf
+              sudo systemctl restart nginx
+              docker stop tictoc-blue && docker rm tictoc-blue
+            else
+              echo "현재 Green이 실행 중입니다. Blue로 배포합니다."
+              docker-compose -f ~/tictoc-deploy/docker-compose.blue.yml up -d
+              sleep 5
+              sudo sed -i 's/proxy_pass http:\/\/green;/proxy_pass http:\/\/blue;/' /etc/nginx/conf.d/app.conf
+              sudo systemctl restart nginx
+              docker stop tictoc-green && docker rm tictoc-green
+            fi
