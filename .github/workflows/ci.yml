@@ -1,0 +1,33 @@
+name: CI - Build & Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Repository Checkout
+        uses: actions/checkout@v3
+
+      - name: 🔑 Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: 🛠️ Build Docker Image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest .
+
+      - name: 🧪 Run Tests (테스트 단계)
+        run: echo "테스트 코드 실행 (실제 프로젝트에서는 여기에 테스트 스크립트를 추가)"
+
+      - name: 📤 Push Docker Image to Docker Hub
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest
+
+      - name: 🚀 Trigger CD Workflow (CD 실행 트리거)
+        run: |
+          curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
+          -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          https://api.github.com/repos/${{ github.repository }}/actions/workflows/cd.yml/dispatches \
+          -d '{"ref":"main"}'
