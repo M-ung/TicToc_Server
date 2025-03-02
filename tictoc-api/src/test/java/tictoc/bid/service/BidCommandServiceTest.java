@@ -1,34 +1,19 @@
 package tictoc.bid.service;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tictoc.TicTocApiApplication;
-import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.model.Auction;
-import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
-import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.exception.BidException;
 import tictoc.bid.port.BidRepositoryPort;
-import tictoc.error.ErrorCode;
-import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ContextConfiguration(classes = TicTocApiApplication.class)
+@ExtendWith(SpringExtension.class)
+@SpringBootTest(classes = TicTocApiApplication.class)
 @ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application-test.yml")
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class BidCommandServiceTest {
     @Autowired
     private BidCommandService bidCommandService;
