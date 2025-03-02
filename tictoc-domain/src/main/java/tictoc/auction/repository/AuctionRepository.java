@@ -21,8 +21,15 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, Auction
             "AND a.status = :status " +
             "AND a.sellStartTime < :sellEndTime " +
             "AND a.sellEndTime > :sellStartTime")
-    boolean existsAuctionInTimeRange(@Param("userId") Long userId, @Param("sellStartTime") LocalDateTime sellStartTime, @Param("sellEndTime") LocalDateTime sellEndTime, @Param("status") TicTocStatus status);
+    boolean existsAuctionInTimeRangeForSave(@Param("userId") Long userId, @Param("sellStartTime") LocalDateTime sellStartTime, @Param("sellEndTime") LocalDateTime sellEndTime, @Param("status") TicTocStatus status);
 
+    @Query("SELECT COUNT(a) > 0 FROM Auction a " +
+            "WHERE a.auctioneerId = :userId " +
+            "AND a.status = :status " +
+            "AND a.id <> :auctionId " +
+            "AND a.sellStartTime < :sellEndTime " +
+            "AND a.sellEndTime > :sellStartTime")
+    boolean existsAuctionInTimeRangeForUpdate(@Param("userId") Long userId, @Param("auctionId") Long auctionId, @Param("sellStartTime") LocalDateTime sellStartTime, @Param("sellEndTime") LocalDateTime sellEndTime, @Param("status") TicTocStatus status);
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Auction a SET a.currentPrice = :price WHERE a.id = :auctionId AND a.currentPrice < :price")
     int updateBidIfHigher(@Param("auctionId") Long auctionId, @Param("price") Integer price);

@@ -25,7 +25,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     @Override
     public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
-        auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        auctionRepositoryPort.validateAuctionTimeRangeForSave(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
         var auction = auctionRepositoryPort.saveAuction(Auction.of(userId, requestDTO));
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
@@ -38,10 +38,12 @@ public class AuctionCommandService implements AuctionCommandUseCase {
     public void update(final Long userId, final Long auctionId, AuctionUseCaseReqDTO.Update requestDTO) {
         var findAuction = auctionRepositoryPort.findAuctionByIdForUpdate(auctionId);
         findAuction.validateAuctionAccess(userId);
-        auctionRepositoryPort.validateAuctionTimeRange(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
+        auctionRepositoryPort.validateAuctionTimeRangeForUpdate(userId, auctionId, findAuction.getSellStartTime(), findAuction.getSellEndTime());
         try {
             findAuction.update(requestDTO);
-            locationCommandUseCase.deleteAuctionLocations(auctionId);
+            if(!findAuction.getType().equals(AuctionType.ONLINE)) {
+                locationCommandUseCase.deleteAuctionLocations(auctionId);
+            }
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
                 locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
             }
