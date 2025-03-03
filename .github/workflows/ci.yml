@@ -13,19 +13,31 @@ jobs:
       - name: 🛎️ Repository Checkout
         uses: actions/checkout@v3
 
+      - name: 🛠️ Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+
+      - name: 🏗️ Build JAR with Gradle
+        run: |
+          cd tictoc-api
+          chmod +x gradlew
+          ./gradlew clean build
+
       - name: 🔑 Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: 🛠️ Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest -f tictoc-api/Dockerfile tictoc-api
 
-      - name: 🧪 Run Tests (테스트 단계)
+      - name: 🧪 Run Tests
         run: echo "테스트 코드 실행 (실제 프로젝트에서는 여기에 테스트 스크립트를 추가)"
 
       - name: 📤 Push Docker Image to Docker Hub
         run: docker push ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest
 
-      - name: 🚀 Trigger CD Workflow (CD 실행 트리거)
+      - name: 🚀 Trigger CD Workflow
         run: |
           curl -X POST -H "Accept: application/vnd.github.everest-preview+json" \
           -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \

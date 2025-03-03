@@ -1,6 +1,9 @@
 bootJar.enabled = true
-
 jar.enabled = true
+jar {
+    archiveBaseName.set("app")
+    archiveVersion.set("")
+}
 
 dependencies {
     implementation project(':tictoc-common')
