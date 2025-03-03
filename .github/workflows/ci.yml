@@ -34,22 +34,22 @@ jobs:
       - name: 1️⃣ Create api module application-prod.yml
         run: |
           mkdir -p ./tictoc-api/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_API }}" > ./tictoc-api/src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-api/src/main/resources/application-prod.yml
 
       - name: 2️⃣ Create domain module application-prod.yml
         run: |
           mkdir -p ./tictoc-domain/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_DOMAIN }}" > ./tictoc-domain/src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-domain/src/main/resources/application-prod.yml
 
       - name: 3️⃣ Create common module application-prod.yml
         run: |
           mkdir -p ./tictoc-common/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_COMMON }}" > ./tictoc-common/src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-common/src/main/resources/application-prod.yml
 
       - name: 4️⃣ Create infrastructure module application-prod.yml
         run: |
           mkdir -p ./tictoc-infrastructure/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_INFRASTRUCTURE }}" > ./tictoc-infrastructure/src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-infrastructure/src/main/resources/application-prod.yml
 
       - name: 🛠️ Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest -f tictoc-api/Dockerfile tictoc-api
