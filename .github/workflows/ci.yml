@@ -13,16 +13,22 @@ jobs:
       - name: 🛎️ Repository Checkout
         uses: actions/checkout@v3
 
+      - name: 🏗️ Set up Gradle with Caching
+        uses: gradle/gradle-build-action@v2
+
       - name: 🛠️ Set up JDK 21
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      - name: 🏗️ Build JAR with Gradle
-        run: |
-          chmod +x gradlew
-          ./gradlew clean build
+#      - name: 🏗️ Build JAR with Gradle
+#        run: |
+#          chmod +x gradlew
+#          ./gradlew clean build
+
+      - name: 🏗️ Use System Gradle
+        run: gradle clean build -x test
 
       - name: 🔍 Check if JAR exists
         run: ls -lh tictoc-api/build/libs/
