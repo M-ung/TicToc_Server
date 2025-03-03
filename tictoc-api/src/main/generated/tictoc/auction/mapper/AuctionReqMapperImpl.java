@@ -12,7 +12,7 @@ import tictoc.auction.model.type.AuctionType;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-03-03T21:54:38+0900",
+    date = "2025-03-04T00:55:06+0900",
     comments = "version: 1.5.5.Final, compiler: javac, environment: Java 21.0.6 (Homebrew)"
 )
 @Component
