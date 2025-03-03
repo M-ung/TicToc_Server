@@ -5,33 +5,17 @@ services:
     image: 'redis:alpine'
     container_name: redis
     environment:
-      REDIS_TIMEOUT: ${REDIS_TIMEOUT}
+      REDIS_TIMEOUT: 2000ms
+    env_file:
+      - .env
     ports:
-      - '${REDIS_PORT}:${REDIS_PORT}'
+      - '6379:6379'
     volumes:
       - ./redis.conf:/usr/local/etc/redis/redis.conf
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
     networks:
       - tic-toc-net
 
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.8.0
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
-      - xpack.security.enabled=false
-    volumes:
-      - elasticsearch_data:/usr/share/elasticsearch/data
-    networks:
-      - tic-toc-net
-    ports:
-      - '${ELASTICSEARCH_PORT}:${ELASTICSEARCH_PORT}'
-
 networks:
   tic-toc-net:
     driver: bridge
-
-volumes:
-  elasticsearch_data:
-    driver: local
