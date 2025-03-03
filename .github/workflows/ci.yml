@@ -31,10 +31,25 @@ jobs:
       - name: 🔑 Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: 👴 Create application-prod.yml
+      - name: 👴 Create api module application-prod.yml
         run: |
           mkdir -p ./tictoc-api/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-api/src/main/resources/application-prod.yml
+          echo "${{ secrets.APPLICATION_PROD_API }}" > ./tictoc-api/src/main/resources/application-prod.yml
+
+      - name: 👴 Create domain module application-prod.yml
+        run: |
+          mkdir -p ./tictoc-domain/src/main/resources
+          echo "${{ secrets.APPLICATION_PROD_DOMAIN }}" > ./tictoc-domain/src/main/resources/application-prod.yml
+
+      - name: 👴 Create common module application-prod.yml
+        run: |
+          mkdir -p ./tictoc-common/src/main/resources
+          echo "${{ secrets.APPLICATION_PROD_COMMON }}" > ./tictoc-common/src/main/resources/application-prod.yml
+
+      - name: 👴 Create infrastructure module application-prod.yml
+        run: |
+          mkdir -p ./tictoc-infrastructure/src/main/resources
+          echo "${{ secrets.APPLICATION_PROD_INFRASTRUCTURE }}" > ./tictoc-infrastructure/src/main/resources/application-prod.yml
 
       - name: 🛠️ Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest -f tictoc-api/Dockerfile tictoc-api
