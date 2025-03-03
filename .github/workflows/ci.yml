@@ -22,11 +22,6 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
 
-#      - name: 🏗️ Build JAR with Gradle
-#        run: |
-#          chmod +x gradlew
-#          ./gradlew clean build
-
       - name: 🏗️ Use System Gradle
         run: gradle clean build -x test
 
