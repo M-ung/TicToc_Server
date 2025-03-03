@@ -1,4 +1,4 @@
-name: CI - Build & Push Docker Image (Batch)
+name: CI - Build & Push Docker Image
 
 on:
   push:
