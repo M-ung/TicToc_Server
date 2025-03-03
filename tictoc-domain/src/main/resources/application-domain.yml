@@ -11,7 +11,3 @@ spring:
     hibernate:
       ddl-auto: update
     generate-ddl: false
-  elasticsearch:
-    uris: ${ELASTICSEARCH_HOST}
-    username: ${ELASTICSEARCH_USERNAME}
-    password: ${ELASTICSEARCH_PASSWORD}

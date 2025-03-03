@@ -1,6 +1,4 @@
 spring:
-  elasticsearch:
-    uris: http://localhost:9200
   h2:
     console:
       enabled: true
