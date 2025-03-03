@@ -6,6 +6,8 @@ services:
     container_name: tictoc-blue
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+    env_file:
+      - .env
     ports:
       - "8081:8080"
     networks:
