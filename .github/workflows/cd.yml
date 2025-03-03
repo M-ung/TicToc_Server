@@ -25,11 +25,6 @@ jobs:
               echo "Docker 네트워크가 존재하지 않습니다. 생성합니다."
               docker network create tic-toc-net
             fi
-
-            if ! docker ps --format '{{.Names}}' | grep -q redis; then
-              echo "Redis가 실행 중이 아닙니다. 실행합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.yml up -d redis
-            fi
             
             if docker ps | grep -q tictoc-blue; then
               echo "현재 Blue가 실행 중입니다. Green으로 배포합니다."
