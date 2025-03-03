@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
+import tictoc.TicTocApiApplication;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
@@ -15,22 +16,18 @@ import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.port.BidRepositoryPort;
 import tictoc.bid.service.BidCommandService;
 import tictoc.error.ErrorCode;
 import tictoc.model.tictoc.TicTocStatus;
-
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = tictoc.TicTocApiApplication.class)
+@SpringBootTest(classes = TicTocApiApplication.class)
 @ActiveProfiles("test")
 public class AuctionCommandServiceTest {
     @Autowired

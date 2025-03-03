@@ -1,9 +1,0 @@
-feign:
-  kakao:
-    kakao_get_token_name: ${KAKAO_GET_TOKEN_NAME}
-    kakao_get_profile_name: ${KAKAO_GET_PROFILE_NAME}
-    kakao_get_token_info_name: ${KAKAO_GET_TOKEN_INFO_NAME}
-    get-kauth-url: ${KAKAO_KAUTH_URL}
-    get-kapi-url: ${KAKAO_KAPI_URL}
-    redirect: ${KAKAO_REDIRECT}
-    rest-api-key: ${KAKAO_REST_API_KEY}

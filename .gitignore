@@ -38,7 +38,11 @@ out/
 
 ### .env ###
 tictoc-api/.env
+tictoc-api/.env
 .env
 
 ### redis ###
 redis.conf
+
+### yml ###
+application-prod.yml

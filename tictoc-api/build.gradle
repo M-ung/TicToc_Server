@@ -30,5 +30,5 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 
     // h2
-    runtimeOnly 'com.h2database:h2:2.1.214'
+    implementation 'com.h2database:h2:2.1.214'
 }

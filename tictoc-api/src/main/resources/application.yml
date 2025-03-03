@@ -2,30 +2,19 @@ jwt:
   secret: ${JWT_SECRET}
   accessTokenExpireTime: ${JWT_ACCESS_EXPIRE_TIME}
   refreshTokenExpireTime: ${JWT_REFRESH_EXPIRE_TIME}
-
 server:
   tomcat:
     threads:
       max: 200
       min-spare: 10
     accept-count: 100
-
 spring:
-  config:
-    import: optional:file:.env
-  profiles:
-    include:
-      - domain
-      - common
-      - batch
-      - infrastructure
-      - external
   cache:
     type: redis
   data:
     redis:
-      host: ${REDIS_HOST}
-      port: ${REDIS_PORT}
+      host: redis
+      port: 6379
       timeout: 2000ms
       lettuce:
         pool:
@@ -40,7 +29,28 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 10MB
-
+  datasource:
+    master:
+      hikari:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_HOST}:${MASTER_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+    slave:
+      hikari:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${DB_HOST}:${SLAVE_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+        username: ${DB_USER}
+        password: ${DB_PASSWORD}
+feign:
+  kakao:
+    kakao_get_token_name: ${KAKAO_GET_TOKEN_NAME}
+    kakao_get_profile_name: ${KAKAO_GET_PROFILE_NAME}
+    kakao_get_token_info_name: ${KAKAO_GET_TOKEN_INFO_NAME}
+    get-kauth-url: ${KAKAO_KAUTH_URL}
+    get-kapi-url: ${KAKAO_KAPI_URL}
+    redirect: ${KAKAO_REDIRECT}
+    rest-api-key: ${KAKAO_REST_API_KEY}
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace
