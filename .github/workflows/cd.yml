@@ -54,4 +54,4 @@ jobs:
               fi
             fi
 
-            docker images -q ${{ secrets.DOCKER_USERNAME }}/tictoc-api | tail -n +2 | xargs -r docker rmi -f
+            docker image prune -f

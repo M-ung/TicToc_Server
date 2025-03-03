@@ -18,5 +18,4 @@ services:
 
 networks:
   tic-toc-net:
-    name: tic-toc-net
-    driver: bridge
+    external: true
