@@ -22,6 +22,19 @@ spring:
       - batch
       - infrastructure
       - external
+  cache:
+    type: redis
+  data:
+    redis:
+      host: redis
+      port: 6379
+      timeout: 2000ms
+      jedis:
+        pool:
+          max-active: 10
+          max-idle: 5
+          min-idle: 1
+          max-wait: 1000ms
   threads:
     virtual:
       enabled: true
