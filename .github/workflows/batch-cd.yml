@@ -1,0 +1,59 @@
+name: CD - Deploy to EC2
+
+on:
+  workflow_run:
+    workflows: ["CI - Build & Push Docker Image"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🚀 Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST_BATCH }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/tictoc-batch:latest
+            
+            if ! docker network ls | grep -q tic-toc-net; then
+              echo "Docker 네트워크가 존재하지 않습니다. 생성합니다."
+              docker network create tic-toc-net
+            fi
+            
+            if ! docker ps --format '{{.Names}}' | grep -q redis; then
+              echo "Redis가 실행 중이 아닙니다. 실행합니다."
+              docker-compose -f ~/tictoc-deploy/docker-compose.yml up -d redis
+            else
+              echo "Redis가 이미 실행 중입니다."
+            fi
+            
+            if docker ps | grep -q tictoc-blue; then
+              echo "현재 Blue가 실행 중입니다. Green으로 배포합니다."
+              docker-compose -f ~/tictoc-deploy/docker-compose.green.yml up -d
+              sleep 5
+              sudo sed -i 's/proxy_pass http:\/\/blue;/proxy_pass http:\/\/green;/' /etc/nginx/conf.d/app.conf
+              sudo systemctl restart nginx
+
+              if docker ps -a --format '{{.Names}}' | grep -q tictoc-blue; then
+                docker stop tictoc-blue && docker rm tictoc-blue
+              fi
+
+            else
+              echo "현재 Green이 실행 중입니다. Blue로 배포합니다."
+              docker-compose -f ~/tictoc-deploy/docker-compose.blue.yml up -d
+              sleep 5
+              sudo sed -i 's/proxy_pass http:\/\/green;/proxy_pass http:\/\/blue;/' /etc/nginx/conf.d/app.conf
+              sudo systemctl restart nginx
+
+              if docker ps -a --format '{{.Names}}' | grep -q tictoc-green; then
+                docker stop tictoc-green && docker rm tictoc-green
+              fi
+            fi
+
+            docker image prune -f
