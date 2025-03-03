@@ -1,9 +1,10 @@
-name: CI - Build & Push Docker Image
+name: CI - Build & Push Docker Image (API)
 
 on:
   push:
     branches:
       - main
+      - deploy/#89
 
 jobs:
   build-and-push:

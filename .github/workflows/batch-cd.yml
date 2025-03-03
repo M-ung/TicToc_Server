@@ -1,8 +1,8 @@
-name: CD - Deploy to EC2
+name: CD - Deploy to EC2 (Batch)
 
 on:
   workflow_run:
-    workflows: ["CI - Build & Push Docker Image"]
+    workflows: ["CI - Build & Push Docker Image (Batch)"]
     types:
       - completed
 
