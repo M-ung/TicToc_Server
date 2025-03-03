@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  tictoc-green:
+    image: mungzogi/tictoc-api:latest
+    container_name: tictoc-green
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8082:8080"
+    networks:
+      - tic-toc-net
+
+networks:
+  tic-toc-net:
+    driver: bridge
