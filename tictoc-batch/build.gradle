@@ -12,6 +12,5 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework.batch:spring-batch-core'
 
-    implementation project(':tictoc-common')
     implementation project(':tictoc-domain')
 }
