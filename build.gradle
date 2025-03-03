@@ -60,6 +60,9 @@ subprojects {
 
         //openFeign
         implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2'
+
+        // elasticsearch
+        implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
     }
 
     test {

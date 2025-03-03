@@ -22,5 +22,6 @@ public class Notification extends BaseTimeEntity {
     private String message;
     @Enumerated(EnumType.STRING)
     private NotificationStatus status;
+    @Builder.Default
     private Boolean isRead = false;
 }

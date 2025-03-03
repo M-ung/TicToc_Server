@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
 public class UserLoginHistory {
     @Id
     private Long id;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private Long userId;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private LocalDateTime loginAt;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String ipAddress;
-    @Field(type = FieldType.Text)
+    @Field(type = FieldType.Keyword)
     private String device;
 
     public static UserLoginHistory of(Long userId, String ipAddress, String device) {
