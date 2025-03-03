@@ -4,7 +4,6 @@ jwt:
   refreshTokenExpireTime: ${JWT_REFRESH_EXPIRE_TIME}
 
 server:
-  port: 8080
   tomcat:
     threads:
       max: 200
@@ -13,9 +12,8 @@ server:
 
 spring:
   config:
-    import: optional:file:.env[.properties]
+    import: optional:file:.env
   profiles:
-    active: prod
     include:
       - domain
       - common

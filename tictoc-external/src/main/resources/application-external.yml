@@ -1,9 +1,3 @@
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  config:
-    import: optional:file:.env
-
 feign:
   kakao:
     kakao_get_token_name: ${KAKAO_GET_TOKEN_NAME}
