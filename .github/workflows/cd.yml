@@ -20,6 +20,11 @@ jobs:
           script: |
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest
+            
+            if ! docker network ls | grep -q tic-toc-net; then
+              echo "Docker 네트워크가 존재하지 않습니다. 생성합니다."
+              docker network create tic-toc-net
+            fi
 
             if ! docker ps --format '{{.Names}}' | grep -q redis; then
               echo "Redis가 실행 중이 아닙니다. 실행합니다."
