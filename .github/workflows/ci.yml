@@ -32,9 +32,10 @@ jobs:
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: 🛠️ Build Docker Image
-        run: |
-          docker buildx create --use
-          docker buildx build --platform linux/amd64 -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest --push -f tictoc-api/Dockerfile tictoc-api
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest -f tictoc-api/Dockerfile tictoc-api
+
+      - name: 🔍 Verify Docker Images
+        run: docker images
 
       - name: 🧪 Run Tests
         run: echo "테스트 코드 실행 (실제 프로젝트에서는 여기에 테스트 스크립트를 추가)"
