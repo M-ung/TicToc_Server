@@ -56,6 +56,16 @@ subprojects {
 
         //openFeign
         implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.1.2'
+
+        // h2
+        implementation 'com.h2database:h2:2.1.214'
+
+        // redis
+        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+        // kafka
+        implementation 'org.springframework.kafka:spring-kafka'
     }
 
     test {

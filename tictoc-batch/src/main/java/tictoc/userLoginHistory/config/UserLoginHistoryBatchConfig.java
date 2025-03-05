@@ -3,23 +3,24 @@ package tictoc.userLoginHistory.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
-import org.springframework.batch.item.database.JdbcBatchItemWriter;
+import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcCursorItemReader;
 import org.springframework.batch.item.database.builder.JdbcCursorItemReaderBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.transaction.PlatformTransactionManager;
 import javax.sql.DataSource;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
-@EnableBatchProcessing
 @RequiredArgsConstructor
 public class UserLoginHistoryBatchConfig {
     private final JobRepository jobRepository;
@@ -46,26 +47,26 @@ public class UserLoginHistoryBatchConfig {
 
     @Bean
     public JdbcCursorItemReader<Long> userLoginHistoryReader() {
-        LocalDateTime oneWeekAgo = LocalDateTime.now().minus(1, ChronoUnit.WEEKS);
+        LocalDateTime startDate = LocalDateTime.now().minus(1, ChronoUnit.YEARS).withMonth(2).withDayOfMonth(28);
+        LocalDateTime endDate = LocalDateTime.now();
+
         return new JdbcCursorItemReaderBuilder<Long>()
                 .dataSource(dataSource)
                 .name("userLoginHistoryReader")
-                .sql("SELECT id FROM user_login_history WHERE login_at < ?")
-                .queryArguments(oneWeekAgo)
+                .sql("SELECT id FROM user_login_history WHERE login_at BETWEEN ? AND ?")
+                .queryArguments(startDate, endDate)
                 .rowMapper((rs, rowNum) -> rs.getLong("id"))
                 .build();
     }
 
     @Bean
-    public JdbcBatchItemWriter<List<Long>> userLoginHistoryItemWriter() {
-        JdbcBatchItemWriter<List<Long>> writer = new JdbcBatchItemWriter<>();
-        writer.setDataSource(dataSource);
-        writer.setSql("DELETE FROM user_login_history WHERE id IN (:ids)");
-        writer.setItemPreparedStatementSetter((item, ps) -> {
-            for (int i = 0; i < item.size(); i++) {
-                ps.setLong(i + 1, item.get(i));
-            }
-        });
-        return writer;
+    public ItemWriter<List<Long>> userLoginHistoryItemWriter() {
+        return items -> {
+            NamedParameterJdbcTemplate namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
+            String sql = "DELETE FROM user_login_history WHERE id IN (:ids)";
+            Map<String, Object> params = new HashMap<>();
+            params.put("ids", items);
+            namedParameterJdbcTemplate.update(sql, params);
+        };
     }
 }

@@ -21,11 +21,10 @@ public class UserLoginHistory {
     private String ipAddress;
     private String device;
 
-    public static UserLoginHistory of(Long userId, String ipAddress, String device) {
-        log.info("[Login History] UserId: {}, IPAddress: {}, Device: {}", userId, ipAddress, device);
+    public static UserLoginHistory of(Long userId, LocalDateTime loginAt, String ipAddress, String device) {
         return UserLoginHistory.builder()
                 .userId(userId)
-                .loginAt(LocalDateTime.now())
+                .loginAt(loginAt)
                 .ipAddress(ipAddress)
                 .device(device)
                 .build();

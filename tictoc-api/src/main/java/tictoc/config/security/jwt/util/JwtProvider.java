@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.error.ErrorCode;
-import tictoc.user.model.UserLoginHistory;
-import tictoc.user.port.UserLoginHistoryRepositoryPort;
+import tictoc.kafka.UserLoginHistoryEvent;
+import tictoc.kafka.UserLoginHistoryEventPublisher;
 
 @Component
 @RequiredArgsConstructor
@@ -14,18 +14,18 @@ public class JwtProvider {
     private final JwtGenerator jwtGenerator;
     private final HttpServletRequest request;
     private final RefreshTokenGenerator refreshTokenGenerator;
-    private final UserLoginHistoryRepositoryPort userLoginHistoryRepositoryPort;
+    private final UserLoginHistoryEventPublisher userLoginHistoryEventPublisher;
 
     public JwtResDTO.Login createJwt(final Long userId) {
-        saveUserLoginHistory(userId);
+        publishUserLoginHistory(userId);
         return JwtResDTO.Login.of(
                 jwtGenerator.generateAccessToken(userId),
                 refreshTokenGenerator.generateRefreshToken(userId)
         );
     }
 
-    private void saveUserLoginHistory(Long userId) {
-        userLoginHistoryRepositoryPort.saveUserLoginHistory(UserLoginHistory.of(userId, getClientIp(), getUserAgent()));
+    private void publishUserLoginHistory(Long userId) {
+        userLoginHistoryEventPublisher.publish(UserLoginHistoryEvent.of(userId, getClientIp(), getUserAgent()));
     }
 
     public Long getUserIdFromToken(String token) {

@@ -17,6 +17,9 @@ spring:
       - infrastructure
   config:
     import: optional:file:.env[.properties]
+  batch:
+    jdbc:
+      initialize-schema: always
   threads:
     virtual:
       enabled: true

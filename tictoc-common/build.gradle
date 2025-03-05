@@ -3,8 +3,4 @@ bootJar.enabled = false
 jar.enabled = true
 
 dependencies {
-    // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
 }
