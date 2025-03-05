@@ -57,3 +57,16 @@ jobs:
             fi
 
             docker image prune -f
+
+      - name: 🗑️ Delete Unused Images
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            echo "실행 중이지 않은 tictoc-api 및 redis 이미지 삭제 중..."
+            docker images | grep 'tictoc-api' | awk '{print $3}' | xargs -r docker rmi -f
+            docker images | grep 'redis' | awk '{print $3}' | xargs -r docker rmi -f
+            docker image prune -f
+            echo "✅ 삭제 완료!"

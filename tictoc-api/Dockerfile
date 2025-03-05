@@ -4,6 +4,6 @@ WORKDIR /app
 COPY ./build/libs/*.jar app.jar
 
 ARG PROFILE=prod
-ENV PROFILE=${PROFILE}
+ENV SPRING_PROFILES_ACTIVE=${PROFILE}
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${PROFILE}", "-jar", "app.jar"]
+ENTRYPOINT ["sh", "-c", "java -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE} -jar app.jar"]

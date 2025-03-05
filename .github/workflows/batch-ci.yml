@@ -32,10 +32,13 @@ jobs:
       - name: 🔑 Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: 1️⃣ Create batch module application-prod.yml
+      - name: 📄 Create .env
         run: |
-          mkdir -p ./tictoc-batch/src/main/resources
-          echo "${{ secrets.APPLICATION_PROD_BATCH }}" > ./tictoc-batch/src/main/resources/application-prod.yml
+          echo "Creating .env file..."
+          cat <<EOF > .env
+          ${{ secrets.ENV }}
+          EOF
+          echo ".env 파일 생성했습니다."
 
       - name: 🛠️ Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-batch:latest -f tictoc-batch/Dockerfile tictoc-batch
