@@ -42,6 +42,7 @@ jobs:
           echo "📄 .env 파일 내용:"
           cat .env
           echo ".env 파일 생성했습니다."
+          echo "DB_HOST=$(grep DB_HOST .env)"
 
 
 #      - name: 2️⃣ Create domain module application-prod.yml
