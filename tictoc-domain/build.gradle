@@ -8,13 +8,6 @@ dependencies {
 
     // mysql
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    // h2
-    testImplementation 'com.h2database:h2'
-
-    // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }
 
 def generated = layout.buildDirectory.dir("generated/querydsl")
