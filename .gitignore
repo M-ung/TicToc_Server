@@ -43,7 +43,6 @@ out/
 redis.conf
 
 ### yml ###
-application-prod.yml
 
 tictoc-api/src/main/generated/**/*.java
 tictoc-domain/src/main/generated/**/*.java
