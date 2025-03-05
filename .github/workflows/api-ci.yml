@@ -32,9 +32,15 @@ jobs:
       - name: 🔑 Log in to Docker Hub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
-      - name: 1️⃣ Create .env
+      - name: 📄 Create .env
         run: |
-          echo "${{ secrets.ENV }}" > .env
+          echo "Creating .env file..."
+          cat <<EOF > .env
+          ${{ secrets.ENV }}
+          EOF
+          echo ".env 파일 생성 완료!"
+          echo "📄 .env 파일 내용:"
+          cat .env
           echo ".env 파일 생성했습니다."
 
 
