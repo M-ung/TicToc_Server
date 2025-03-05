@@ -18,9 +18,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-batch'
     implementation 'org.springframework.batch:spring-batch-core'
 
-    // kafka
-    implementation 'org.springframework.kafka:spring-kafka'
-
     implementation project(':tictoc-domain')
     implementation project(':tictoc-common')
+    implementation project(':tictoc-infrastructure')
 }

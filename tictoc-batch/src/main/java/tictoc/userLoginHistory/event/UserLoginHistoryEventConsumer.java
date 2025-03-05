@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import tictoc.error.exception.LogFileWriteException;
-import tictoc.user.event.UserLoginHistoryEvent;
+import tictoc.kafka.UserLoginHistoryEvent;
 import tictoc.user.model.UserLoginHistory;
 import tictoc.user.repository.UserLoginHistoryRepository;
 import java.io.FileWriter;
@@ -16,7 +16,11 @@ import static tictoc.error.ErrorCode.LOG_FILE_WRITE_BAD_REQUEST;
 public class UserLoginHistoryEventConsumer {
     private final UserLoginHistoryRepository userLoginHistoryRepository;
 
-    @KafkaListener(topics = "user-login-history-topic", groupId = "batch-group")
+    @KafkaListener(
+            topics = "user-login-history-topic",
+            groupId = "${spring.kafka.consumer.group-id}",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
     public void consume(UserLoginHistoryEvent event) {
         UserLoginHistory userLoginHistory = saveUserLoginHistory(UserLoginHistory.of(
                 event.userId(), event.loginAt(), event.ipAddress(), event.device()));

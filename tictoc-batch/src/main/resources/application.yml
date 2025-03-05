@@ -9,6 +9,11 @@ server:
       min-spare: 10
     accept-count: 100
 spring:
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: always
   profiles:
     active: dev
     include:
