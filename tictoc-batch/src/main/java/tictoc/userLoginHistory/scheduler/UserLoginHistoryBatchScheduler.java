@@ -1,4 +1,4 @@
-package tictoc.user;
+package tictoc.userLoginHistory.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
