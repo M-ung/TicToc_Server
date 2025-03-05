@@ -21,7 +21,7 @@ public class UserLoginHistoryRepositoryAdaptor implements UserLoginHistoryReposi
     }
 
     private void saveLog(UserLoginHistory loginHistory) {
-        try (FileWriter writer = new FileWriter("/var/log/user_login_history.log", true)) {
+        try (FileWriter writer = new FileWriter("/log/user_login_history.log", true)) {
             writer.write(String.format("%s - UserId: %d, IPAddress: %s, Device: %s\n",
                     loginHistory.getLoginAt(), loginHistory.getUserId(),
                     loginHistory.getIpAddress(), loginHistory.getDevice()));
