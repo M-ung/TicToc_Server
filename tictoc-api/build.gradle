@@ -3,6 +3,21 @@ bootJar {
     archiveVersion = ""
 }
 
+processResources {
+    from(project(":tictoc-common").file("src/main/resources")) {
+        into("BOOT-INF/classes")
+    }
+    from(project(":tictoc-domain").file("src/main/resources")) {
+        into("BOOT-INF/classes")
+    }
+    from(project(":tictoc-infrastructure").file("src/main/resources")) {
+        into("BOOT-INF/classes")
+    }
+    from(project(":tictoc-external").file("src/main/resources")) {
+        into("BOOT-INF/classes")
+    }
+}
+
 jar {
     enabled = false
 }

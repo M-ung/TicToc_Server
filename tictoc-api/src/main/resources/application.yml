@@ -8,41 +8,21 @@ server:
       max: 200
       min-spare: 10
     accept-count: 100
-  port: 8080
 spring:
   profiles:
-    active: local
+    active: dev
     include:
+      - domain
+      - external
       - infrastructure
+  config:
+    import: optional:file:.env[.properties]
   threads:
     virtual:
       enabled: true
   servlet:
     multipart:
       max-file-size: 5MB
-      max-request-size: 10MB
-  datasource:
-    master:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${DB_HOST}:${MASTER_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-        username: ${DB_USER}
-        password: ${DB_PASSWORD}
-    slave:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${DB_HOST}:${SLAVE_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-        username: ${DB_USER}
-        password: ${DB_PASSWORD}
-feign:
-  kakao:
-    kakao_get_token_name: ${KAKAO_GET_TOKEN_NAME}
-    kakao_get_profile_name: ${KAKAO_GET_PROFILE_NAME}
-    kakao_get_token_info_name: ${KAKAO_GET_TOKEN_INFO_NAME}
-    get-kauth-url: ${KAKAO_KAUTH_URL}
-    get-kapi-url: ${KAKAO_KAPI_URL}
-    redirect: ${KAKAO_REDIRECT}
-    rest-api-key: ${KAKAO_REST_API_KEY}
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace

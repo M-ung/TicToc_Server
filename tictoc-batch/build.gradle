@@ -3,6 +3,12 @@ bootJar {
     archiveVersion = ""
 }
 
+processResources {
+    from(project(":tictoc-domain").file("src/main/resources")) {
+        into("BOOT-INF/classes")
+    }
+}
+
 jar {
     enabled = false
 }
