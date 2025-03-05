@@ -44,10 +44,6 @@ subprojects {
         // jackson
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-        // redis
-        implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-        implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-
         // jpa
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-jdbc'

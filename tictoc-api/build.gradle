@@ -31,4 +31,8 @@ dependencies {
 
     // h2
     implementation 'com.h2database:h2:2.1.214'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }

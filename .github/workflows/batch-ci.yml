@@ -1,9 +1,10 @@
-name: CI - Build & Push Docker Image
+name: Batch Module CI - Build & Push Docker Image
 
 on:
   push:
     branches:
-      - main
+#      - main
+      - deploy/**
 
 jobs:
   build-and-push:

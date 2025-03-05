@@ -10,19 +10,10 @@ server:
     accept-count: 100
   port: 8080
 spring:
-  cache:
-    type: redis
-  data:
-    redis:
-      host: redis
-      port: 6379
-      timeout: 2000ms
-      lettuce:
-        pool:
-          max-active: 10
-          max-idle: 5
-          min-idle: 1
-          max-wait: 1000ms
+  profiles:
+    active: local
+    include:
+      - infrastructure
   threads:
     virtual:
       enabled: true
