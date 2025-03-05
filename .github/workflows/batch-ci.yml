@@ -38,9 +38,6 @@ jobs:
           cat <<EOF > .env
           ${{ secrets.ENV }}
           EOF
-          echo ".env 파일 생성 완료!"
-          echo "📄 .env 파일 내용:"
-          cat .env
           echo ".env 파일 생성했습니다."
 
       - name: 🛠️ Build Docker Image

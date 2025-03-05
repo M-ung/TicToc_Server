@@ -38,27 +38,7 @@ jobs:
           cat <<EOF > .env
           ${{ secrets.ENV }}
           EOF
-          echo ".env 파일 생성 완료!"
-          echo "📄 .env 파일 내용:"
-          cat .env
           echo ".env 파일 생성했습니다."
-          echo "DB_HOST=$(grep DB_HOST .env)"
-
-
-#      - name: 2️⃣ Create domain module application-prod.yml
-#        run: |
-#          mkdir -p ./tictoc-domain/src/main/resources
-#          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-domain/src/main/resources/application-prod.yml
-#
-#      - name: 3️⃣ Create common module application-prod.yml
-#        run: |
-#          mkdir -p ./tictoc-common/src/main/resources
-#          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-common/src/main/resources/application-prod.yml
-#
-#      - name: 4️⃣ Create infrastructure module application-prod.yml
-#        run: |
-#          mkdir -p ./tictoc-infrastructure/src/main/resources
-#          echo "${{ secrets.APPLICATION_PROD }}" > ./tictoc-infrastructure/src/main/resources/application-prod.yml
 
       - name: 🛠️ Build Docker Image
         run: docker build -t ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest -f tictoc-api/Dockerfile tictoc-api
