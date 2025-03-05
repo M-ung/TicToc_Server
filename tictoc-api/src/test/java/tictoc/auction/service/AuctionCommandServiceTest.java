@@ -26,9 +26,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@ActiveProfiles("test")
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TicTocApiApplication.class)
-@ActiveProfiles("test")
 public class AuctionCommandServiceTest {
     @Autowired
     private AuctionCommandService auctionCommandService;
@@ -96,6 +96,7 @@ public class AuctionCommandServiceTest {
         });
 
         latch.await();
+        executorService.shutdown();
 
         Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
         assertThat(updatedAuction.getTitle()).isEqualTo("Test Auction");
@@ -128,6 +129,7 @@ public class AuctionCommandServiceTest {
         });
 
         latch.await();
+        executorService.shutdown();
 
         Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
         assertThat(updatedAuction.getStatus()).isEqualTo(TicTocStatus.ACTIVE);
