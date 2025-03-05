@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - deploy/#89
+      - deploy/**
 
 jobs:
   build-and-push:
