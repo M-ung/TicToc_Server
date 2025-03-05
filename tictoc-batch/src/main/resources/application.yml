@@ -1,36 +1,28 @@
+jwt:
+  secret: ${JWT_SECRET}
+  accessTokenExpireTime: ${JWT_ACCESS_EXPIRE_TIME}
+  refreshTokenExpireTime: ${JWT_REFRESH_EXPIRE_TIME}
 server:
   tomcat:
     threads:
       max: 200
       min-spare: 10
     accept-count: 100
-  port: 8081
 spring:
   profiles:
-    active: local
+    active: dev
     include:
+      - domain
+      - external
       - infrastructure
+  config:
+    import: optional:file:.env[.properties]
   threads:
     virtual:
       enabled: true
   servlet:
     multipart:
       max-file-size: 5MB
-      max-request-size: 10MB
-  datasource:
-    master:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${DB_HOST}:${MASTER_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-        username: ${DB_USER}
-        password: ${DB_PASSWORD}
-    slave:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${DB_HOST}:${SLAVE_DB_PORT}/${DB_NAME}?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-        username: ${DB_USER}
-        password: ${DB_PASSWORD}
-
 logging.level:
   org.hibernate.SQL: debug
   org.hibernate.orm.jdbc.bind: trace

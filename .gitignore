@@ -37,8 +37,6 @@ out/
 .vscode/
 
 ### .env ###
-tictoc-api/.env
-tictoc-api/.env
 .env
 
 ### redis ###
@@ -46,3 +44,10 @@ redis.conf
 
 ### yml ###
 application-prod.yml
+
+tictoc-api/src/main/generated/**/*.java
+tictoc-domain/src/main/generated/**/*.java
+tictoc-common/src/main/generated/**/*.java
+tictoc-batch/src/main/generated/**/*.java
+tictoc-external/src/main/generated/**/*.java
+tictoc-infrastructure/src/main/generated/**/*.java
