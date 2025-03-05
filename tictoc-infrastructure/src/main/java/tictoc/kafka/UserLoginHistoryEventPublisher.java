@@ -1,4 +1,4 @@
-package tictoc.user.event;
+package tictoc.kafka;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
