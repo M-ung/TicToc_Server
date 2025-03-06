@@ -52,7 +52,7 @@ public enum ErrorCode {
     KAKAO_BAD_REQUEST(HttpStatus.BAD_REQUEST, "카카오 로그인 통신에 실패하였습니다."),
 
     // Log
-    LOG_FILE_WRITE_BAD_REQUEST(HttpStatus.BAD_REQUEST,"로그 파일 저장 중 오류 발생했습니다.");
+    LOG_FILE_WRITE_ERROR(HttpStatus.BAD_REQUEST,"로그 파일 저장 중 오류 발생했습니다.");
 
     private final HttpStatus status;
     private final String message;
