@@ -1,7 +1,6 @@
 package tictoc.userLoginHistory.event.consumer;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,18 +9,18 @@ import tictoc.kafka.evnt.UserLoginHistoryEvent;
 import tictoc.kafka.exception.KafkaConsumeException;
 import tictoc.user.model.UserLoginHistory;
 import tictoc.user.repository.UserLoginHistoryRepository;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import static tictoc.error.ErrorCode.*;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserLoginHistoryEventConsumer {
     private final UserLoginHistoryRepository userLoginHistoryRepository;
+    private static final String LOG_FILE_PATH = "/var/log/tictoc/user_login_history.log";
+    private static final String LOG_MESSAGE_FORMAT = "%s - Id: %d, UserId: %d, IPAddress: %s, Device: %s%n";
 
     @KafkaListener(
             topics = "user-login-history-topic",
@@ -44,19 +43,39 @@ public class UserLoginHistoryEventConsumer {
     }
 
     private void saveLog(UserLoginHistory loginHistory) {
-        String userHome = System.getProperty("user.home");
-        String logFilePath = userHome + "/tictoc_logs/user_login_history.log";
-        File logFile = new File(logFilePath);
+        File logFile = createDirectoryAndFile();
+        writeLog(loginHistory, logFile);
+    }
+
+    private void writeLog(UserLoginHistory loginHistory, File logFile) {
+        synchronized (this) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
+                writer.write(String.format(LOG_MESSAGE_FORMAT,
+                        loginHistory.getLoginAt(), loginHistory.getId(), loginHistory.getUserId(), loginHistory.getIpAddress(), loginHistory.getDevice()));
+            } catch (IOException e) {
+                throw new LogFileWriteException(LOG_FILE_WRITE_ERROR);
+            }
+        }
+    }
+
+    private static File createDirectoryAndFile() {
+        File logFile = new File(LOG_FILE_PATH);
+        File directory = logFile.getParentFile();
+        if (!directory.exists()) {
+            if (!directory.mkdirs()) {
+                throw new LogFileWriteException(LOG_DIRECTORY_CREATION_ERROR);
+            }
+        }
         try {
-            logFile.getParentFile().mkdirs();
-            synchronized (this) {
-                try (BufferedWriter writer = new BufferedWriter(new FileWriter(logFile, true))) {
-                    writer.write(String.format("%s - Id: %d, UserId: %d, IPAddress: %s, Device: %s\n",
-                            loginHistory.getLoginAt(), loginHistory.getId(), loginHistory.getUserId(), loginHistory.getIpAddress(), loginHistory.getDevice()));
+            if (!logFile.exists()) {
+                boolean created = logFile.createNewFile();
+                if (!created) {
+                    throw new LogFileWriteException(LOG_FILE_CREATION_ERROR);
                 }
             }
         } catch (IOException e) {
-            throw new LogFileWriteException(LOG_FILE_WRITE_ERROR);
+            throw new LogFileWriteException(LOG_FILE_CREATION_ERROR, e);
         }
+        return logFile;
     }
 }

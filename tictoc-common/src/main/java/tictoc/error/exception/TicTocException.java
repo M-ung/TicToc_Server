@@ -12,8 +12,18 @@ public class TicTocException extends RuntimeException {
         this.errorCode = errorCode;
     }
 
+    public TicTocException(ErrorCode errorCode, Throwable cause) {
+        super(errorCode.getMessage(), cause);
+        this.errorCode = errorCode;
+    }
+
     public TicTocException(String message, ErrorCode errorCode) {
         super(message);
+        this.errorCode = errorCode;
+    }
+
+    public TicTocException(String message, ErrorCode errorCode, Throwable cause) {
+        super(message, cause);
         this.errorCode = errorCode;
     }
 }

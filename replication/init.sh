@@ -8,7 +8,7 @@
 
 # MASTER DB
 - docker inspect <컨테이너_이름_또는_ID> | grep "IPAddress"
-- SHOW MASTER STATUS; # file 복사
+- SHOW MASTER STATUS;
 - GRANT REPLICATION SLAVE ON *.* TO '유저'@'%';
 - FLUSH PRIVILEGES;
 
