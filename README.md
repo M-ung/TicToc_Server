@@ -1,7 +1,10 @@
 # ⏰ TicToc - Server
 
 ## 🖥️ 프로젝트 소개
-자신의 시간을 팔 수 있는 경매 플랫폼 서비스입니다.
+당신의 시간에 가치를 매기다, 시간 거래 경매 플랫폼입니다.
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/292b193b-9585-41b1-9951-73af07682fd9" width="80%">
+</div>
 
 <br>
 
