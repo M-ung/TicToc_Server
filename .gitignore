@@ -50,3 +50,5 @@ tictoc-common/src/main/generated/**/*.java
 tictoc-batch/src/main/generated/**/*.java
 tictoc-external/src/main/generated/**/*.java
 tictoc-infrastructure/src/main/generated/**/*.java
+
+replication
