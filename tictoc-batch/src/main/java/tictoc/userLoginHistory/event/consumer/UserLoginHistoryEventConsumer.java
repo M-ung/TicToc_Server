@@ -1,4 +1,4 @@
-package tictoc.userLoginHistory.event;
+package tictoc.userLoginHistory.event.consumer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

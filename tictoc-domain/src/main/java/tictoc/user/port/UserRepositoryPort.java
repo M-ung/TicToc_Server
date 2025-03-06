@@ -1,10 +1,9 @@
 package tictoc.user.port;
 
 import tictoc.user.model.User;
+import java.util.Optional;
 
 public interface UserRepositoryPort {
     User saveUser(User user);
-    User findUserById(Long userId);
-    User findUserByKakaoId(String kakaoId);
-    boolean existsUserByKakaoId(String kakaoId);
+    Optional<User> findUserByKakaoId(String kakaoId);
 }

@@ -1,10 +1,11 @@
-package tictoc.kafka.evnt;
+package tictoc.kafka.evnt.publisher;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import tictoc.error.ErrorCode;
+import tictoc.kafka.evnt.UserLoginHistoryEvent;
 import tictoc.kafka.exception.KafkaPublishException;
 
 @Slf4j
