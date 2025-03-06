@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import tictoc.kafka.evnt.UserLoginHistoryEvent;
+import tictoc.kafka.evnt.constants.UserLoginHistoryConstants;
 
 @Component
 @RequiredArgsConstructor
@@ -20,13 +21,13 @@ public class LoginHistoryPublisher {
     }
 
     private String getClientIp() {
-        var ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isEmpty() || "unknown".equalsIgnoreCase(ip))
+        var ip = request.getHeader(UserLoginHistoryConstants.X_FORWARDED_FOR);
+        if (ip == null || ip.isEmpty() ||UserLoginHistoryConstants.UNKNOWN.equalsIgnoreCase(ip))
             ip = request.getRemoteAddr();
         return ip;
     }
 
     private String getUserAgent() {
-        return request.getHeader("User-Agent");
+        return request.getHeader(UserLoginHistoryConstants.USER_AGENT);
     }
 }
