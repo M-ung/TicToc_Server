@@ -1,16 +1,19 @@
 package tictoc.userLoginHistory.event;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import tictoc.error.exception.LogFileWriteException;
-import tictoc.kafka.UserLoginHistoryEvent;
+import tictoc.kafka.evnt.UserLoginHistoryEvent;
+import tictoc.kafka.exception.KafkaConsumeException;
 import tictoc.user.model.UserLoginHistory;
 import tictoc.user.repository.UserLoginHistoryRepository;
 import java.io.FileWriter;
 import java.io.IOException;
-import static tictoc.error.ErrorCode.LOG_FILE_WRITE_BAD_REQUEST;
+import static tictoc.error.ErrorCode.*;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class UserLoginHistoryEventConsumer {
@@ -22,9 +25,13 @@ public class UserLoginHistoryEventConsumer {
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consume(UserLoginHistoryEvent event) {
-        UserLoginHistory userLoginHistory = saveUserLoginHistory(UserLoginHistory.of(
-                event.userId(), event.loginAt(), event.ipAddress(), event.device()));
-        saveLog(userLoginHistory);
+        try {
+            UserLoginHistory userLoginHistory = saveUserLoginHistory(UserLoginHistory.of(
+                    event.userId(), event.loginAt(), event.ipAddress(), event.device()));
+            saveLog(userLoginHistory);
+        } catch (Exception e) {
+            throw new KafkaConsumeException(KAFKA_CONSUME_ERROR);
+        }
     }
 
     public UserLoginHistory saveUserLoginHistory(UserLoginHistory loginHistory) {

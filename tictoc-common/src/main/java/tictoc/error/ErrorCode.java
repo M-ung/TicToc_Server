@@ -26,12 +26,15 @@ public enum ErrorCode {
     BID_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 입찰입니다."),
     BID_FAIL(HttpStatus.BAD_REQUEST,"이미 입찰되었습니다."),
 
-    // Redis Auction
+    // Redis
     REDIS_AUCTION_NOT_FOUND(HttpStatus.BAD_REQUEST,"레디스에서 찾을 수 없는 경매입니다."),
     REDIS_AUCTION_PARSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"레디스에서 경매 데이터를 파싱하는 데 실패했습니다."),
 
-    // Kafka Auction
-    KAFKA_AUCTION_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,"카프카에서 경매 종료 진행을 실패했습니다."),
+    // Kafka
+    KAFKA_PUBLISH_ERROR(HttpStatus.BAD_REQUEST,"카프카에서 발행에 실패했습니다."),
+    KAFKA_CONSUME_ERROR(HttpStatus.BAD_REQUEST,"카프카에서 소비에 실패했습니다."),
+    KAFKA_SETTING_ERROR(HttpStatus.BAD_REQUEST,"카프카에서 세팅에 실패했습니다."),
+    KAFKA_DESERIALIZATION(HttpStatus.BAD_REQUEST,"카프카에서 역직렬화에 실패했습니다."),
 
     // Location
     LOCATION_NOT_FOUND(HttpStatus.BAD_REQUEST,"찾을 수 없는 지역 정보입니다."),
