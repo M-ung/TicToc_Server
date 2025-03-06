@@ -1,4 +1,4 @@
-package tictoc.kafka;
+package tictoc.kafka.evnt;
 
 import lombok.Builder;
 import java.time.LocalDateTime;

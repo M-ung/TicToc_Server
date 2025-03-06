@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.error.ErrorCode;
-import tictoc.kafka.UserLoginHistoryEvent;
-import tictoc.kafka.UserLoginHistoryEventPublisher;
+import tictoc.kafka.evnt.UserLoginHistoryEvent;
+import tictoc.kafka.evnt.UserLoginHistoryEventPublisher;
 
 @Component
 @RequiredArgsConstructor
