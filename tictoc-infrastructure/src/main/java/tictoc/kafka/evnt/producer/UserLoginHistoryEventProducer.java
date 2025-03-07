@@ -1,4 +1,4 @@
-package tictoc.kafka.evnt.publisher;
+package tictoc.kafka.evnt.producer;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +14,12 @@ import tictoc.kafka.exception.KafkaPublishException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class UserLoginHistoryEventPublisher {
+public class UserLoginHistoryEventProducer {
     private final HttpServletRequest request;
     private final KafkaTemplate<String, UserLoginHistoryEvent> kafkaTemplate;
 
     @Async
-    public void publish(Long userId) {
+    public void produce(Long userId) {
         try {
             UserLoginHistoryEvent event = UserLoginHistoryEvent.of(userId, getClientIp(), getUserAgent());
             log.info("[INFO] 토픽을 발행했습니다.: {}", event);
