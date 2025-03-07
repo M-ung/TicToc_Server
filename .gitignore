@@ -52,3 +52,8 @@ tictoc-external/src/main/generated/**/*.java
 tictoc-infrastructure/src/main/generated/**/*.java
 
 replication
+
+### log ###
+spy.log
+logs/
+*.log
