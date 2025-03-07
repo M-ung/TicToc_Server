@@ -22,7 +22,7 @@
 
 ## 🛠️ 헥사고날 아키텍처 구조
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/203c6f0e-fcd8-44e6-897c-89009058170f" width="80%">
+  <img src="https://github.com/user-attachments/assets/5bfcd479-4fbb-487f-83dc-e407758a9b0d" width="80%">
 </div>
 
 <br>
