@@ -13,9 +13,16 @@
 
 <br>
 
-## 🛠️ 아키텍처 구조
+## 🛠️ 시스템 아키텍처 구조
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
   <img src="https://github.com/user-attachments/assets/ea6fab02-e5be-453b-b551-ea96796cbfed" width="80%">
+</div>
+
+<br>
+
+## 🛠️ 헥사고날 아키텍처 구조
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+  <img src="https://github.com/user-attachments/assets/203c6f0e-fcd8-44e6-897c-89009058170f" width="80%">
 </div>
 
 <br>
