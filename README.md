@@ -8,7 +8,11 @@
 
 <br>
 
-## 🟢 ERD
+## 🟢 ERD 구조
+<div style="display: flex; flex-wrap: wrap; gap: 10px;">
+    <img src="https://github.com/user-attachments/assets/db8fb94c-8c6a-4e2c-9de9-30056862a5ac" width="80%">
+  <img src="https://github.com/user-attachments/assets/523346d2-083c-4c64-9281-8d2787c7ab42" width="80%">
+</div>
 
 <br>
 
@@ -28,7 +32,6 @@
 
 ## 📁 디렉토리 구조
 ```
-.
 tictoc-api ## 🗂️ API 관련 모듈
 ├── Dockerfile
 ├── build.gradle
@@ -176,30 +179,30 @@ tictoc-infrastructure (## 🗂️ Redis, Kafka 관련 모듈)
 
 ## 🕰️ 개발 기간
 * 25.01.11 - 진행 중
-  
+
 <br>
-  
+
 ## ⚙️ 개발 환경
-- `Java 21`
+- **Java** : 21
 - **IDE** : IntelliJ IDEA
 - **Framework** : Springboot(3.3.7)
 - **Database** : MySQL
 - **ORM** : Hibernate (Spring Data JPA 사용)
 
 <br>
-  
+
 ## 🧑‍🤝‍🧑 멤버 구성
 <p>
     <a href="https://github.com/M-ung">
       <img src="https://avatars.githubusercontent.com/u/126846468?v=4" width="100">
     </a>
 </p>
-  
+
 <br>
-  
+
 ## 📝 규칙
-  
-- **커밋 컨벤션**
+
+- **1️⃣ 커밋 컨벤션 규칙**
     - Feat: 새로운 기능 추가
     - Fix: 버그 수정
     - Docs: 문서 수정
@@ -207,27 +210,56 @@ tictoc-infrastructure (## 🗂️ Redis, Kafka 관련 모듈)
     - Refactor: 코드 리팩토링
     - Test: 테스트 코드, 리팩토링 테스트 코드 추가
     - Chore: 빌드 업무 수정, 패키지 매니저 수정
-  
-- **Branch 규칙**
+
+- **2️⃣ Branch 규칙**
     - 각자의 깃 타입과 이슈번호를 딴 branch 명을 사용한다.
     - 예시
         - git checkout -b 타입/#이슈번호
         - git checkout -b feature/#5
-  
-- **Commit message 규칙**
+
+- **3️⃣ Commit message 규칙**
     - "타입(앞글자를 대문자로): 커밋 메세지 - #이슈번호" 형식으로 작성한다.
     - 예시
         - Feat: 커밋 내용 - #이슈번호
         - Feat: 로그인 구현 - #5
-  
-- **DTO 규칙**
-    - 엔티티명 + Response/Request + DTO
-    - 예시
-        - UserResponseDTO
-        - PostRequestDTO
-     
+    - 아래 참고 자료를 최대한 활용한다.
+        - https://meetup.nhncloud.com/posts/106
+
+- **4️⃣ 쓰기/읽기 규칙**
+    - 쓰기 기능
+        - 객체 이름
+            - 엔티티 + Command + 계층
+            - 예시
+                - `UserCommandController`
+        - Transactional
+            - `@Transactional`
+    - 조회 기능
+        - 객체 이름
+            - 엔티티 + Query + 계층
+            - 예시
+                - `UserQueryService`
+        - Transactional
+            - `@Transactional(readOnly = true)`
+
+- **5️⃣ DTO 규칙**
+    - DTO 이름
+        - 엔티티명 + Response/Request + DTO
+        - 예시
+            - `UserResponseDTO`
+            - `PostRequestDTO`
+    - DTO 타입
+        - Default -> `record`
+        - Querydsl 사용시 -> `class`
+
 <br>
-  
+
+## 🔥 TroubleShooting
+- 장기 프로젝트 이대로.. 괜찮을까..?
+  -  https://velog.io/@_mung/TroubleShooting-TicToc-%EC%9E%A5%EA%B8%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%B4%EB%8C%80%EB%A1%9C..-%EA%B4%9C%EC%B0%AE%EC%9D%84%EA%B9%8C
+- Service 계층 이거.. 너무 무거운데..?
+  - https://velog.io/@_mung/TroubleShooting-TicToc-%EB%B9%84%EC%A7%80%EB%8B%88%EC%8A%A4-%EB%A1%9C%EC%A7%81-%EB%84%88%EB%AC%B4-%EB%AC%B4%EA%B1%B0%EC%9A%B4%EB%8D%B0-kds50uem
+
+
 ## 📚 참고 자료
 
 - **Mysql Master/Slave**
