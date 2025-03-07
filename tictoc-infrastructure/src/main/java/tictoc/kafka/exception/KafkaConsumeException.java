@@ -7,4 +7,7 @@ public class KafkaConsumeException extends TicTocException {
     public KafkaConsumeException(final ErrorCode errorCode) {
         super(errorCode);
     }
+    public KafkaConsumeException(final ErrorCode errorCode, final Throwable cause) {
+        super(errorCode, cause);
+    }
 }
