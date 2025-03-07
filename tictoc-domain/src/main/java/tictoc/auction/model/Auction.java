@@ -87,7 +87,7 @@ public class Auction extends BaseTimeEntity {
 
     public void validateAuctionAccess(final Long userId) {
         if(!userId.equals(this.auctioneerId)) {
-            throw new BidNoAccessException(BID_NO_ACCESS);
+            throw new AuctionNoAccessException(AUCTION_NO_ACCESS);
         }
     }
 
