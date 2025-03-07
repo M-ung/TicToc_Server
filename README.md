@@ -15,7 +15,7 @@
 
 ## 🛠️ 아키텍처 구조
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/c63542c2-2374-448b-854e-db971eeb62fd" width="80%">
+  <img src="https://github.com/user-attachments/assets/b9b20f8b-e722-4dab-9e69-eb128e785c4e" width="80%">
 </div>
 
 <br>
