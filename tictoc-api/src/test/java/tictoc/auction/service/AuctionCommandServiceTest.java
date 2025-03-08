@@ -13,6 +13,7 @@ import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.exception.ConflictAuctionDeleteException;
 import tictoc.auction.exception.ConflictAuctionUpdateException;
 import tictoc.auction.model.Auction;
+import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
@@ -56,7 +57,7 @@ public class AuctionCommandServiceTest {
                 Collections.emptyList(),
                 AuctionType.ONLINE
         );
-        auction = auctionRepositoryPort.saveAuction(Auction.of(2L, requestDTO));
+        auction = auctionRepositoryPort.saveAuction(Auction.of(1L, requestDTO));
     }
 
     @Test
@@ -98,8 +99,10 @@ public class AuctionCommandServiceTest {
         latch.await();
         executorService.shutdown();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
-        assertThat(updatedAuction.getTitle()).isEqualTo("Test Auction");
+        Auction afterAuction = auctionRepositoryPort.findAuctionById(auction.getId());
+        assertThat(afterAuction.getTitle()).isEqualTo("Test Auction");
+        assertThat(afterAuction.getProgress()).isEqualTo(AuctionProgress.IN_PROGRESS);
+        assertThat(afterAuction.getCurrentPrice()).isEqualTo(BID_PRICE);
     }
 
     @Test
@@ -131,7 +134,9 @@ public class AuctionCommandServiceTest {
         latch.await();
         executorService.shutdown();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
-        assertThat(updatedAuction.getStatus()).isEqualTo(TicTocStatus.ACTIVE);
+        Auction deletedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
+        assertThat(deletedAuction.getStatus()).isEqualTo(TicTocStatus.ACTIVE);
+        assertThat(deletedAuction.getProgress()).isEqualTo(AuctionProgress.IN_PROGRESS);
+        assertThat(deletedAuction.getCurrentPrice()).isEqualTo(BID_PRICE);
     }
 }
