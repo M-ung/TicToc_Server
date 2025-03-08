@@ -18,4 +18,5 @@ public interface AuctionRepositoryPort {
     AuctionUseCaseResDTO.Detail findDetailById(Long auctionId);
     PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable);
     int updateBidIfHigher(BidUseCaseReqDTO.Bid requestDTO);
+    int findCurrentIdById(Long auctionId);
 }

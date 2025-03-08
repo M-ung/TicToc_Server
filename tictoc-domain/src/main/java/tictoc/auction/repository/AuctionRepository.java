@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT a FROM Auction a WHERE a.id = :auctionId and a.status = :status")
     Optional<Auction> findByIdAndStatusForUpdate(@Param("auctionId") Long auctionId, @Param("status") TicTocStatus status);
     Optional<Auction> findByIdAndStatus(Long auctionId, TicTocStatus status);
@@ -33,4 +34,7 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, Auction
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Auction a SET a.currentPrice = :price WHERE a.id = :auctionId AND a.currentPrice < :price")
     int updateBidIfHigher(@Param("auctionId") Long auctionId, @Param("price") Integer price);
+
+    @Query("SELECT a.currentPrice FROM Auction a WHERE a.id = :auctionId")
+    Integer findCurrentPriceById(@Param("auctionId") Long auctionId);
 }
