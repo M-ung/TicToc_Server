@@ -45,7 +45,7 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     }
 
     @Override
-    public void validateAuctionTimeRangeForUpdate(Long userId, Long auctionId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
+    public void  validateAuctionTimeRangeForUpdate(Long userId, Long auctionId, LocalDateTime sellStartTime, LocalDateTime sellEndTime) {
         if (auctionRepository.existsAuctionInTimeRangeForUpdate(userId, auctionId, sellStartTime, sellEndTime, TicTocStatus.ACTIVE)) {
             throw new DuplicateAuctionDateException(DUPLICATE_AUCTION_DATE);
         }
