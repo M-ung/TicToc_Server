@@ -258,7 +258,8 @@ tictoc-infrastructure (## 🗂️ Redis, Kafka 관련 모듈)
   -  https://velog.io/@_mung/TroubleShooting-TicToc-%EC%9E%A5%EA%B8%B0-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EC%9D%B4%EB%8C%80%EB%A1%9C..-%EA%B4%9C%EC%B0%AE%EC%9D%84%EA%B9%8C
 - Service 계층 이거.. 너무 무거운데..?
   - https://velog.io/@_mung/TroubleShooting-TicToc-%EB%B9%84%EC%A7%80%EB%8B%88%EC%8A%A4-%EB%A1%9C%EC%A7%81-%EB%84%88%EB%AC%B4-%EB%AC%B4%EA%B1%B0%EC%9A%B4%EB%8D%B0-kds50uem
-
+- 경매 관리 중에 입찰이!? 동시성 충돌을 막아라!!!
+  - https://velog.io/@_mung/TroubleShooting-TicToc-%EA%B2%BD%EB%A7%A4-%EA%B4%80%EB%A6%AC-%EC%A4%91%EC%97%90-%EC%9E%85%EC%B0%B0%EC%9D%B4-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%B6%A9%EB%8F%8C%EC%9D%84-%EB%A7%89%EC%95%84%EB%9D%BC 
 
 ## 📚 참고 자료
 
