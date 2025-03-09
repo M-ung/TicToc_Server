@@ -1,4 +1,4 @@
-package tictoc.bid.service;
+package tictoc.bid.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

@@ -1,4 +1,4 @@
-package tictoc.auction.service.location;
+package tictoc.auction.application.location;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

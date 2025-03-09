@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import tictoc.annotation.Event;
 import tictoc.error.exception.LogFileWriteException;
 import tictoc.kafka.evnt.UserLoginHistoryEvent;
 import tictoc.kafka.exception.KafkaConsumeException;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import static tictoc.error.ErrorCode.*;
 
 @Slf4j
-@Component
+@Event("Consumer")
 @RequiredArgsConstructor
 public class UserLoginHistoryEventConsumer {
     private final UserLoginHistoryRepository userLoginHistoryRepository;

@@ -1,4 +1,4 @@
-package tictoc.user.service;
+package tictoc.user.application;
 
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;

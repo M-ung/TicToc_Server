@@ -7,7 +7,6 @@ import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.exception.AuctionAlreadyStartedException;
 import tictoc.auction.exception.AuctionNoAccessException;
 import tictoc.bid.exception.AuctionAlreadyBidException;
-import tictoc.bid.exception.BidNoAccessException;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.model.baseTime.BaseTimeEntity;
@@ -48,7 +47,7 @@ public class Auction extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private TicTocStatus status;
     @Version
-    private Integer version;
+    private Long version;
 
     public static Auction of(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
         return Auction.builder()
@@ -81,10 +80,6 @@ public class Auction extends BaseTimeEntity {
         this.type = requestDTO.type();
     }
 
-    public void updateCurrentPrice(final Integer currentPrice) {
-        this.currentPrice = currentPrice;
-    }
-
     public void deactivate(final Long userId) {
         validateAuctionAccess(userId);
         validateAuctionAlreadyStarted();
@@ -103,7 +98,7 @@ public class Auction extends BaseTimeEntity {
         }
     }
 
-    public void start(final Long userId) {
+    public void startBid(final Long userId) {
         this.validateBidAccess(userId);
         this.validateAuctionProgress();
         if (this.progress == NOT_STARTED) {

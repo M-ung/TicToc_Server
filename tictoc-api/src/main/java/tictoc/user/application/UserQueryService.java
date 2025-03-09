@@ -1,4 +1,4 @@
-package tictoc.user.service;
+package tictoc.user.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

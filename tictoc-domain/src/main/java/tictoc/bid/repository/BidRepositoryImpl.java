@@ -13,7 +13,6 @@ import tictoc.model.page.PageCustom;
 import tictoc.model.tictoc.TicTocStatus;
 import java.util.List;
 import java.util.Optional;
-
 import static tictoc.auction.model.QAuction.auction;
 import static tictoc.bid.model.QBid.bid;
 
@@ -35,7 +34,7 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
         return queryFactory.select(Projections.constructor(BidUseCaseResDTO.Bid.class,
                         auction.id,
                         auction.title,
-                        bid.price,
+                        bid.bidPrice,
                         auction.currentPrice,
                         bid.status,
                         auction.progress
