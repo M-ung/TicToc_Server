@@ -3,7 +3,7 @@ package tictoc.auction.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Event;
 import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.port.AuctionRepositoryPort;
@@ -17,9 +17,9 @@ import tictoc.user.model.UserSchedule;
 import tictoc.user.port.UserScheduleRepositoryPort;
 import java.nio.charset.StandardCharsets;
 
-@Component
+@Event("Listener")
 @RequiredArgsConstructor
-public class CloseAuctionListener implements MessageListener {
+public class CloseAuctionEventListener implements MessageListener {
     private final AuctionRepositoryPort auctionRepositoryPort;
     private final BidRepositoryPort bidRepositoryPort;
     private final WinningBidRepositoryPort winningBidRepositoryPort;

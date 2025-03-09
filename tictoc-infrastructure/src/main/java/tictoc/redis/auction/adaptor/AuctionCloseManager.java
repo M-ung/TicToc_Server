@@ -2,16 +2,16 @@ package tictoc.redis.auction.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Adapter;
 import tictoc.constants.AuctionConstants;
 import tictoc.redis.auction.port.out.CloseAuctionUseCase;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
-public class CloseAuctionAdapter implements CloseAuctionUseCase {
+public class AuctionCloseManager implements CloseAuctionUseCase {
     private final StringRedisTemplate redisTemplate;
 
     @Override

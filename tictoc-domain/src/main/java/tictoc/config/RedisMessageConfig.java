@@ -7,14 +7,14 @@ import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
-import tictoc.auction.event.CloseAuctionListener;
+import tictoc.auction.event.CloseAuctionEventListener;
 import tictoc.constants.AuctionConstants;
 
 @Configuration
 public class RedisMessageConfig {
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(
-            RedisConnectionFactory connectionFactory, CloseAuctionListener listener) {
+            RedisConnectionFactory connectionFactory, CloseAuctionEventListener listener) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listener, new PatternTopic(AuctionConstants.REDIS_KEY_EVENT_EXPIRED));
