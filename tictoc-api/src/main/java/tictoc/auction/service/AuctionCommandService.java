@@ -69,7 +69,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
 
     private void bidBeforeFail(Long auctionId) {
         var latestAuction = auctionRepositoryPort.findAuctionById(auctionId);
-        var latestCurrentPrice = auctionRepositoryPort.findCurrentIdById(auctionId);
+        var latestCurrentPrice = auctionRepositoryPort.findCurrentPriceById(auctionId);
         latestAuction.updateCurrentPrice(latestCurrentPrice);
     }
 }

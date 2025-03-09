@@ -20,10 +20,10 @@ public class BidCommandService implements BidCommandUseCase {
 
     @Override
     public void bid(final Long userId, BidUseCaseReqDTO.Bid requestDTO) {
-        if(auctionRepositoryPort.updateBidIfHigher(requestDTO) == 0) {
-            throw new BidException(BID_FAIL);
-        }
-        var findAuction = auctionRepositoryPort.findAuctionById(requestDTO.auctionId());
+//        if(auctionRepositoryPort.updateBidIfHigher(requestDTO) == 0) {
+//            throw new BidException(BID_FAIL);
+//        }
+        var findAuction = auctionRepositoryPort.findAuctionByIdForUpdate(requestDTO.auctionId());
         bidRepositoryPort.checkBeforeBid(findAuction);
         findAuction.start(userId);
         bidRepositoryPort.saveBid(Bid.of(userId, requestDTO));

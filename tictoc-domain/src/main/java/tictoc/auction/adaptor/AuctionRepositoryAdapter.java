@@ -72,7 +72,7 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     }
 
     @Override
-    public int findCurrentIdById(Long auctionId) {
+    public int findCurrentPriceById(Long auctionId) {
         return auctionRepository.findCurrentPriceById(auctionId);
     }
 }

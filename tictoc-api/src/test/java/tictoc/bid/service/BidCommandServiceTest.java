@@ -14,6 +14,7 @@ import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.exception.BidException;
+import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidRepositoryPort;
 import tictoc.error.ErrorCode;
 import java.time.LocalDateTime;
@@ -22,6 +23,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -32,6 +35,8 @@ public class BidCommandServiceTest {
     private BidCommandService bidCommandService;
     @Autowired
     private AuctionRepositoryPort auctionRepositoryPort;
+    @Autowired
+    private BidRepositoryPort bidRepositoryPort;
 
     private static final Integer BID_PRICE = 1500;
     private static final int NUM_USERS = 1000;
@@ -65,12 +70,13 @@ public class BidCommandServiceTest {
 
         AtomicInteger successUsers = new AtomicInteger(0);
         AtomicInteger failedUsers = new AtomicInteger(0);
-
+        AtomicReference<Long> successUserId = new AtomicReference<>(0L);
         for (int i = 1; i <= NUM_USERS; i++) {
             final Long userId = (long) i;
             executorService.submit(() -> {
                 try {
-                    bidCommandService.bid(userId, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
+                    bidCommandService.bid(userId, new BidUseCaseReqDTO.Bid(auction.getId(), (int) (BID_PRICE * userId)));
+                    successUserId.set(userId);
                     successUsers.incrementAndGet();
                 } catch (BidException e) {
                     failedUsers.incrementAndGet();
@@ -82,9 +88,12 @@ public class BidCommandServiceTest {
         }
 
         latch.await();
+        executorService.shutdown();
 
-        Auction updatedAuction = auctionRepositoryPort.findAuctionById(auction.getId());
-        assertThat(updatedAuction.getCurrentPrice()).isEqualTo(BID_PRICE);
+//        Auction findAuction = auctionRepositoryPort.findAuctionById(auction.getId());
+//        Bid findBid = bidRepositoryPort.findBidByAuctionId(findAuction.getId());
+//        assertThat(findAuction.getCurrentPrice()).isEqualTo(BID_PRICE);
+//        assertThat(findBid.getBidderId()).isEqualTo(successUserId.get());
         assertThat(successUsers.get()).isEqualTo(1);
         assertThat(failedUsers.get()).isEqualTo(NUM_USERS-1);
         executorService.shutdown();

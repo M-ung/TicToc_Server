@@ -15,8 +15,7 @@ public class UserLoginHistoryBatchScheduler {
     private final JobLauncher jobLauncher;
     private final Job userLoginHistoryJob;
 
-//    @Scheduled(cron = "*/10 * * * * *") //TODO 30초에 한 번 (테스트용)
-    @Scheduled(cron = "0 0 1 * * *") //TODO 아침 10시에 한 번 (배포용)
+    @Scheduled(cron = "0 0 0 * * SUN")
     public void runBatchJob() throws JobExecutionException {
         JobParameters jobParameters = new JobParametersBuilder()
                 .addLong("time", System.currentTimeMillis())
