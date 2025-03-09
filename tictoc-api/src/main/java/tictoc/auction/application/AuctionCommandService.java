@@ -50,7 +50,6 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             closeAuctionUseCase.delete(auctionId);
             closeAuctionUseCase.save(auctionId, findAuction.getAuctionCloseTime());
         } catch (OptimisticLockingFailureException e) {
-            bidBeforeFail(auctionId);
             throw new ConflictAuctionUpdateException(ErrorCode.CONFLICT_AUCTION_UPDATE);
         }
     }
@@ -62,14 +61,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             findAuction.deactivate(userId);
             closeAuctionUseCase.delete(auctionId);
         } catch (OptimisticLockingFailureException e) {
-            bidBeforeFail(auctionId);
-            throw new ConflictAuctionDeleteException(ErrorCode.CONFLICT_AUCTION_DELETE);
+            throw new ConflictAuctionUpdateException(ErrorCode.CONFLICT_AUCTION_UPDATE);
         }
-    }
-
-    private void bidBeforeFail(Long auctionId) {
-        var latestAuction = auctionRepositoryPort.findAuctionById(auctionId);
-        var latestCurrentPrice = auctionRepositoryPort.findCurrentPriceById(auctionId);
-        latestAuction.updateCurrentPrice(latestCurrentPrice);
     }
 }

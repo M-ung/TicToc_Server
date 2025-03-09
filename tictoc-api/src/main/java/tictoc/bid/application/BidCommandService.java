@@ -32,16 +32,17 @@ public class BidCommandService implements BidCommandUseCase {
             if (!lock.tryLock(Math.round(RedisConstants.LOCK_WAIT_TIME), RedisConstants.LOCK_LEASE_TIME, TimeUnit.SECONDS)) {
                 throw new BidException(BID_FAIL);
             }
-            var findAuction = auctionRepositoryPort.findAuctionByIdForUpdate(requestDTO.auctionId());
+            var findAuction = auctionRepositoryPort.findAuctionById(requestDTO.auctionId());
 
             bidRepositoryPort.checkBeforeBid(findAuction);
             findAuction.startBid(userId);
 
+            Integer beforePrice = findAuction.getCurrentPrice();
             int updatedRows = auctionRepositoryPort.updateBidIfHigher(requestDTO);
             if (updatedRows == 0) {
                 throw new BidException(BID_FAIL);
             }
-            bidRepositoryPort.saveBid(Bid.of(userId, requestDTO, findAuction.getCurrentPrice()));
+            bidRepositoryPort.saveBid(Bid.of(userId, requestDTO, beforePrice));
             Thread.sleep(RedisConstants.LOCK_LEASE_TIME * 1000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

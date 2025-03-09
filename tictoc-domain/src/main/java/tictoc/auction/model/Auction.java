@@ -47,7 +47,7 @@ public class Auction extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private TicTocStatus status;
     @Version
-    private Integer version;
+    private Long version;
 
     public static Auction of(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
         return Auction.builder()
@@ -126,9 +126,5 @@ public class Auction extends BaseTimeEntity {
         this.currentPrice = 0;
         this.finalPrice = 0;
         this.progress = NOT_BID;
-    }
-
-    public void updateCurrentPrice(int latestCurrentPrice) {
-        this.currentPrice = latestCurrentPrice;
     }
 }

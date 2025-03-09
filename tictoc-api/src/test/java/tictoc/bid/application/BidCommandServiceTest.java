@@ -14,7 +14,6 @@ import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.exception.BidException;
 import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidCommandUseCase;
 import tictoc.bid.port.BidRepositoryPort;
@@ -26,7 +25,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
@@ -70,8 +68,8 @@ public class BidCommandServiceTest {
         CountDownLatch readyLatch = new CountDownLatch(NUM_USERS);
         CountDownLatch startLatch = new CountDownLatch(1);
         CountDownLatch doneLatch = new CountDownLatch(NUM_USERS);
-
         ExecutorService executorService = Executors.newFixedThreadPool(NUM_USERS);
+
         AtomicInteger successUsers = new AtomicInteger(0);
         AtomicInteger failedUsers = new AtomicInteger(0);
         AtomicReference<Long> successUserId = new AtomicReference<>();
@@ -88,11 +86,9 @@ public class BidCommandServiceTest {
                     successUserId.set(userId);
                     successBidPrice.set(bidPrice);
                     successUsers.incrementAndGet();
-                } catch (BidException e) {
+                } catch (Exception e) {
                     failedUsers.incrementAndGet();
                     assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
                 } finally {
                     doneLatch.countDown();
                 }

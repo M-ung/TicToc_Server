@@ -70,9 +70,4 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     public int updateBidIfHigher(BidUseCaseReqDTO.Bid requestDTO) {
         return auctionRepository.updateBidIfHigher(requestDTO.auctionId(), requestDTO.price());
     }
-
-    @Override
-    public int findCurrentPriceById(Long auctionId) {
-        return auctionRepository.findCurrentPriceById(auctionId);
-    }
 }
