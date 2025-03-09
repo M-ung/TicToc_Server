@@ -15,9 +15,10 @@ import tictoc.auction.exception.ConflictAuctionUpdateException;
 import tictoc.auction.model.Auction;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
+import tictoc.auction.port.AuctionCommandUseCase;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.application.BidCommandService;
+import tictoc.bid.port.BidCommandUseCase;
 import tictoc.error.ErrorCode;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
@@ -32,9 +33,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = TicTocApiApplication.class)
 public class AuctionCommandServiceTest {
     @Autowired
-    private AuctionCommandService auctionCommandService;
+    private AuctionCommandUseCase auctionCommandUseCase;
     @Autowired
-    private BidCommandService bidCommandService;
+    private BidCommandUseCase bidCommandUseCase;
     @Autowired
     private AuctionRepositoryPort auctionRepositoryPort;
     private static final Integer BID_PRICE = 1500;
@@ -78,7 +79,7 @@ public class AuctionCommandServiceTest {
                         Collections.emptyList(),
                         AuctionType.ONLINE
                 );
-                auctionCommandService.update(1L, auction.getId(), updateDTO);
+                auctionCommandUseCase.update(1L, auction.getId(), updateDTO);
             } catch (Exception e) {
                 assertThat(e).isInstanceOf(ConflictAuctionUpdateException.class);
             } finally {
@@ -88,7 +89,7 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
-                bidCommandService.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
+                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
             } catch (Exception e) {
                 assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
             } finally {
@@ -113,7 +114,7 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
-                auctionCommandService.delete(1L, auction.getId());
+                auctionCommandUseCase.delete(1L, auction.getId());
             } catch (Exception e) {
                 assertThat(e).isInstanceOf(ConflictAuctionDeleteException.class);
             } finally {
@@ -123,7 +124,7 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
-                bidCommandService.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
+                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
             } catch (Exception e) {
                 assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
             } finally {

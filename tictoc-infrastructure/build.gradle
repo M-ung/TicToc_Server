@@ -3,8 +3,4 @@ jar.enabled = true
 
 dependencies {
     implementation project(':tictoc-common')
-
-    // redis
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 }

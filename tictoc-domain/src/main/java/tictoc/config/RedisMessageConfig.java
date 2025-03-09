@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.PatternTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import tictoc.auction.event.CloseAuctionEventListener;
-import tictoc.constants.AuctionConstants;
+import tictoc.constants.RedisConstants;
 
 @Configuration
 public class RedisMessageConfig {
@@ -17,7 +17,7 @@ public class RedisMessageConfig {
             RedisConnectionFactory connectionFactory, CloseAuctionEventListener listener) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listener, new PatternTopic(AuctionConstants.REDIS_KEY_EVENT_EXPIRED));
+        container.addMessageListener(listener, new PatternTopic(RedisConstants.REDIS_KEY_EVENT_EXPIRED));
         return container;
     }
 
@@ -25,7 +25,7 @@ public class RedisMessageConfig {
     public Boolean enableKeyspaceNotifications(RedisConnectionFactory redisConnectionFactory) {
         StringRedisTemplate template = new StringRedisTemplate(redisConnectionFactory);
         template.execute((RedisCallback<Object>) connection -> {
-            connection.setConfig(AuctionConstants.REDIS_KEY_SPACE_EVENT_PARAM, AuctionConstants.REDIS_KEY_SPACE_EVENT_VALUE);
+            connection.setConfig(RedisConstants.REDIS_KEY_SPACE_EVENT_PARAM, RedisConstants.REDIS_KEY_SPACE_EVENT_VALUE);
             return null;
         });
         return true;
