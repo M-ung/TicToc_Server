@@ -1,15 +1,13 @@
-package tictoc.bid.service;
+package tictoc.bid.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.exception.BidException;
 import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidCommandUseCase;
 import tictoc.bid.port.BidRepositoryPort;
-import static tictoc.error.ErrorCode.BID_FAIL;
 
 @Service
 @Transactional

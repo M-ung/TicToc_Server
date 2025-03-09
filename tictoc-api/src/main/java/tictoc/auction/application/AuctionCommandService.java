@@ -1,4 +1,4 @@
-package tictoc.auction.service;
+package tictoc.auction.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.OptimisticLockingFailureException;

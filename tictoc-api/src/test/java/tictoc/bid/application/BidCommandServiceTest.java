@@ -1,4 +1,4 @@
-package tictoc.bid.service;
+package tictoc.bid.application;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -14,7 +14,6 @@ import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.exception.BidException;
-import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidRepositoryPort;
 import tictoc.error.ErrorCode;
 import java.time.LocalDateTime;
