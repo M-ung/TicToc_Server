@@ -1,16 +1,15 @@
 package tictoc.user.adaptor;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Adapter;
 import tictoc.user.dto.response.UserUseCaseResDTO;
 import tictoc.user.model.UserSchedule;
 import tictoc.user.port.UserScheduleRepositoryPort;
 import tictoc.user.repository.UserScheduleRepository;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
 public class UserScheduleRepositoryAdaptor implements UserScheduleRepositoryPort {
     private final UserScheduleRepository userScheduleRepository;

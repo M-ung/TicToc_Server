@@ -2,7 +2,7 @@ package tictoc.bid.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Adapter;
 import tictoc.auction.model.Auction;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
@@ -15,7 +15,7 @@ import tictoc.auction.model.type.AuctionProgress;
 import tictoc.model.page.PageCustom;
 import static tictoc.error.ErrorCode.BID_NOT_FOUND;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
 public class BidRepositoryAdaptor implements BidRepositoryPort {
     private final BidRepository bidRepository;

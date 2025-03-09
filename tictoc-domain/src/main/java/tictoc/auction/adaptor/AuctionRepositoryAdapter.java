@@ -2,7 +2,7 @@ package tictoc.auction.adaptor;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Adapter;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.dto.response.AuctionUseCaseResDTO;
 import tictoc.auction.exception.AuctionNotFoundException;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import static tictoc.error.ErrorCode.AUCTION_NOT_FOUND;
 import static tictoc.error.ErrorCode.DUPLICATE_AUCTION_DATE;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
 public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     private final AuctionRepository auctionRepository;

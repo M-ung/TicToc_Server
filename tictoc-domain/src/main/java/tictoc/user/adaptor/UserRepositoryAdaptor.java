@@ -1,7 +1,7 @@
 package tictoc.user.adaptor;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import tictoc.annotation.Adapter;
 import tictoc.user.exception.UserNotFoundException;
 import tictoc.user.model.User;
 import tictoc.user.port.UserRepositoryPort;
@@ -9,7 +9,7 @@ import tictoc.user.repository.UserRepository;
 import java.util.Optional;
 import static tictoc.error.ErrorCode.USER_NOT_FOUND;
 
-@Component
+@Adapter
 @RequiredArgsConstructor
 public class UserRepositoryAdaptor implements UserRepositoryPort {
     private final UserRepository userRepository;
