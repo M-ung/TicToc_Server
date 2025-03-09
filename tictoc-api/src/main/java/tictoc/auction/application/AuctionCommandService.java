@@ -61,7 +61,7 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             findAuction.deactivate(userId);
             closeAuctionUseCase.delete(auctionId);
         } catch (OptimisticLockingFailureException e) {
-            throw new ConflictAuctionUpdateException(ErrorCode.CONFLICT_AUCTION_UPDATE);
+            throw new ConflictAuctionDeleteException(ErrorCode.CONFLICT_AUCTION_DELETE);
         }
     }
 }
