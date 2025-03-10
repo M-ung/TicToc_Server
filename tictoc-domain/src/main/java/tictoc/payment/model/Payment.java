@@ -17,9 +17,9 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long tradeId;
     private Long auctioneerId;
     private Long bidderId;
+    private Long winningBidId;
     private Integer price;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
