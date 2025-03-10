@@ -1,7 +1,8 @@
 package tictoc.bid.dto.response;
 
 import tictoc.auction.model.type.AuctionProgress;
-import tictoc.bid.model.type.BidStatus;
+import tictoc.bid.model.type.BidProgress;
+
 import java.time.LocalDateTime;
 
 public class BidResDTO {
@@ -10,7 +11,7 @@ public class BidResDTO {
             String title,
             Integer myPrice,
             Integer currentPrice,
-            BidStatus bidStatus,
+            BidProgress bidProgress,
             AuctionProgress auctionProgress
     ) {}
     public record WinningBid(

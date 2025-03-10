@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
 import tictoc.auction.model.type.AuctionProgress;
-import tictoc.bid.model.type.BidStatus;
+import tictoc.bid.model.type.BidProgress;
 import tictoc.model.page.PageCustom;
 import tictoc.model.tictoc.TicTocStatus;
 import java.util.List;
@@ -36,7 +36,7 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
                         auction.title,
                         bid.bidPrice,
                         auction.currentPrice,
-                        bid.status,
+                        bid.progress,
                         auction.progress
                 ))
                 .from(bid)
@@ -44,7 +44,7 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
                 .where(
                         auction.status.eq(TicTocStatus.ACTIVE),
                         bid.bidderId.eq(userId),
-                        filterBidStatus(requestDTO.bidStatus()),
+                        filterBidStatus(requestDTO.bidProgress()),
                         filterAuctionProgress(requestDTO.auctionProgress())
                 )
                 .offset(pageable.getOffset())
@@ -52,9 +52,9 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
                 .fetch();
     }
 
-    private BooleanExpression filterBidStatus(BidStatus status) {
+    private BooleanExpression filterBidStatus(BidProgress status) {
         return status != null
-                ? bid.status.eq(status)
+                ? bid.progress.eq(status)
                 : null;
     }
 
@@ -76,7 +76,7 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
                         .where(
                                 auction.status.eq(TicTocStatus.ACTIVE),
                                 bid.bidderId.eq(userId),
-                                filterBidStatus(requestDTO.bidStatus()),
+                                filterBidStatus(requestDTO.bidProgress()),
                                 filterAuctionProgress(requestDTO.auctionProgress())
                         )
                         .fetchOne()

@@ -8,7 +8,7 @@ import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.dto.response.BidUseCaseResDTO;
 import tictoc.bid.exception.BidNotFoundException;
 import tictoc.bid.model.Bid;
-import tictoc.bid.model.type.BidStatus;
+import tictoc.bid.model.type.BidProgress;
 import tictoc.bid.port.BidRepositoryPort;
 import tictoc.bid.repository.BidRepository;
 import tictoc.auction.model.type.AuctionProgress;
@@ -39,6 +39,6 @@ public class BidRepositoryAdaptor implements BidRepositoryPort {
 
     @Override
     public Bid findBidByAuctionId(Long auctionId) {
-        return bidRepository.findByAuctionIdAndStatus(auctionId, BidStatus.PROGRESS).orElseThrow(() -> new BidNotFoundException(BID_NOT_FOUND));
+        return bidRepository.findByAuctionIdAndProgress(auctionId, BidProgress.PROGRESS).orElseThrow(() -> new BidNotFoundException(BID_NOT_FOUND));
     }
 }

@@ -3,7 +3,7 @@ package tictoc.bid.model;
 import jakarta.persistence.*;
 import lombok.*;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
-import tictoc.bid.model.type.BidStatus;
+import tictoc.bid.model.type.BidProgress;
 
 @Getter
 @Entity
@@ -20,7 +20,7 @@ public class Bid {
     private Integer beforePrice;
     private Integer bidPrice;
     @Enumerated(EnumType.STRING)
-    private BidStatus status;
+    private BidProgress progress;
 
     public static Bid of(final Long userId, BidUseCaseReqDTO.Bid requestDTO, Integer currentPrice) {
         return Bid.builder()
@@ -28,15 +28,15 @@ public class Bid {
                 .bidderId(userId)
                 .beforePrice(currentPrice)
                 .bidPrice(requestDTO.price())
-                .status(BidStatus.PROGRESS)
+                .progress(BidProgress.PROGRESS)
                 .build();
     }
 
     public void fail() {
-        this.status = BidStatus.FAILED;
+        this.progress = BidProgress.FAILED;
     }
 
     public void win() {
-        this.status = BidStatus.WIN;
+        this.progress = BidProgress.WIN;
     }
 }

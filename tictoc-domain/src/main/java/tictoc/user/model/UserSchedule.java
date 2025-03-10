@@ -23,7 +23,7 @@ public class UserSchedule extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long userId;
-    private Long tradeId;
+    private Long winningBidId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     @Enumerated(EnumType.STRING)
@@ -32,7 +32,7 @@ public class UserSchedule extends BaseTimeEntity {
     public static UserSchedule of(Auction auction, Bid bid) {
         return UserSchedule.builder()
                 .userId(bid.getBidderId())
-                .tradeId(1L)
+                .winningBidId(1L) //TODO 결제 붙이고 구현할 예정
                 .startTime(auction.getSellStartTime())
                 .endTime(auction.getSellEndTime())
                 .status(TicTocStatus.ACTIVE)

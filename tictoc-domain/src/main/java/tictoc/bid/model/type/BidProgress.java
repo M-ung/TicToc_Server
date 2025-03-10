@@ -1,5 +1,5 @@
 package tictoc.bid.model.type;
 
-public enum BidStatus {
+public enum BidProgress {
     WIN, PROGRESS, FAILED
 }

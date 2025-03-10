@@ -1,7 +1,7 @@
 package tictoc.bid.dto.request;
 
 import tictoc.auction.model.type.AuctionProgress;
-import tictoc.bid.model.type.BidStatus;
+import tictoc.bid.model.type.BidProgress;
 
 public class BidUseCaseReqDTO {
     public record Bid(
@@ -9,7 +9,7 @@ public class BidUseCaseReqDTO {
             Integer price
     ) {}
     public record Filter (
-            BidStatus bidStatus,
+            BidProgress bidProgress,
             AuctionProgress auctionProgress
     ) {}
 }
