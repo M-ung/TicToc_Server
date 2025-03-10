@@ -10,8 +10,7 @@
 
 ## 🟢 ERD 구조
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-    <img src="https://github.com/user-attachments/assets/db8fb94c-8c6a-4e2c-9de9-30056862a5ac" width="80%">
-  <img src="https://github.com/user-attachments/assets/523346d2-083c-4c64-9281-8d2787c7ab42" width="80%">
+    <img src="https://github.com/user-attachments/assets/45ba7907-cb40-478d-a84a-36c2ee06646b" width="80%">
 </div>
 
 <br>
