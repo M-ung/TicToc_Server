@@ -38,52 +38,43 @@ jobs:
             fi
 
             echo "현재 실행 중인 컨테이너 확인..."
-            if docker ps | grep -q tictoc-blue; then
-              echo "🔵 Blue 컨테이너가 실행 중입니다. Green을 업데이트합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
+            BLUE_RUNNING=$(docker ps --format '{{.Names}}' | grep -w 'tictoc-blue' || echo "stopped")
+            GREEN_RUNNING=$(docker ps --format '{{.Names}}' | grep -w 'tictoc-green' || echo "stopped")
 
-              until docker ps | grep -q tictoc-green; do
-                echo "⏳ Green 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
-                sleep 2
-              done
-              echo "✅ Green 컨테이너가 정상적으로 실행되었습니다!"
+            if [ "$BLUE_RUNNING" != "stopped" ]; then
+                echo "🔵 Blue 컨테이너가 실행 중입니다. Green을 업데이트합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
 
-              echo "🛑 기존 Blue 컨테이너를 종료합니다."
-              docker stop tictoc-blue && docker rm tictoc-blue
+                until docker ps --format '{{.Names}}' | grep -wq 'tictoc-green'; do
+                    echo "⏳ Green 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
+                    sleep 2
+                done
+                echo "✅ Green 컨테이너가 정상적으로 실행되었습니다!"
 
-              echo "🔵 Blue 컨테이너를 다시 실행합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
-            
-              until docker ps | grep -q tictoc-blue; do
-                echo "⏳ Blue 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
-                sleep 2
-              done
-              echo "✅ Blue 컨테이너도 새 버전으로 업데이트 완료!"
+                echo "🛑 기존 Blue 컨테이너를 종료합니다."
+                docker stop tictoc-blue && docker rm tictoc-blue
 
+                echo "🔵 새로운 Blue 컨테이너를 실행합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
             else
-              echo "🟢 Green 컨테이너가 실행 중입니다. Blue를 업데이트합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
-            
-              until docker ps | grep -q tictoc-blue; do
-                echo "⏳ Blue 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
-                sleep 2
-              done
-              echo "✅ Blue 컨테이너가 정상적으로 실행되었습니다!"
+                echo "🟢 Green 컨테이너가 실행 중입니다. Blue를 업데이트합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
 
-              echo "🛑 기존 Green 컨테이너를 종료합니다."
-              docker stop tictoc-green && docker rm tictoc-green
+                until docker ps --format '{{.Names}}' | grep -wq 'tictoc-blue'; do
+                    echo "⏳ Blue 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
+                    sleep 2
+                done
+                echo "✅ Blue 컨테이너가 정상적으로 실행되었습니다!"
 
-              echo "🟢 Green 컨테이너를 다시 실행합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
-            
-              until docker ps | grep -q tictoc-green; do
-                echo "⏳ Green 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
-                sleep 2
-              done
-              echo "✅ Green 컨테이너도 새 버전으로 업데이트 완료!"
+                echo "🛑 기존 Green 컨테이너를 종료합니다."
+                docker stop tictoc-green && docker rm tictoc-green
+
+                echo "🟢 새로운 Green 컨테이너를 실행합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
             fi
 
-            echo "🔄 Nginx가 자동으로 로드 밸런싱을 조정합니다."
+            echo "🔄 Nginx 설정을 다시 로드합니다."
+            sudo systemctl daemon-reload
             sudo systemctl restart nginx
             echo "✅ 무중단 배포 완료!"
 
