@@ -8,21 +8,21 @@
 
 <br>
 
-## 🟢 ERD 구조
+## 🟢 ERD
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
     <img src="https://github.com/user-attachments/assets/dae658ad-8106-4882-aa18-fde1e0b55361" width="80%">
 </div>
 
 <br>
 
-## 🛠️ 시스템 아키텍처 구조
+## 🛠️ 시스템 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
   <img src="https://github.com/user-attachments/assets/ea6fab02-e5be-453b-b551-ea96796cbfed" width="80%">
 </div>
 
 <br>
 
-## 🛠️ 헥사고날 아키텍처 구조
+## 🛠️ 소프트웨어 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
   <img src="https://github.com/user-attachments/assets/5bfcd479-4fbb-487f-83dc-e407758a9b0d" width="80%">
 </div>
