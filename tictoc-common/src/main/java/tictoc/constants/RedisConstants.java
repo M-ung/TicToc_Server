@@ -8,6 +8,6 @@ public class RedisConstants {
     public static final String REDIS_KEY_SPACE_EVENT_VALUE = "Ex";
 
     public static final String LOCK_PREFIX = "bid:";
-    public static final double LOCK_WAIT_TIME = 0;
+    public static final long LOCK_WAIT_TIME = 0;
     public static final long LOCK_LEASE_TIME = 3;
 }
