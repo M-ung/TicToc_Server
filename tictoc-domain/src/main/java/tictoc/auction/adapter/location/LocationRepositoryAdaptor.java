@@ -1,4 +1,4 @@
-package tictoc.auction.adaptor.location;
+package tictoc.auction.adapter.location;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

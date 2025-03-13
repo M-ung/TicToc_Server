@@ -1,20 +1,16 @@
-package tictoc.user.controller;
+package tictoc.user.adapter;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tictoc.config.security.jwt.dto.JwtResDTO;
-import tictoc.user.mapper.UserReqMapper;
 import tictoc.user.port.UserCommandUseCase;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
-@Tag(name = "User", description = "회원 관련 API")
-public class UserCommandController {
-    private final UserReqMapper userReqMapper;
+public class UserCommandController implements UserCommandApi {
     private final UserCommandUseCase userCommandUseCase;
 
     @PostMapping("/login")

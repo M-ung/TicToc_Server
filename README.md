@@ -40,28 +40,28 @@ tictoc-api ## 🗂️ API 관련 모듈
     │   │   └── tictoc
     │   │       ├── TicTocApiApplication.java
     │   │       ├── auction 
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── mapper (## 🗂️ 객체 변환)
     │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
     │   │       ├── bid
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── mapper (## 🗂️ 객체 변환)
     │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
+    │   │       ├── user
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
+    │   │       │   ├── mapper (## 🗂️ 객체 변환)
+    │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
     │   │       ├── config
     │   │       │   ├── CorsFilter.java 
     │   │       │   ├── SpringDocOpenApiConfig.java (## 📄 Swagger)
     │   │       │   ├── WebConfig.java
     │   │       │   └── security
-    │   │       ├── user
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
-    │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
-    │   │       │   ├── mapper (## 🗂️ 객체 변환)
-    │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
     │   ├── resources
     │   │   ├── application.yml (## 📄 공통 application.yml)
     │   │   ├── application-dev.yml (## 📄 개발 application.yml)
@@ -108,7 +108,7 @@ tictoc-domain (## 🗂️ 도메인 관련 모듈)
     │   │   └── tictoc
     │   │       ├── TicTocDomainApplication.java
     │   │       ├── auction
-    │   │       │   ├── adaptor (## 🗂️ DB와 연결하는 구현체)
+    │   │       │   ├── adapter (## 🗂️ DB와 연결하는 구현체)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── event (## 🗂️ Redis Event)
     │   │       │   ├── exception (## 🗂️ 커스텀 예러)
@@ -116,7 +116,7 @@ tictoc-domain (## 🗂️ 도메인 관련 모듈)
     │   │       │   ├── port (## 🗂️ DB와 연결하는 인터페이스)
     │   │       │   ├── repository (## 🗂️ DB와 접근하는 저장소)
     │   │       ├── bid
-    │   │       │   ├── adaptor (## 🗂️ DB와 연결하는 구현체)
+    │   │       │   ├── adapter (## 🗂️ DB와 연결하는 구현체)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── exception (## 🗂️ 커스텀 예러)
     │   │       │   ├── model (## 🗂️ 도메인 엔티티)
@@ -128,12 +128,12 @@ tictoc-domain (## 🗂️ 도메인 관련 모듈)
     │   │       ├── payment
     │   │       │   ├── model (## 🗂️ 도메인 엔티티)
     │   │       ├── propfile
-    │   │       │   ├── adaptor (## 🗂️ DB와 연결하는 구현체)
+    │   │       │   ├── adapter (## 🗂️ DB와 연결하는 구현체)
     │   │       │   ├── model (## 🗂️ 도메인 엔티티)
     │   │       │   ├── port (## 🗂️ DB와 연결하는 인터페이스)
     │   │       │   ├── repository (## 🗂️ DB와 접근하는 저장소)
     │   │       ├── user
-    │   │       │   ├── adaptor (## 🗂️ DB와 연결하는 구현체)
+    │   │       │   ├── adapter (## 🗂️ DB와 연결하는 구현체)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── exception (## 🗂️ 커스텀 예러)
     │   │       │   ├── model (## 🗂️ 도메인 엔티티)
@@ -167,7 +167,7 @@ tictoc-infrastructure (## 🗂️ Redis, Kafka 관련 모듈)
     │   │       │   ├── exception (## 🗂️ 커스텀 예러)
     │   │       ├── redis 
     │   │       │   ├── auction
-    │   │       │   │   ├── adaptor (## 🗂️ Redis 비지니스 로직 구현체)
+    │   │       │   │   ├── adapter (## 🗂️ Redis 비지니스 로직 구현체)
     │   │       │   │   ├── port (## 🗂️ Redis 비지니스 로직 인터페이스)
     │   │       │   ├── config (## 🗂️ Redis 설정)
     │   │       │   ├── exception (## 🗂️ 커스텀 예러)

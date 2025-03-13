@@ -1,6 +1,5 @@
-package tictoc.user.controller;
+package tictoc.user.adapter;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/member")
-@Tag(name = "User", description = "회원 관련 API")
-public class UserQueryController {
+public class UserQueryController implements UserQueryApi {
     private final UserResMapper userResMapper;
     private final UserQueryUseCase userQueryUseCase;
 
