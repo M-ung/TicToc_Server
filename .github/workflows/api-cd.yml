@@ -18,43 +18,65 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            echo "✅ EC2 접속 완료. 배포를 시작합니다..."
+
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
             docker pull ${{ secrets.DOCKER_USERNAME }}/tictoc-api:latest
-            
+
             if ! docker network ls | grep -q tic-toc-net; then
-              echo "Docker 네트워크가 존재하지 않습니다. 생성합니다."
+              echo "🕸️ Docker 네트워크가 존재하지 않습니다. 생성합니다."
               docker network create tic-toc-net
+              echo "✅ Docker 네트워크 생성 완료!"
             fi
-            
+
             if ! docker ps --format '{{.Names}}' | grep -q redis; then
-              echo "Redis가 실행 중이 아닙니다. 실행합니다."
+              echo "🎈 Redis가 실행 중이 아닙니다. 실행합니다."
               docker-compose -f ~/tictoc-deploy/docker-compose.yml up -d redis
+              echo "✅ Redis 실행 완료!"
             else
-              echo "Redis가 이미 실행 중입니다."
+              echo "🎈 Redis가 이미 실행 중입니다."
             fi
-            
-            if docker ps | grep -q tictoc-blue; then
-              echo "현재 Blue가 실행 중입니다. Green으로 배포합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.green.yml up -d
-              sleep 5
-              sudo sed -i 's|proxy_pass http://blue|proxy_pass http://green|' /etc/nginx/conf.d/app.conf
-              sudo systemctl restart nginx
 
-              if docker ps -a --format '{{.Names}}' | grep -q tictoc-blue; then
+            echo "현재 실행 중인 컨테이너 확인..."
+            BLUE_RUNNING=$(docker ps --format '{{.Names}}' | grep -w 'tictoc-blue' || echo "stopped")
+            GREEN_RUNNING=$(docker ps --format '{{.Names}}' | grep -w 'tictoc-green' || echo "stopped")
+
+            if [ "$BLUE_RUNNING" != "stopped" ]; then
+                echo "🔵 Blue 컨테이너가 실행 중입니다. Green을 업데이트합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
+
+                until docker ps --format '{{.Names}}' | grep -wq 'tictoc-green'; do
+                    echo "⏳ Green 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
+                    sleep 2
+                done
+                echo "✅ Green 컨테이너가 정상적으로 실행되었습니다!"
+
+                echo "🛑 기존 Blue 컨테이너를 종료합니다."
                 docker stop tictoc-blue && docker rm tictoc-blue
-              fi
 
+                echo "🔵 새로운 Blue 컨테이너를 실행합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
             else
-              echo "현재 Green이 실행 중입니다. Blue로 배포합니다."
-              docker-compose -f ~/tictoc-deploy/docker-compose.blue.yml up -d
-              sleep 5
-              sudo sed -i 's|proxy_pass http://green|proxy_pass http://blue|' /etc/nginx/conf.d/app.conf
-              sudo nginx -t && sudo systemctl restart nginx
+                echo "🟢 Green 컨테이너가 실행 중입니다. Blue를 업데이트합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-blue
 
-              if docker ps -a --format '{{.Names}}' | grep -q tictoc-green; then
+                until docker ps --format '{{.Names}}' | grep -wq 'tictoc-blue'; do
+                    echo "⏳ Blue 컨테이너가 아직 실행되지 않았습니다. 2초 후 다시 확인..."
+                    sleep 2
+                done
+                echo "✅ Blue 컨테이너가 정상적으로 실행되었습니다!"
+
+                echo "🛑 기존 Green 컨테이너를 종료합니다."
                 docker stop tictoc-green && docker rm tictoc-green
-              fi
+
+                echo "🟢 새로운 Green 컨테이너를 실행합니다."
+                docker-compose -f ~/tictoc-deploy/docker-compose.backend.yml up -d tictoc-green
             fi
+
+            echo "🔄 Nginx 설정을 다시 로드합니다."
+            sudo systemctl daemon-reload
+            sudo systemctl restart nginx
+            echo "✅ 무중단 배포 완료!"
 
 
       - name: 🗑️ Delete Unused Images
@@ -64,8 +86,6 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            echo "실행 중이지 않은 tictoc-api 및 redis 이미지 삭제 중..."
-            docker images | grep 'tictoc-api' | awk '{print $3}' | xargs -r docker rmi -f
-            docker images | grep 'redis' | awk '{print $3}' | xargs -r docker rmi -f
+            echo "🗑️ 사용되지 않는 Docker 이미지를 삭제합니다."
             docker image prune -f
-            echo "✅ 삭제 완료!"
+            echo "✅ 정리 완료!"
