@@ -1,4 +1,4 @@
-package tictoc.auction.controller;
+package tictoc.auction.adapter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

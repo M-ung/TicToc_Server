@@ -1,4 +1,4 @@
-package tictoc.profile.adaptor;
+package tictoc.profile.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

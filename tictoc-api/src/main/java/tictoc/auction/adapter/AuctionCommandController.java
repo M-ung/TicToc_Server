@@ -1,6 +1,5 @@
-package tictoc.auction.controller;
+package tictoc.auction.adapter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class AuctionCommandController {
 
     @PostMapping("/register")
     @Operation(summary = "경매 등록 API", description = "경매 등록 API 입니다.")
-    public ResponseEntity<String> register (@UserId final Long userId, @RequestBody @Valid AuctionReqDTO.Register requestDTO) throws JsonProcessingException {
+    public ResponseEntity<String> register (@UserId final Long userId, @RequestBody @Valid AuctionReqDTO.Register requestDTO) {
         auctionCommandUseCase.register(userId, auctionReqMapper.toUseCaseDTO(requestDTO));
         return ResponseEntity.ok().body("경매가 등록되었습니다.");
     }

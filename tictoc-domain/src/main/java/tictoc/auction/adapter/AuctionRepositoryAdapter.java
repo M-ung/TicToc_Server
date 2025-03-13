@@ -1,4 +1,4 @@
-package tictoc.auction.adaptor;
+package tictoc.auction.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;

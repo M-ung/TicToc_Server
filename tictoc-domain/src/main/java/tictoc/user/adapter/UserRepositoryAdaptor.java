@@ -1,4 +1,4 @@
-package tictoc.user.adaptor;
+package tictoc.user.adapter;
 
 import lombok.RequiredArgsConstructor;
 import tictoc.annotation.Adapter;
