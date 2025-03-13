@@ -40,28 +40,28 @@ tictoc-api ## 🗂️ API 관련 모듈
     │   │   └── tictoc
     │   │       ├── TicTocApiApplication.java
     │   │       ├── auction 
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── mapper (## 🗂️ 객체 변환)
     │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
     │   │       ├── bid
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
     │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
     │   │       │   ├── mapper (## 🗂️ 객체 변환)
     │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
+    │   │       ├── user
+    │   │       │   ├── adapter (## 🗂️ API 요청을 처리하는 컨트롤러)
+    │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
+    │   │       │   ├── mapper (## 🗂️ 객체 변환)
+    │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
+    │   │       │   ├── application (## 🗂️ 비지니스 로직 구현체)
     │   │       ├── config
     │   │       │   ├── CorsFilter.java 
     │   │       │   ├── SpringDocOpenApiConfig.java (## 📄 Swagger)
     │   │       │   ├── WebConfig.java
     │   │       │   └── security
-    │   │       ├── user
-    │   │       │   ├── controller (## 🗂️ API 요청을 처리하는 컨트롤러)
-    │   │       │   ├── dto (## 🗂️ 데이터 전송 객체)
-    │   │       │   ├── mapper (## 🗂️ 객체 변환)
-    │   │       │   ├── port (## 🗂️ 비지니스 로직 인터페이스)
-    │   │       │   ├── service (## 🗂️ 비지니스 로직 구현체)
     │   ├── resources
     │   │   ├── application.yml (## 📄 공통 application.yml)
     │   │   ├── application-dev.yml (## 📄 개발 application.yml)
