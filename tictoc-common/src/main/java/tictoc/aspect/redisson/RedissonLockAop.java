@@ -1,4 +1,4 @@
-package tictoc.aspect;
+package tictoc.aspect.redisson;
 
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -6,15 +6,15 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
+import org.springframework.stereotype.Component;
 import tictoc.annotation.DistributedLock;
-import tictoc.annotation.RedissonLock;
 import tictoc.constants.RedisConstants;
 import tictoc.error.ErrorCode;
 import tictoc.error.exception.LockAcquisitionException;
 import java.util.concurrent.TimeUnit;
 
 @Aspect
-@RedissonLock
+@Component
 @RequiredArgsConstructor
 public class RedissonLockAop {
     private final RedissonClient redissonClient;
