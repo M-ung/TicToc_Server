@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.model.type.BidProgress;
+import tictoc.model.baseTime.BaseTimeEntity;
 
 @Getter
 @Entity
@@ -11,7 +12,7 @@ import tictoc.bid.model.type.BidProgress;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "bid", uniqueConstraints = @UniqueConstraint(columnNames = {"auctionId", "beforePrice"}))
-public class Bid {
+public class Bid extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

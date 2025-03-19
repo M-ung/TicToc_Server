@@ -17,8 +17,10 @@ import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
 import tictoc.auction.port.AuctionCommandUseCase;
 import tictoc.auction.port.AuctionRepositoryPort;
+import tictoc.auction.repository.AuctionRepository;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.bid.port.BidCommandUseCase;
+import tictoc.bid.repository.BidRepository;
 import tictoc.error.ErrorCode;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
@@ -69,6 +71,16 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
+                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
+            } catch (Exception e) {
+                assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
+            } finally {
+                latch.countDown();
+            }
+        });
+
+        executorService.submit(() -> {
+            try {
                 AuctionUseCaseReqDTO.Update updateDTO = new AuctionUseCaseReqDTO.Update(
                         "Updated Auction Title",
                         "Updated Auction Description",
@@ -82,16 +94,6 @@ public class AuctionCommandServiceTest {
                 auctionCommandUseCase.update(1L, auction.getId(), updateDTO);
             } catch (Exception e) {
                 assertThat(e).isInstanceOf(ConflictAuctionUpdateException.class);
-            } finally {
-                latch.countDown();
-            }
-        });
-
-        executorService.submit(() -> {
-            try {
-                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
-            } catch (Exception e) {
-                assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
             } finally {
                 latch.countDown();
             }
@@ -114,9 +116,9 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
-                auctionCommandUseCase.delete(1L, auction.getId());
+                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
             } catch (Exception e) {
-                assertThat(e).isInstanceOf(ConflictAuctionDeleteException.class);
+                assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
             } finally {
                 latch.countDown();
             }
@@ -124,9 +126,9 @@ public class AuctionCommandServiceTest {
 
         executorService.submit(() -> {
             try {
-                bidCommandUseCase.bid(2L, new BidUseCaseReqDTO.Bid(auction.getId(), BID_PRICE));
+                auctionCommandUseCase.delete(1L, auction.getId());
             } catch (Exception e) {
-                assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
+                assertThat(e).isInstanceOf(ConflictAuctionDeleteException.class);
             } finally {
                 latch.countDown();
             }
