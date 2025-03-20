@@ -3,7 +3,7 @@
 ## 🖥️ 프로젝트 소개
 당신의 시간에 가치를 매기다, 시간 거래 경매 플랫폼입니다.
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/292b193b-9585-41b1-9951-73af07682fd9" width="80%">
+  <img src="https://github.com/user-attachments/assets/339cb265-d614-4496-bb6f-31a263892259" width="80%">
 </div>
 
 <br>
@@ -17,14 +17,14 @@
 
 ## 🛠️ 시스템 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/ea6fab02-e5be-453b-b551-ea96796cbfed" width="80%">
+  <img src="https://github.com/user-attachments/assets/45a534ee-3862-4cff-a45e-e15d8bf3f0df" width="80%">
 </div>
 
 <br>
 
 ## 🛠️ 소프트웨어 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/5bfcd479-4fbb-487f-83dc-e407758a9b0d" width="80%">
+  <img src="https://github.com/user-attachments/assets/c286e841-47a5-486b-8480-7f7101c7f57f" width="80%">
 </div>
 
 <br>
