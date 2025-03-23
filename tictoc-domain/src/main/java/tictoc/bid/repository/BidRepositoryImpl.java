@@ -25,8 +25,15 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
     @Override
     public PageCustom<BidUseCaseResDTO.Bid> findBidsByFilterWithPageable(final Long userId, BidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
         var results = queryFilteredBids(userId, requestDTO, pageable);
-        long total = getTotalByFilter(userId, requestDTO);
-        int totalPages = calculateTotalPages(total, pageable.getPageSize());
+        BooleanExpression[] conditions = new BooleanExpression[] {
+                auction.status.eq(TicTocStatus.ACTIVE),
+                bid.bidderId.eq(userId),
+                filterBidStatus(requestDTO.bidProgress()),
+                filterAuctionProgress(requestDTO.auctionProgress())
+        };
+
+        long total = pageable.getPageNumber() == 0 ? getTotal(conditions) : -1;
+        int totalPages = total >= 0 ? (int) Math.ceil((double) total / pageable.getPageSize()) : -1;
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
     }
 
@@ -53,32 +60,19 @@ public class BidRepositoryImpl implements BidRepositoryCustom {
     }
 
     private BooleanExpression filterBidStatus(BidProgress status) {
-        return status != null
-                ? bid.progress.eq(status)
-                : null;
+        return status != null ? bid.progress.eq(status) : null;
     }
 
     private BooleanExpression filterAuctionProgress(AuctionProgress progress) {
-        return progress != null
-                ? auction.progress.eq(progress)
-                : null;
+        return progress != null ? auction.progress.eq(progress) : null;
     }
 
-    private int calculateTotalPages(long total, int pageSize) {
-        return (int) Math.ceil((double) total / pageSize);
-    }
-
-    private long getTotalByFilter(Long userId, BidUseCaseReqDTO.Filter requestDTO) {
+    private long getTotal(BooleanExpression... conditions) {
         return Optional.ofNullable(
                 queryFactory.select(bid.count())
                         .from(bid)
                         .leftJoin(auction).on(bid.auctionId.eq(auction.id))
-                        .where(
-                                auction.status.eq(TicTocStatus.ACTIVE),
-                                bid.bidderId.eq(userId),
-                                filterBidStatus(requestDTO.bidProgress()),
-                                filterAuctionProgress(requestDTO.auctionProgress())
-                        )
+                        .where(conditions)
                         .fetchOne()
         ).orElse(0L);
     }
