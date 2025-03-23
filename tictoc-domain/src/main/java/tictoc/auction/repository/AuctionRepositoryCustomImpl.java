@@ -27,14 +27,47 @@ public class AuctionRepositoryCustomImpl implements AuctionRepositoryCustom {
     @Override
     public PageCustom<AuctionUseCaseResDTO.Auction> findAuctionsByFilterWithPageable(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
         var results = queryFilteredAuctions(requestDTO, pageable);
-        long total = getTotalCount(auction.status.eq(TicTocStatus.ACTIVE)
-                .and(filterPrice(requestDTO.startPrice(), requestDTO.endPrice()))
-                .and(filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()))
-                .and(filterProgress(requestDTO.progress()))
-                .and(filterType(requestDTO.type()))
-                .and(filterLocations(requestDTO.locations())));
-        int totalPages = calculateTotalPages(total, pageable.getPageSize());
+        BooleanExpression[] conditions = new BooleanExpression[] {
+                auction.status.eq(TicTocStatus.ACTIVE),
+                filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
+                filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
+                filterProgress(requestDTO.progress()),
+                filterType(requestDTO.type()),
+                filterLocations(requestDTO.locations())
+        };
+
+        long total = pageable.getPageNumber() == 0 ? getTotal(conditions) : -1;
+        int totalPages = total >= 0 ? (int) Math.ceil((double) total / pageable.getPageSize()) : -1;
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
+    }
+
+    private List<AuctionUseCaseResDTO.Auction> queryFilteredAuctions(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
+        return queryFactory.select(Projections.constructor(AuctionUseCaseResDTO.Auction.class,
+                        auction.id,
+                        auction.title,
+                        auction.startPrice,
+                        auction.currentPrice,
+                        auction.sellStartTime,
+                        auction.sellEndTime,
+                        auction.auctionOpenTime,
+                        auction.auctionCloseTime,
+                        auction.progress,
+                        auction.type
+                ))
+                .from(auction)
+                .leftJoin(auctionLocation).on(auction.id.eq(auctionLocation.auctionId))
+                .leftJoin(location).on(auctionLocation.locationId.eq(location.id))
+                .where(
+                        auction.status.eq(TicTocStatus.ACTIVE),
+                        filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
+                        filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
+                        filterProgress(requestDTO.progress()),
+                        filterType(requestDTO.type()),
+                        filterLocations(requestDTO.locations())
+                )
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
     }
 
     @Override
@@ -65,8 +98,13 @@ public class AuctionRepositoryCustomImpl implements AuctionRepositoryCustom {
     @Override
     public PageCustom<AuctionUseCaseResDTO.Auction> findMyAuctionsWithPageable(final Long userId, Pageable pageable) {
         var results = queryMyAuctions(userId, pageable);
-        long total = getTotalCount(auction.status.eq(TicTocStatus.ACTIVE).and(auction.auctioneerId.eq(userId)));
-        int totalPages = calculateTotalPages(total, pageable.getPageSize());
+        BooleanExpression[] conditions = new BooleanExpression[] {
+                auction.status.eq(TicTocStatus.ACTIVE),
+                auction.auctioneerId.eq(userId)
+        };
+
+        long total = pageable.getPageNumber() == 0 ? getTotal(conditions) : -1;
+        int totalPages = total >= 0 ? (int) Math.ceil((double) total / pageable.getPageSize()) : -1;
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
     }
 
@@ -89,35 +127,6 @@ public class AuctionRepositoryCustomImpl implements AuctionRepositoryCustom {
                 .where(
                         auction.status.eq(TicTocStatus.ACTIVE),
                         auction.auctioneerId.eq(userId)
-                )
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .fetch();
-    }
-
-    private List<AuctionUseCaseResDTO.Auction> queryFilteredAuctions(AuctionUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
-        return queryFactory.select(Projections.constructor(AuctionUseCaseResDTO.Auction.class,
-                        auction.id,
-                        auction.title,
-                        auction.startPrice,
-                        auction.currentPrice,
-                        auction.sellStartTime,
-                        auction.sellEndTime,
-                        auction.auctionOpenTime,
-                        auction.auctionCloseTime,
-                        auction.progress,
-                        auction.type
-                ))
-                .from(auction)
-                .leftJoin(auctionLocation).on(auction.id.eq(auctionLocation.auctionId))
-                .leftJoin(location).on(auctionLocation.locationId.eq(location.id))
-                .where(
-                        auction.status.eq(TicTocStatus.ACTIVE),
-                        filterPrice(requestDTO.startPrice(), requestDTO.endPrice()),
-                        filterSellTime(requestDTO.sellStartTime(), requestDTO.sellEndTime()),
-                        filterProgress(requestDTO.progress()),
-                        filterType(requestDTO.type()),
-                        filterLocations(requestDTO.locations())
                 )
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -179,15 +188,13 @@ public class AuctionRepositoryCustomImpl implements AuctionRepositoryCustom {
         return result;
     }
 
-    private int calculateTotalPages(long total, int pageSize) {
-        return (int) Math.ceil((double) total / pageSize);
-    }
-
-    private long getTotalCount(BooleanExpression condition) {
+    private long getTotal(BooleanExpression... conditions) {
         return Optional.ofNullable(
                 queryFactory.select(auction.count())
                         .from(auction)
-                        .where(condition)
+                        .leftJoin(auctionLocation).on(auction.id.eq(auctionLocation.auctionId))
+                        .leftJoin(location).on(auctionLocation.locationId.eq(location.id))
+                        .where(conditions)
                         .fetchOne()
         ).orElse(0L);
     }
