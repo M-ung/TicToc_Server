@@ -23,9 +23,16 @@ public class WinningBidRepositoryImpl implements WinningBidRepositoryCustom {
 
     @Override
     public PageCustom<BidUseCaseResDTO.WinningBid> findWinningBidsByFilterWithPageable(WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable) {
-        var results = queryFilteredWinningBids (requestDTO, pageable);
-        long total = getTotalByFilter(requestDTO);
-        int totalPages = calculateTotalPages(total, pageable.getPageSize());
+        var results = queryFilteredWinningBids(requestDTO, pageable);
+        BooleanExpression[] conditions = new BooleanExpression[]{
+                auction.status.eq(TicTocStatus.ACTIVE),
+                filterPrice(requestDTO.price()),
+                filterBidDate(requestDTO.winningBidDate()),
+                filterSellTime(requestDTO)
+        };
+
+        long total = pageable.getPageNumber() == 0 ? getTotal(conditions) : -1;
+        int totalPages = total >= 0 ? (int) Math.ceil((double) total / pageable.getPageSize()) : -1;
         return new PageCustom<>(results, totalPages, total, pageable.getPageSize(), pageable.getPageNumber());
     }
 
@@ -69,21 +76,12 @@ public class WinningBidRepositoryImpl implements WinningBidRepositoryCustom {
         return localDateTime != null ? winningBid.updatedAt.eq(localDateTime) : null;
     }
 
-    private int calculateTotalPages(long total, int pageSize) {
-        return (int) Math.ceil((double) total / pageSize);
-    }
-
-    private long getTotalByFilter(WinningBidUseCaseReqDTO.Filter requestDTO) {
+    private long getTotal(BooleanExpression... conditions) {
         return Optional.ofNullable(
                 queryFactory.select(winningBid.count())
                         .from(winningBid)
                         .leftJoin(auction).on(winningBid.auctionId.eq(auction.id))
-                        .where(
-                                auction.status.eq(TicTocStatus.ACTIVE),
-                                filterPrice(requestDTO.price()),
-                                filterBidDate(requestDTO.winningBidDate()),
-                                filterSellTime(requestDTO)
-                        )
+                        .where(conditions)
                         .fetchOne()
         ).orElse(0L);
     }
