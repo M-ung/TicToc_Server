@@ -15,15 +15,6 @@ public class KakaoFeignProvider {
     private final KakaoGetTokenFeignApi kakaoGetTokenFeignApi;
     private final KakaoGetTokenInfoFeignApi kakaoGetTokenInfoFeignApi;
     private final KakaoGetProfileFeignApi kakaoGetProfileFeignApi;
-//
-//    public String login(final String authorizationCode) {
-//        try {
-//            final String accessToken = getKakaoAccessToken(authorizationCode);
-//            return getSocialId(accessToken);
-//        } catch (FeignException e) {
-//            throw new BadRequestException(ErrorCode.KAKAO_BAD_REQUEST);
-//        }
-//    }
 
     public KakaoResDTO.KakaoUserInfo getKakaoProfile(final String accessToken) {
         return kakaoGetProfileFeignApi.getKakaoProfile(accessToken);

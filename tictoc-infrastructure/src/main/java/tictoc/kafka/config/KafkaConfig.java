@@ -49,8 +49,7 @@ public class KafkaConfig {
 
     @Bean
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, UserLoginHistoryEvent>> kafkaListenerContainerFactory() {
-        ConcurrentKafkaListenerContainerFactory<String, UserLoginHistoryEvent> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
+        ConcurrentKafkaListenerContainerFactory<String, UserLoginHistoryEvent> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         factory.setCommonErrorHandler(new DefaultErrorHandler(
                 new DeadLetterPublishingRecoverer(kafkaTemplate()),

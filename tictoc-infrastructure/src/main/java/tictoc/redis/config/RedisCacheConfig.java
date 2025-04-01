@@ -33,12 +33,11 @@ public class RedisCacheConfig {
         PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator.builder()
                 .allowIfSubType(Object.class)
                 .build();
-
         return new ObjectMapper()
-                .enable(SerializationFeature.INDENT_OUTPUT)
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                .registerModule(new JavaTimeModule())
-                .activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+                .enable(SerializationFeature.INDENT_OUTPUT) // Json 들여쓰기 출력
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS) // 날짜를 문자열로 저장
+                .registerModule(new JavaTimeModule()) // Java 8 날짜 타입
+                .activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL); // 다양한 타입의 객체를 안전하게 Json으로 저장
     }
 
     @Bean
@@ -51,23 +50,21 @@ public class RedisCacheConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory factory = new LettuceConnectionFactory(host, port);
-        return factory;
+        return new LettuceConnectionFactory(host, port);
     }
 
     private RedisCacheConfiguration defaultCacheConfiguration() {
         return RedisCacheConfiguration
                 .defaultCacheConfig()
-                .disableCachingNullValues()
-                .serializeKeysWith(fromSerializer(new StringRedisSerializer()))
-                .serializeValuesWith(fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper())))
-                .entryTtl(Duration.ofMinutes(2));
+                .disableCachingNullValues() // Null은 캐시 X
+                .serializeKeysWith(fromSerializer(new StringRedisSerializer())) // Key는 문자열로 저장
+                .serializeValuesWith(fromSerializer(new GenericJackson2JsonRedisSerializer(objectMapper()))); // 값은 Json으로 저장
     }
 
     @Bean
-    public RedisTemplate<?, ?> redisTemplate() {
-        RedisTemplate<?, ?> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
+    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory cf) {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(cf);
         redisTemplate.setDefaultSerializer(new StringRedisSerializer());
         return redisTemplate;
     }

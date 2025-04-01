@@ -19,5 +19,4 @@ public class MasterDataSourceConfig {
                 .type(HikariDataSource.class)
                 .build();
     }
-
 }
