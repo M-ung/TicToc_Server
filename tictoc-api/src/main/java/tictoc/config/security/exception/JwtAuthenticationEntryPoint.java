@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import tictoc.constants.AuthConstants;
 import tictoc.error.ErrorCode;
 import tictoc.error.ErrorResponse;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 

@@ -14,6 +14,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
-        resolvers.add(userIdArgumentResolver);
+        resolvers.add(userIdArgumentResolver); // 사용자의 ID를 추출해서 컨트롤러 파라미터로 자동 주입해줄 커스텀 resolver
     }
 }

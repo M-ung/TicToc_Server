@@ -22,8 +22,11 @@ public class SpringDocOpenApiConfig {
     @Bean
     public OpenAPI openAPI() {
         SecurityScheme securityScheme = new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")
-                .in(SecurityScheme.In.HEADER).name("Authorization");
+                .type(SecurityScheme.Type.HTTP) // 인증 타입: HTTP 인증
+                .scheme("bearer") // 인증 방식: Bearer 토큰
+                .bearerFormat("JWT") // 토큰 포맷: JWT (UI 표시 목적)
+                .in(SecurityScheme.In.HEADER) // 헤더에 포함시킬 것임
+                .name("Authorization"); // 헤더 이름: Authorization
         SecurityRequirement securityRequirement = new SecurityRequirement().addList("bearerAuth");
 
         return new OpenAPI()

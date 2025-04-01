@@ -6,7 +6,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
@@ -15,11 +14,9 @@ import tictoc.constants.AuthConstants;
 import tictoc.error.ErrorCode;
 import tictoc.error.ErrorResponse;
 import tictoc.error.exception.UnauthorizedException;
-
 import java.io.IOException;
 import java.io.PrintWriter;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class ExceptionHandlerFilter extends OncePerRequestFilter {
@@ -43,7 +40,6 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
     }
 
     private void handleException(HttpServletResponse response, Exception e) throws IOException {
-        log.error(">>> Exception Handler Filter : ", e);
         setResponse(response, HttpStatus.INTERNAL_SERVER_ERROR, ErrorCode.INTERNAL_SERVER_ERROR);
     }
 

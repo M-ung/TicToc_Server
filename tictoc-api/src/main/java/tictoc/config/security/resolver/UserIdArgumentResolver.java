@@ -13,10 +13,10 @@ import tictoc.annotation.UserId;
 public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        //UserId 어노테이션을 parameter가 가지고 있는지 확인
+        // userId 어노테이션을 parameter가 가지고 있는지 확인
         var isParamHasUserIdAnnotation = parameter.hasParameterAnnotation(UserId.class);
 
-        //parameter의 타입이 Long인지 확인
+        // parameter의 타입이 Long인지 확인
         var isParamLongType = Long.class.equals(parameter.getParameterType());
         return isParamHasUserIdAnnotation && isParamLongType;
     }
@@ -25,6 +25,6 @@ public class UserIdArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         return SecurityContextHolder.getContext()
                 .getAuthentication()
-                .getPrincipal();
+                .getPrincipal(); // 현재 인증된 사용자의 principal 반환
     }
 }
