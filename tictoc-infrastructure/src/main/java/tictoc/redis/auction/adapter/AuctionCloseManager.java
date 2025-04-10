@@ -1,4 +1,4 @@
-package tictoc.redis.auction.adaptor;
+package tictoc.redis.auction.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;

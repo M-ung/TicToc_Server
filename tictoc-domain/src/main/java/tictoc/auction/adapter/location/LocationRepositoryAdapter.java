@@ -14,7 +14,7 @@ import static tictoc.error.ErrorCode.LOCATION_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor
-public class LocationRepositoryAdaptor implements LocationRepositoryPort {
+public class LocationRepositoryAdapter implements LocationRepositoryPort {
     private final LocationRepository locationRepository;
     private final AuctionLocationRepository auctionLocationRepository;
 
