@@ -9,6 +9,7 @@ import tictoc.auction.exception.AuctionNoAccessException;
 import tictoc.bid.exception.AuctionAlreadyBidException;
 import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.model.type.AuctionType;
+import tictoc.bid.exception.BidException;
 import tictoc.model.baseTime.BaseTimeEntity;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
@@ -78,6 +79,14 @@ public class Auction extends BaseTimeEntity {
         this.sellEndTime = requestDTO.sellEndTime();
         this.auctionCloseTime = requestDTO.auctionCloseTime();
         this.type = requestDTO.type();
+    }
+
+    public void updateCurrentPrice(Integer price) {
+        if(this.currentPrice < price) {
+            this.currentPrice = price;
+        } else {
+            throw new BidException(BID_FAIL);
+        }
     }
 
     public void deactivate(final Long userId) {
