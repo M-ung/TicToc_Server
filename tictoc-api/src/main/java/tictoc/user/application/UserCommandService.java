@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.error.ErrorCode;
 import tictoc.error.exception.BadRequestException;
-import tictoc.kafka.evnt.producer.UserLoginHistoryEventProducer;
 import tictoc.kakao.KakaoFeignProvider;
 import tictoc.config.security.jwt.dto.JwtResDTO;
 import tictoc.config.security.jwt.util.JwtProvider;
@@ -16,7 +15,9 @@ import tictoc.profile.model.ProfileImage;
 import tictoc.profile.port.ProfileRepositoryPort;
 import tictoc.user.model.User;
 import tictoc.user.port.UserCommandUseCase;
+import tictoc.user.port.UserLoginHistoryRepositoryPort;
 import tictoc.user.port.UserRepositoryPort;
+import java.time.LocalDateTime;
 
 @Service
 @Transactional
@@ -24,19 +25,19 @@ import tictoc.user.port.UserRepositoryPort;
 public class UserCommandService implements UserCommandUseCase {
     private final UserRepositoryPort userRepositoryPort;
     private final ProfileRepositoryPort profileRepositoryPort;
-    private final UserLoginHistoryEventProducer userLoginHistoryEventProducer;
+    private final UserLoginHistoryRepositoryPort userLoginHistoryRepositoryPort;
     private final JwtProvider jwtProvider;
     private final KakaoFeignProvider kakaoFeignProvider;
 
     @Override
-    public JwtResDTO.Login login(String authenticationCode) {
+    public JwtResDTO.Login login(String authenticationCode, String userIp, String userAgent) {
         try {
             final var accessToken = kakaoFeignProvider.getKakaoAccessToken(authenticationCode);
             final var kakaoId = kakaoFeignProvider.getSocialId(accessToken);
             final Long userId = userRepositoryPort.findUserByKakaoId(kakaoId)
                     .map(User::getId)
                     .orElseGet(() -> createUser(kakaoId, accessToken));
-            userLoginHistoryEventProducer.produce(userId);
+            userLoginHistoryRepositoryPort.save(userId, LocalDateTime.now(), userIp, userAgent);
             return createJwt(userId);
         } catch (FeignException e) {
             throw new BadRequestException(ErrorCode.KAKAO_BAD_REQUEST);
