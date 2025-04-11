@@ -7,9 +7,11 @@ import tictoc.annotation.DistributedLock;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.constants.RedisConstants;
+import tictoc.bid.exception.BidException;
 import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidCommandUseCase;
 import tictoc.bid.port.BidRepositoryPort;
+import static tictoc.error.ErrorCode.BID_FAIL;
 
 @Service
 @Transactional
@@ -25,7 +27,14 @@ public class BidCommandService implements BidCommandUseCase {
         bidRepositoryPort.checkBeforeBid(findAuction);
         findAuction.startBid(userId);
         Integer beforePrice = findAuction.getCurrentPrice();
-        findAuction.updateCurrentPrice(requestDTO.price());
+        executeAtomicBidUpdate(requestDTO);
         bidRepositoryPort.saveBid(Bid.of(userId, requestDTO, beforePrice));
+    }
+
+    private void executeAtomicBidUpdate(BidUseCaseReqDTO.Bid requestDTO) {
+        int updatedRows = auctionRepositoryPort.updateBidIfHigher(requestDTO);
+        if (updatedRows == 0) {
+            throw new BidException(BID_FAIL);
+        }
     }
 }

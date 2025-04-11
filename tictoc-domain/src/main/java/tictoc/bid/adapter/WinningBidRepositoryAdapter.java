@@ -12,7 +12,7 @@ import tictoc.model.page.PageCustom;
 
 @Adapter
 @RequiredArgsConstructor
-public class WinningBidRepositoryAdaptor implements WinningBidRepositoryPort {
+public class WinningBidRepositoryAdapter implements WinningBidRepositoryPort {
     private final WinningBidRepository winningBidRepository;
 
     @Override

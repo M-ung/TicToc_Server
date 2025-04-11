@@ -64,9 +64,6 @@ subprojects {
         implementation 'org.springframework.boot:spring-boot-starter-data-redis'
         implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
 
-        // kafka
-        implementation 'org.springframework.kafka:spring-kafka'
-
         // redisson
         implementation 'org.redisson:redisson-spring-boot-starter:3.23.5'
     }

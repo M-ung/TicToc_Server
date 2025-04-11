@@ -1,4 +1,4 @@
-package tictoc.kafka.evnt.constants;
+package tictoc.constants;
 
 public class UserLoginHistoryConstants {
     public static final String X_FORWARDED_FOR = "X-Forwarded-For";

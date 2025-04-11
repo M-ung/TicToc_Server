@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Adapter
 @RequiredArgsConstructor
-public class UserScheduleRepositoryAdaptor implements UserScheduleRepositoryPort {
+public class UserScheduleRepositoryAdapter implements UserScheduleRepositoryPort {
     private final UserScheduleRepository userScheduleRepository;
 
     @Override

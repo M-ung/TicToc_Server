@@ -17,7 +17,7 @@ import static tictoc.error.ErrorCode.BID_NOT_FOUND;
 
 @Adapter
 @RequiredArgsConstructor
-public class BidRepositoryAdaptor implements BidRepositoryPort {
+public class BidRepositoryAdapter implements BidRepositoryPort {
     private final BidRepository bidRepository;
 
     @Override

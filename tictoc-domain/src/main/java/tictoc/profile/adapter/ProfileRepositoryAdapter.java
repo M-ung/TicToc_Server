@@ -11,7 +11,7 @@ import tictoc.profile.repository.ProfileRepository;
 
 @Component
 @RequiredArgsConstructor
-public class ProfileRepositoryAdaptor implements ProfileRepositoryPort {
+public class ProfileRepositoryAdapter implements ProfileRepositoryPort {
     private final ProfileRepository profileRepository;
     private final ProfileImageRepository profileImageRepository;
     private final MoneyHistoryRepository moneyHistoryRepository;
