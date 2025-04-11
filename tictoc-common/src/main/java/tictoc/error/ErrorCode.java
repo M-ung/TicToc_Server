@@ -54,8 +54,8 @@ public enum ErrorCode {
     // Log
     LOG_FILE_WRITE_ERROR(HttpStatus.BAD_REQUEST,"로그 파일 저장 중 오류 발생했습니다."),
     LOG_DIRECTORY_CREATION_ERROR(HttpStatus.BAD_REQUEST,"로그 파일 디렉토리 생성 중 오류 발생했습니다."),
-    LOG_FILE_CREATION_ERROR(HttpStatus.BAD_REQUEST,"로그 파일 생성 중 오류 발생했습니다.")
-    ;
+    LOG_FILE_CREATION_ERROR(HttpStatus.BAD_REQUEST,"로그 파일 생성 중 오류 발생했습니다."),
+    CSV_FAIL(HttpStatus.BAD_REQUEST,"사용자 로그인 기록 CSV 저장 중 오류 발생했습니다.");
 
     private final HttpStatus status;
     private final String message;
