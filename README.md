@@ -30,12 +30,12 @@
 
 ## 🛠️ 시스템 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/45a534ee-3862-4cff-a45e-e15d8bf3f0df" width="80%">
+  <img src="https://github.com/user-attachments/assets/b701ea05-8de5-40bc-b6ab-4bfbd0f59a8f" width="80%">
 </div>
 
 ## 🛠️ 소프트웨어 아키텍처
 <div style="display: flex; flex-wrap: wrap; gap: 10px;">
-  <img src="https://github.com/user-attachments/assets/c286e841-47a5-486b-8480-7f7101c7f57f" width="80%">
+  <img src="https://github.com/user-attachments/assets/4905b31c-43ec-4b8e-ada3-45309a00dca2" width="80%">
 </div>
 
 ## 📝 규칙
