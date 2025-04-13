@@ -7,6 +7,8 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @Slf4j
 @Component
 @Aspect
@@ -28,13 +30,13 @@ public class LoggerAspect {
     }
 
     @AfterThrowing(
-            pointcut = "execution(* tictoc..*(..))",
+            pointcut = "execution(* tictoc.userLoginHistory.*(..))",
             throwing = "ex"
     )
     public void logException(JoinPoint joinPoint, Throwable ex) {
-        log.error("[ERROR {}] 예외 발생: {}, message: {}",
+        log.error("[EXCEPTION] method={}, args={}, message: {}",
                 joinPoint.getSignature().toShortString(),
-                joinPoint.getArgs(),
+                Arrays.toString(joinPoint.getArgs()),
                 ex.getMessage(), ex);
     }
 }
