@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class RedissonLockAop {
+public class RedissonLockAspect {
     private final RedissonClient redissonClient;
 
     @Around("@annotation(distributedLock)")
