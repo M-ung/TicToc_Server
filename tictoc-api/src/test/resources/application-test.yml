@@ -3,18 +3,11 @@ spring:
     activate:
       on-profile: test
   datasource:
-    master:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/test_db?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-        username: test
-        password: test
-    slave:
-      hikari:
-        driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://localhost:3306/test_db?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
-        username: test
-        password: test
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/test_db?useSSL=false&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true
+      username: test
+      password: test
   jpa:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     hibernate:
