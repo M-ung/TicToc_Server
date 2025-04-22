@@ -6,9 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
 import tictoc.auction.dto.response.AuctionUseCaseResDTO;
+import tictoc.auction.model.Auction;
+import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.port.AuctionQueryUseCase;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.model.page.PageCustom;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)

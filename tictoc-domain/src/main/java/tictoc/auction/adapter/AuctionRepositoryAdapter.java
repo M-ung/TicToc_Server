@@ -8,12 +8,15 @@ import tictoc.auction.dto.response.AuctionUseCaseResDTO;
 import tictoc.auction.exception.AuctionNotFoundException;
 import tictoc.auction.exception.DuplicateAuctionDateException;
 import tictoc.auction.model.Auction;
+import tictoc.auction.model.type.AuctionProgress;
 import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.auction.repository.AuctionRepository;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
 import tictoc.model.page.PageCustom;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import static tictoc.error.ErrorCode.AUCTION_NOT_FOUND;
 import static tictoc.error.ErrorCode.DUPLICATE_AUCTION_DATE;
 
@@ -69,5 +72,14 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     @Override
     public int updateBidIfHigher(BidUseCaseReqDTO.Bid requestDTO) {
         return auctionRepository.updateBidIfHigher(requestDTO.auctionId(), requestDTO.price());
+    }
+
+    @Override
+    public List<Auction> findExpiredAuctions(List<AuctionProgress> progresses, LocalDateTime now) {
+        return auctionRepository.findAllByProgressInAndAuctionCloseTimeBeforeAndStatus(
+                progresses,
+                now,
+                TicTocStatus.ACTIVE
+        );
     }
 }
