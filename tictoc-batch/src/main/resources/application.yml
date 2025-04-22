@@ -15,9 +15,12 @@ spring:
       - domain
       - external
       - infrastructure
+      - common
   config:
     import: optional:file:.env[.properties]
   batch:
+    job:
+      enabled: false
     jdbc:
       initialize-schema: always
   threads:

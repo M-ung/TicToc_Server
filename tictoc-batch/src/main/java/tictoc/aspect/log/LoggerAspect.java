@@ -22,7 +22,7 @@ public class LoggerAspect {
     }
 
     @AfterReturning(
-            pointcut = "execution(* tictoc.userLoginHistory.config.UserLoginHistoryBatchConfig(..))",
+            pointcut = "execution(* tictoc.userLoginHistory.batch.UserLoginHistoryBatchConfig(..))",
             returning = "result"
     )
     public void deleteUserLoginHistorySuccess(JoinPoint joinPoint, Object result) {

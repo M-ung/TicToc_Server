@@ -15,6 +15,7 @@ spring:
       - domain
       - external
       - infrastructure
+      - common
   config:
     import: optional:file:.env[.properties]
   threads:

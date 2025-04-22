@@ -1,4 +1,4 @@
-package tictoc.scheduler;
+package tictoc.auction.scheduler;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
