@@ -7,3 +7,5 @@ feign:
     get-kapi-url: ${KAKAO_KAPI_URL}
     redirect: ${KAKAO_REDIRECT}
     rest-api-key: ${KAKAO_REST_API_KEY}
+slack:
+  webhook-url: ${SLACK_URL}

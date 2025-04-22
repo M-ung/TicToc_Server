@@ -21,5 +21,6 @@ dependencies {
 
     implementation project(':tictoc-domain')
     implementation project(':tictoc-common')
+    implementation project(':tictoc-external')
     implementation project(':tictoc-infrastructure')
 }
