@@ -17,6 +17,7 @@ public enum ErrorCode {
     DUPLICATE_AUCTION_DATE(HttpStatus.BAD_REQUEST,"중복된 경매 날짜가 있습니다."),
     CONFLICT_AUCTION_UPDATE(HttpStatus.BAD_REQUEST,"경매 수정이 충돌나서 할 수 없습니다."),
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),
+    AUCTION_TIME_OVER(HttpStatus.BAD_REQUEST,"경매 시간이 종료되었습니다."),
     INVALID_AUCTION_TIME_RANGE(HttpStatus.BAD_REQUEST,"sellStartTime은 sellEndTime보다 이전이어야 합니다."),
 
     // Bid

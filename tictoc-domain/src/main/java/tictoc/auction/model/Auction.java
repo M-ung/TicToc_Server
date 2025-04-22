@@ -81,14 +81,6 @@ public class Auction extends BaseTimeEntity {
         this.type = requestDTO.type();
     }
 
-    public void updateCurrentPrice(Integer price) {
-        if(this.currentPrice < price) {
-            this.currentPrice = price;
-        } else {
-            throw new BidException(BID_FAIL);
-        }
-    }
-
     public void deactivate(final Long userId) {
         validateAuctionAccess(userId);
         validateAuctionAlreadyStarted();
@@ -108,10 +100,17 @@ public class Auction extends BaseTimeEntity {
     }
 
     public void startBid(final Long userId) {
+        this.validateAuctionTime();
         this.validateBidAccess(userId);
         this.validateAuctionProgress();
         if (this.progress == NOT_STARTED) {
             this.progress = IN_PROGRESS;
+        }
+    }
+
+    private void validateAuctionTime() {
+        if (auctionCloseTime.isBefore(LocalDateTime.now())) {
+            throw new BidException(AUCTION_TIME_OVER);
         }
     }
 
