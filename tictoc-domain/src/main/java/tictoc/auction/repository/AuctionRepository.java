@@ -7,8 +7,10 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import tictoc.auction.model.Auction;
+import tictoc.auction.model.type.AuctionProgress;
 import tictoc.model.tictoc.TicTocStatus;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface AuctionRepository extends JpaRepository<Auction, Long>, AuctionRepositoryCustom {
@@ -35,4 +37,11 @@ public interface AuctionRepository extends JpaRepository<Auction, Long>, Auction
     @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("UPDATE Auction a SET a.currentPrice = :price WHERE a.id = :auctionId AND a.currentPrice < :price")
     int updateBidIfHigher(@Param("auctionId") Long auctionId, @Param("price") Integer price);
+
+
+    List<Auction> findAllByProgressInAndAuctionCloseTimeBeforeAndStatus(
+            List<AuctionProgress> progresses,
+            LocalDateTime now,
+            TicTocStatus status
+    );
 }
