@@ -38,7 +38,7 @@ public class BidCommandService implements BidCommandUseCase {
             throw new BidException(INVALID_PROFILE_MONEY);
         }
         bidRepositoryPort.checkBeforeBid(auction);
-        auction.checkAuction(userId);
+        auction.validateBeforeBid(userId);
     }
 
     private void executeAtomicBidUpdate(BidUseCaseReqDTO.Bid requestDTO) {
