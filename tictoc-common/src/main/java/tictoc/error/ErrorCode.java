@@ -19,6 +19,7 @@ public enum ErrorCode {
     CONFLICT_AUCTION_DELETE(HttpStatus.BAD_REQUEST,"경매 삭제가 충돌나서 할 수 없습니다."),
     AUCTION_TIME_OVER(HttpStatus.BAD_REQUEST,"경매 시간이 종료되었습니다."),
     INVALID_AUCTION_TIME_RANGE(HttpStatus.BAD_REQUEST,"sellStartTime은 sellEndTime보다 이전이어야 합니다."),
+    CLOSE_AUCTION_ERROR(HttpStatus.BAD_REQUEST,"경매 종료 실패입니다. (찾을 수 없는 사용거나 보유 금액이 적습니다.)"),
 
     // Bid
     AUCTION_ALREADY_FINISHED(HttpStatus.BAD_REQUEST, "이미 경매가 종료되었습니다."),
