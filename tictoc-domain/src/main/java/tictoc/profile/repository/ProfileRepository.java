@@ -8,7 +8,12 @@ import tictoc.profile.model.Profile;
 
 public interface ProfileRepository extends JpaRepository<Profile, Long> {
     boolean existsByUserIdAndMoneyGreaterThanEqual(Long userId, Integer price);
+
     @Modifying(clearAutomatically = true)
     @Query("UPDATE Profile p SET p.money = p.money - :price WHERE p.userId = :userId AND p.money >= :price")
     int subtractMoney(@Param("userId") Long userId, @Param("price") Integer price);
+
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Profile p SET p.money = p.money + :price WHERE p.userId = :userId")
+    int addMoney(@Param("userId") Long userId, @Param("price") Integer price);
 }

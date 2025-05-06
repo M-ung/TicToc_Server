@@ -60,6 +60,7 @@ public class CloseAuctionEventListener implements MessageListener {
         bidRepositoryPort.saveBid(bid);
         winningBidRepositoryPort.saveWinningBid(WinningBid.of(auction, bid));
         profileRepositoryPort.subtractMoney(bid.getBidderId(), bid.getBidPrice());
+        profileRepositoryPort.addMoney(auction.getAuctioneerId(), bid.getBidPrice());
     }
 
     private void processUserSchedule(Auction auction, Bid bid) {

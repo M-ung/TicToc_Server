@@ -8,4 +8,5 @@ public interface ProfileRepositoryPort {
     ProfileImage saveProfileImage(ProfileImage profileImage);
     boolean checkMoney(Long userId, Integer price);
     void subtractMoney(Long userId, Integer price);
+    void addMoney(Long auctioneerId, Integer bidPrice);
 }
