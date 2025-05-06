@@ -3,8 +3,8 @@ name: API Module CI - Build & Push Docker Image
 on:
   push:
     branches:
-      - main
-      - deploy/**
+#      - main
+#      - deploy/**
 
 jobs:
   build-and-push:
