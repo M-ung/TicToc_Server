@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tictoc.TicTocApiApplication;
@@ -18,6 +19,8 @@ import tictoc.bid.model.Bid;
 import tictoc.bid.port.BidCommandUseCase;
 import tictoc.bid.port.BidRepositoryPort;
 import tictoc.error.ErrorCode;
+import tictoc.profile.port.ProfileRepositoryPort;
+
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.concurrent.CountDownLatch;
@@ -26,6 +29,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TicTocApiApplication.class)
@@ -38,6 +44,9 @@ public class BidCommandServiceTest {
     @Autowired
     private BidRepositoryPort bidRepositoryPort;
 
+    @MockBean
+    private ProfileRepositoryPort profileRepositoryPort;
+
     private static final Integer BID_PRICE = 1500;
     private static final int NUM_USERS = 5000;
     private Auction auction;
@@ -48,6 +57,7 @@ public class BidCommandServiceTest {
         LocalDateTime sellStartTime = now.plusMinutes(10);
         LocalDateTime sellEndTime = now.plusHours(2);
         LocalDateTime auctionCloseTime = now.plusHours(3);
+        when(profileRepositoryPort.checkMoney(anyLong(), anyInt())).thenReturn(true);
 
         AuctionUseCaseReqDTO.Register requestDTO = new AuctionUseCaseReqDTO.Register(
                 "Test Auction",

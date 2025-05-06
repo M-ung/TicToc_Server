@@ -25,4 +25,9 @@ public class ProfileRepositoryAdapter implements ProfileRepositoryPort {
     public ProfileImage saveProfileImage(ProfileImage profileImage) {
         return profileImageRepository.save(profileImage);
     }
+
+    @Override
+    public boolean checkMoney(Long userId, Integer price) {
+        return profileRepository.existsByUserIdAndMoneyGreaterThanEqual(userId, price);
+    }
 }

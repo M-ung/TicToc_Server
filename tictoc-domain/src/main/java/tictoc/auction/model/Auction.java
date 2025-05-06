@@ -99,7 +99,7 @@ public class Auction extends BaseTimeEntity {
         }
     }
 
-    public void startBid(final Long userId) {
+    public void checkAuction(final Long userId) {
         this.validateAuctionTime();
         this.validateBidAccess(userId);
         this.validateAuctionProgress();
