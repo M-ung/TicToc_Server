@@ -1,8 +1,9 @@
 name: Batch Module CI - Build & Push Docker Image
 
-#on:
-#  push:
-#    branches:
+on:
+  push:
+    branches:
+      - xx
 #      - main
 #      - deploy/**
 

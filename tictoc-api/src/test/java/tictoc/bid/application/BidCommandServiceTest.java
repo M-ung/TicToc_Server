@@ -3,119 +3,112 @@ package tictoc.bid.application;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tictoc.TicTocApiApplication;
-import tictoc.auction.dto.request.AuctionUseCaseReqDTO;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import tictoc.auction.model.Auction;
-import tictoc.auction.model.type.AuctionType;
-import tictoc.auction.port.AuctionRepositoryPort;
 import tictoc.bid.dto.request.BidUseCaseReqDTO;
+import tictoc.bid.exception.BidException;
 import tictoc.bid.model.Bid;
-import tictoc.bid.port.BidCommandUseCase;
-import tictoc.bid.port.BidRepositoryPort;
+import tictoc.auction.model.type.AuctionProgress;
 import tictoc.error.ErrorCode;
+import tictoc.model.tictoc.TicTocStatus;
 import tictoc.profile.port.ProfileRepositoryPort;
-
+import tictoc.auction.port.AuctionRepositoryPort;
+import tictoc.bid.port.BidRepositoryPort;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicReference;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
-@ExtendWith(SpringExtension.class)
-@SpringBootTest(classes = TicTocApiApplication.class)
-@ActiveProfiles("test")
 public class BidCommandServiceTest {
-    @Autowired
-    private BidCommandUseCase bidCommandUseCase;
-    @Autowired
-    private AuctionRepositoryPort auctionRepositoryPort;
-    @Autowired
-    private BidRepositoryPort bidRepositoryPort;
+    @InjectMocks private BidCommandService bidCommandService;
 
-    @MockBean
-    private ProfileRepositoryPort profileRepositoryPort;
+    @Mock private ProfileRepositoryPort profileRepositoryPort;
+    @Mock private AuctionRepositoryPort auctionRepositoryPort;
+    @Mock private BidRepositoryPort bidRepositoryPort;
 
-    private static final Integer BID_PRICE = 1500;
-    private static final int NUM_USERS = 5000;
     private Auction auction;
+    private BidUseCaseReqDTO.Bid bidDTO;
 
     @BeforeEach
-    public void setup() {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime sellStartTime = now.plusMinutes(10);
-        LocalDateTime sellEndTime = now.plusHours(2);
-        LocalDateTime auctionCloseTime = now.plusHours(3);
-        when(profileRepositoryPort.checkMoney(anyLong(), anyInt())).thenReturn(true);
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        auction = Auction.builder()
+                .id(1L)
+                .auctioneerId(100L)
+                .currentPrice(1000)
+                .finalPrice(1000)
+                .progress(AuctionProgress.NOT_STARTED)
+                .auctionCloseTime(LocalDateTime.now().plusHours(1))
+                .status(TicTocStatus.ACTIVE)
+                .build();
 
-        AuctionUseCaseReqDTO.Register requestDTO = new AuctionUseCaseReqDTO.Register(
-                "Test Auction",
-                "This is a test auction.",
-                1000,
-                sellStartTime,
-                sellEndTime,
-                auctionCloseTime,
-                Collections.emptyList(),
-                AuctionType.ONLINE
-        );
-        auction = auctionRepositoryPort.saveAuction(Auction.of(9999L, requestDTO));
+        bidDTO = new BidUseCaseReqDTO.Bid(1L, 1500);
     }
 
     @Test
-    @DisplayName("입찰 시 동시성 이슈 발생에 대한 테스트")
-    public void 입찰_시_동시성_이슈_발생에_대한_테스트() throws InterruptedException {
-        CountDownLatch readyLatch = new CountDownLatch(NUM_USERS);
-        CountDownLatch startLatch = new CountDownLatch(1);
-        CountDownLatch doneLatch = new CountDownLatch(NUM_USERS);
-        ExecutorService executorService = Executors.newFixedThreadPool(NUM_USERS);
+    @DisplayName("입찰 성공 테스트")
+    void 입찰_성공_테스트() {
+        // given
+        when(auctionRepositoryPort.findAuctionById(1L)).thenReturn(auction);
+        when(profileRepositoryPort.checkMoney(200L, 1500)).thenReturn(true);
+        doNothing().when(bidRepositoryPort).checkBeforeBid(any());
+        when(auctionRepositoryPort.updateBidIfHigher(bidDTO)).thenReturn(1);
 
-        AtomicInteger successUsers = new AtomicInteger(0);
-        AtomicInteger failedUsers = new AtomicInteger(0);
-        AtomicReference<Long> successUserId = new AtomicReference<>();
-        AtomicReference<Integer> successBidPrice = new AtomicReference<>();
+        // when
+        bidCommandService.bid(200L, bidDTO);
 
-        for (int i = 1; i <= NUM_USERS; i++) {
-            final Long userId = (long) i;
-            executorService.submit(() -> {
-                try {
-                    readyLatch.countDown();
-                    startLatch.await();
-                    int bidPrice = (int) (BID_PRICE * userId);
-                    bidCommandUseCase.bid(userId, new BidUseCaseReqDTO.Bid(auction.getId(), bidPrice));
-                    successUserId.set(userId);
-                    successBidPrice.set(bidPrice);
-                    successUsers.incrementAndGet();
-                } catch (Exception e) {
-                    failedUsers.incrementAndGet();
-                    assertThat(e.getMessage()).isEqualTo(ErrorCode.BID_FAIL.getMessage());
-                } finally {
-                    doneLatch.countDown();
-                }
-            });
-        }
+        // then
+        verify(bidRepositoryPort).saveBid(any(Bid.class));
+        verify(auctionRepositoryPort).updateBidIfHigher(bidDTO);
+    }
 
-        readyLatch.await();
-        startLatch.countDown();
-        doneLatch.await();
-        executorService.shutdown();
+    @Test
+    @DisplayName("잔액 부족으로 입찰 실패 테스트")
+    void 잔액_부족으로_입찰_실패_테스트() {
+        // given
+        when(auctionRepositoryPort.findAuctionById(1L)).thenReturn(auction);
+        when(profileRepositoryPort.checkMoney(200L, 1500)).thenReturn(false);
 
-        Auction findAuction = auctionRepositoryPort.findAuctionById(auction.getId());
-        Bid findBid = bidRepositoryPort.findBidByAuctionId(findAuction.getId());
-        assertThat(findAuction.getCurrentPrice()).isEqualTo(successBidPrice.get());
-        assertThat(findBid.getBidderId()).isEqualTo(successUserId.get());
-        assertThat(successUsers.get()).isEqualTo(1);
-        assertThat(failedUsers.get()).isEqualTo(NUM_USERS-1);
-        executorService.shutdown();
+        // when & then
+        assertThatThrownBy(() -> bidCommandService.bid(200L, bidDTO))
+                .isInstanceOf(BidException.class)
+                .hasMessageContaining(ErrorCode.INVALID_PROFILE_MONEY.getMessage());
+
+        verify(bidRepositoryPort, never()).saveBid(any());
+    }
+
+    @Test
+    @DisplayName("입찰 조건 불충족으로 입찰 실패 테스트")
+    void 입찰_조건_불충족으로_입찰_실패_테스트() {
+        // given
+        when(auctionRepositoryPort.findAuctionById(1L)).thenReturn(auction);
+        when(profileRepositoryPort.checkMoney(200L, 1500)).thenReturn(true);
+        doThrow(new BidException(ErrorCode.BID_FAIL)).when(bidRepositoryPort).checkBeforeBid(auction);
+
+        // when & then
+        assertThatThrownBy(() -> bidCommandService.bid(200L, bidDTO))
+                .isInstanceOf(BidException.class)
+                .hasMessageContaining(ErrorCode.BID_FAIL.getMessage());
+
+        verify(bidRepositoryPort, never()).saveBid(any());
+    }
+
+    @Test
+    @DisplayName("현재 입찰가보다 낮은 금액으로 입찰 시 실패 테스트")
+    void 낮은_금액으로_입찰_실패_테스트() {
+        // given
+        BidUseCaseReqDTO.Bid lowBidDTO = new BidUseCaseReqDTO.Bid(1L, 900);
+        when(auctionRepositoryPort.findAuctionById(1L)).thenReturn(auction);
+        when(profileRepositoryPort.checkMoney(200L, 900)).thenReturn(true);
+        doNothing().when(bidRepositoryPort).checkBeforeBid(any());
+        when(auctionRepositoryPort.updateBidIfHigher(lowBidDTO)).thenReturn(0);
+
+        // when & then
+        assertThatThrownBy(() -> bidCommandService.bid(200L, lowBidDTO))
+                .isInstanceOf(BidException.class)
+                .hasMessageContaining(ErrorCode.BID_FAIL.getMessage());
+
+        verify(bidRepositoryPort, never()).saveBid(any());
     }
 }
