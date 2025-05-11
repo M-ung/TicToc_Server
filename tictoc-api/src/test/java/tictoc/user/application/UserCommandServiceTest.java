@@ -26,11 +26,9 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class UserCommandServiceTest {
-    @InjectMocks
-    private UserCommandService userCommandService;
+    @InjectMocks private UserCommandService userCommandService;
 
-    @Mock
-    private UserRepositoryPort userRepositoryPort;
+    @Mock private UserRepositoryPort userRepositoryPort;
     @Mock private ProfileRepositoryPort profileRepositoryPort;
     @Mock private UserLoginHistoryRepositoryPort userLoginHistoryRepositoryPort;
     @Mock private JwtProvider jwtProvider;

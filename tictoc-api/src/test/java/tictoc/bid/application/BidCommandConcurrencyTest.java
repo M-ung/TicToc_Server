@@ -36,7 +36,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(classes = TicTocApiApplication.class)
 @ActiveProfiles("test")
-public class BidCommandServiceTest {
+public class BidCommandConcurrencyTest {
     @Autowired
     private BidCommandUseCase bidCommandUseCase;
     @Autowired
