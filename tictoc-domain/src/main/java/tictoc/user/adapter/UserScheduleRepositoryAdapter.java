@@ -15,7 +15,7 @@ public class UserScheduleRepositoryAdapter implements UserScheduleRepositoryPort
     private final UserScheduleRepository userScheduleRepository;
 
     @Override
-    public void saveUserSchedule(UserSchedule userSchedule) {
+    public void save(UserSchedule userSchedule) {
         userScheduleRepository.save(userSchedule);
     }
 

@@ -67,14 +67,14 @@ public class AuctionCommandServiceTest {
         // given
         Auction mockAuction = mock(Auction.class);
         when(mockAuction.getId()).thenReturn(1L);
-        when(auctionRepositoryPort.saveAuction(any())).thenReturn(mockAuction);
+        when(auctionRepositoryPort.save(any())).thenReturn(mockAuction);
 
         // when
         auctionCommandService.register(1L, registerDTO);
 
         // then
         verify(auctionRepositoryPort).validateAuctionTimeRangeForSave(anyLong(), any(), any());
-        verify(auctionRepositoryPort).saveAuction(any());
+        verify(auctionRepositoryPort).save(any());
         verify(closeAuctionUseCase).save(eq(1L), any());
     }
 
@@ -88,7 +88,7 @@ public class AuctionCommandServiceTest {
         // when & then
         assertThrows(IllegalArgumentException.class, () -> auctionCommandService.register(1L, registerDTO));
         verify(auctionRepositoryPort).validateAuctionTimeRangeForSave(anyLong(), any(), any());
-        verify(auctionRepositoryPort, never()).saveAuction(any());
+        verify(auctionRepositoryPort, never()).save(any());
     }
 
 

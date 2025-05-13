@@ -33,7 +33,7 @@ public class BidRepositoryAdapter implements BidRepositoryPort {
     }
 
     @Override
-    public void saveBid(Bid bid) {
+    public void save(Bid bid) {
         bidRepository.save(bid);
     }
 

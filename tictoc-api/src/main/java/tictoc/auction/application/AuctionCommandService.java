@@ -26,10 +26,10 @@ public class AuctionCommandService implements AuctionCommandUseCase {
     @Override
     public void register(final Long userId, AuctionUseCaseReqDTO.Register requestDTO) {
         auctionRepositoryPort.validateAuctionTimeRangeForSave(userId, requestDTO.sellStartTime(), requestDTO.sellEndTime());
-        var auction = auctionRepositoryPort.saveAuction(Auction.of(userId, requestDTO));
+        var auction = auctionRepositoryPort.save(Auction.of(userId, requestDTO));
         var auctionId = auction.getId();
         if (!requestDTO.type().equals(AuctionType.ONLINE)) {
-            locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
+            locationCommandUseCase.save(auctionId, requestDTO.locations());
         }
         closeAuctionUseCase.save(auctionId, auction.getAuctionCloseTime());
     }
@@ -42,10 +42,10 @@ public class AuctionCommandService implements AuctionCommandUseCase {
             auctionRepositoryPort.validateAuctionTimeRangeForUpdate(userId, auctionId, findAuction.getSellStartTime(), findAuction.getSellEndTime());
             findAuction.update(requestDTO);
             if(!findAuction.getType().equals(AuctionType.ONLINE)) {
-                locationCommandUseCase.deleteAuctionLocations(auctionId);
+                locationCommandUseCase.delete(auctionId);
             }
             if (!requestDTO.type().equals(AuctionType.ONLINE)) {
-                locationCommandUseCase.saveAuctionLocations(auctionId, requestDTO.locations());
+                locationCommandUseCase.save(auctionId, requestDTO.locations());
             }
             closeAuctionUseCase.delete(auctionId);
             closeAuctionUseCase.save(auctionId, findAuction.getAuctionCloseTime());

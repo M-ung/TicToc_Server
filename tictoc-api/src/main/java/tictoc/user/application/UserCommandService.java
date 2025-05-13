@@ -12,6 +12,7 @@ import tictoc.config.security.jwt.util.JwtProvider;
 import tictoc.kakao.dto.KakaoResDTO;
 import tictoc.profile.model.Profile;
 import tictoc.profile.model.ProfileImage;
+import tictoc.profile.port.ProfileImageRepositoryPort;
 import tictoc.profile.port.ProfileRepositoryPort;
 import tictoc.user.model.User;
 import tictoc.user.port.UserCommandUseCase;
@@ -28,6 +29,7 @@ public class UserCommandService implements UserCommandUseCase {
     private final UserLoginHistoryRepositoryPort userLoginHistoryRepositoryPort;
     private final JwtProvider jwtProvider;
     private final KakaoFeignProvider kakaoFeignProvider;
+    private final ProfileImageRepositoryPort profileImageRepositoryPort;
 
     @Override
     public JwtResDTO.Login login(String authenticationCode, String userIp, String userAgent) {
@@ -60,14 +62,14 @@ public class UserCommandService implements UserCommandUseCase {
     }
 
     private User saveUser(String kakaoId, String name) {
-        return userRepositoryPort.saveUser(User.of(kakaoId, name));
+        return userRepositoryPort.save(User.of(kakaoId, name));
     }
 
     private Profile saveProfile(Long userId, String nickname) {
-        return profileRepositoryPort.saveProfile(Profile.of(userId, nickname));
+        return profileRepositoryPort.save(Profile.of(userId, nickname));
     }
 
     private void saveProfileImage(Long profileId, String profileImageUrl) {
-        profileRepositoryPort.saveProfileImage(ProfileImage.of(profileId, profileImageUrl));
+        profileImageRepositoryPort.save(ProfileImage.of(profileId, profileImageUrl));
     }
 }

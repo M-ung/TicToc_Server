@@ -45,16 +45,16 @@ public class AuctionScheduler {
             processWinningBid(findAuction, findBid);
             processUserSchedule(findAuction, findBid);
         }
-        auctionRepositoryPort.saveAuction(findAuction);
+        auctionRepositoryPort.save(findAuction);
     }
 
     private void processWinningBid(Auction auction, Bid bid) {
         bid.win();
-        bidRepositoryPort.saveBid(bid);
-        winningBidRepositoryPort.saveWinningBid(WinningBid.of(auction, bid));
+        bidRepositoryPort.save(bid);
+        winningBidRepositoryPort.save(WinningBid.of(auction, bid));
     }
 
     private void processUserSchedule(Auction auction, Bid bid) {
-        userScheduleRepositoryPort.saveUserSchedule(UserSchedule.of(auction, bid));
+        userScheduleRepositoryPort.save(UserSchedule.of(auction, bid));
     }
 }

@@ -26,7 +26,7 @@ public class AuctionRepositoryAdapter implements AuctionRepositoryPort {
     private final AuctionRepository auctionRepository;
 
     @Override
-    public Auction saveAuction(Auction auction) {
+    public Auction save(Auction auction) {
         return auctionRepository.save(auction);
     }
 

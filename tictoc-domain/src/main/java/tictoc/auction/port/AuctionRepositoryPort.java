@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface AuctionRepositoryPort {
-    Auction saveAuction(Auction auction);
+    Auction save(Auction auction);
     Auction findAuctionByIdForUpdate(Long auctionId);
     Auction findAuctionById(Long auctionId);
     void validateAuctionTimeRangeForSave(Long userId, LocalDateTime sellStartTime, LocalDateTime sellEndTime);

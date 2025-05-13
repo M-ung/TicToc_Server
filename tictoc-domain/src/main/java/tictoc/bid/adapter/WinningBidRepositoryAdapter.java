@@ -21,7 +21,7 @@ public class WinningBidRepositoryAdapter implements WinningBidRepositoryPort {
     }
 
     @Override
-    public void saveWinningBid(WinningBid winningBid) {
+    public void save(WinningBid winningBid) {
         winningBidRepository.save(winningBid);
     }
 }

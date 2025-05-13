@@ -30,7 +30,7 @@ public class BidCommandService implements BidCommandUseCase {
         var findAuction = auctionRepositoryPort.findAuctionById(requestDTO.auctionId());
         validateBid(userId, requestDTO.price(), findAuction);
         executeAtomicBidUpdate(requestDTO);
-        bidRepositoryPort.saveBid(Bid.of(userId, requestDTO, findAuction.getCurrentPrice()));
+        bidRepositoryPort.save(Bid.of(userId, requestDTO, findAuction.getCurrentPrice()));
     }
 
     private void validateBid(Long userId, Integer price, Auction auction) {
