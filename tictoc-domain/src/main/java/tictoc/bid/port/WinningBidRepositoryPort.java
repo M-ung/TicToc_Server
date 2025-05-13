@@ -8,5 +8,5 @@ import tictoc.model.page.PageCustom;
 
 public interface WinningBidRepositoryPort {
     PageCustom<BidUseCaseResDTO.WinningBid> findWinningBidsByFilterWithPageable(WinningBidUseCaseReqDTO.Filter requestDTO, Pageable pageable);
-    void saveWinningBid(WinningBid winningBid);
+    void save(WinningBid winningBid);
 }

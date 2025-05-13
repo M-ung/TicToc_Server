@@ -14,7 +14,7 @@ import static tictoc.error.ErrorCode.USER_NOT_FOUND;
 public class UserRepositoryAdapter implements UserRepositoryPort {
     private final UserRepository userRepository;
 
-    public User saveUser(User user) {
+    public User save(User user) {
         return userRepository.save(user);
     }
     public Optional<User> findUserByKakaoId(String kakaoId) {

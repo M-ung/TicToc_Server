@@ -5,29 +5,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import tictoc.auction.exception.CloseAuctionException;
 import tictoc.profile.model.Profile;
-import tictoc.profile.model.ProfileImage;
 import tictoc.profile.port.ProfileRepositoryPort;
-import tictoc.profile.repository.MoneyHistoryRepository;
-import tictoc.profile.repository.ProfileImageRepository;
 import tictoc.profile.repository.ProfileRepository;
-
 import static tictoc.error.ErrorCode.*;
 
 @Component
 @RequiredArgsConstructor
 public class ProfileRepositoryAdapter implements ProfileRepositoryPort {
     private final ProfileRepository profileRepository;
-    private final ProfileImageRepository profileImageRepository;
-    private final MoneyHistoryRepository moneyHistoryRepository;
 
     @Override
-    public Profile saveProfile(Profile profile) {
+    public Profile save(Profile profile) {
         return profileRepository.save(profile);
-    }
-
-    @Override
-    public ProfileImage saveProfileImage(ProfileImage profileImage) {
-        return profileImageRepository.save(profileImage);
     }
 
     @Override

@@ -52,18 +52,18 @@ public class CloseAuctionEventListener implements MessageListener {
             processWinningBid(auction, bid);
             processUserSchedule(auction, bid);
         }
-        auctionRepositoryPort.saveAuction(auction);
+        auctionRepositoryPort.save(auction);
     }
 
     private void processWinningBid(Auction auction, Bid bid) {
         bid.win();
-        bidRepositoryPort.saveBid(bid);
-        winningBidRepositoryPort.saveWinningBid(WinningBid.of(auction, bid));
+        bidRepositoryPort.save(bid);
+        winningBidRepositoryPort.save(WinningBid.of(auction, bid));
         profileRepositoryPort.subtractMoney(bid.getBidderId(), bid.getBidPrice());
         profileRepositoryPort.addMoney(auction.getAuctioneerId(), bid.getBidPrice());
     }
 
     private void processUserSchedule(Auction auction, Bid bid) {
-        userScheduleRepositoryPort.saveUserSchedule(UserSchedule.of(auction, bid));
+        userScheduleRepositoryPort.save(UserSchedule.of(auction, bid));
     }
 }

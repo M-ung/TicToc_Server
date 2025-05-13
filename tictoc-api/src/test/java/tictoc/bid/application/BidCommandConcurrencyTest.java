@@ -69,7 +69,7 @@ public class BidCommandConcurrencyTest {
                 Collections.emptyList(),
                 AuctionType.ONLINE
         );
-        auction = auctionRepositoryPort.saveAuction(Auction.of(9999L, requestDTO));
+        auction = auctionRepositoryPort.save(Auction.of(9999L, requestDTO));
     }
 
     @Test

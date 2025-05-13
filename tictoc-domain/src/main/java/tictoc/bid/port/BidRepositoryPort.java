@@ -10,6 +10,6 @@ import tictoc.model.page.PageCustom;
 public interface BidRepositoryPort {
     PageCustom<BidUseCaseResDTO.Bid> findBidsByFilterWithPageable(Long userId, BidUseCaseReqDTO.Filter requestDTO, Pageable pageable);
     void checkBeforeBid(Auction auction);
-    void saveBid(Bid bid);
+    void save(Bid bid);
     Bid findBidByAuctionId(Long auctionId);
 }

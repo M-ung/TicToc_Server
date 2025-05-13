@@ -59,7 +59,7 @@ public class BidCommandServiceTest {
         bidCommandService.bid(200L, bidDTO);
 
         // then
-        verify(bidRepositoryPort).saveBid(any(Bid.class));
+        verify(bidRepositoryPort).save(any(Bid.class));
         verify(auctionRepositoryPort).updateBidIfHigher(bidDTO);
     }
 
@@ -75,7 +75,7 @@ public class BidCommandServiceTest {
                 .isInstanceOf(BidException.class)
                 .hasMessageContaining(ErrorCode.INVALID_PROFILE_MONEY.getMessage());
 
-        verify(bidRepositoryPort, never()).saveBid(any());
+        verify(bidRepositoryPort, never()).save(any());
     }
 
     @Test
@@ -91,7 +91,7 @@ public class BidCommandServiceTest {
                 .isInstanceOf(BidException.class)
                 .hasMessageContaining(ErrorCode.BID_FAIL.getMessage());
 
-        verify(bidRepositoryPort, never()).saveBid(any());
+        verify(bidRepositoryPort, never()).save(any());
     }
 
     @Test
@@ -109,6 +109,6 @@ public class BidCommandServiceTest {
                 .isInstanceOf(BidException.class)
                 .hasMessageContaining(ErrorCode.BID_FAIL.getMessage());
 
-        verify(bidRepositoryPort, never()).saveBid(any());
+        verify(bidRepositoryPort, never()).save(any());
     }
 }

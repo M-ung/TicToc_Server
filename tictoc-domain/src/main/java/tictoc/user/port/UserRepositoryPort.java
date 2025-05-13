@@ -4,6 +4,6 @@ import tictoc.user.model.User;
 import java.util.Optional;
 
 public interface UserRepositoryPort {
-    User saveUser(User user);
+    User save(User user);
     Optional<User> findUserByKakaoId(String kakaoId);
 }
